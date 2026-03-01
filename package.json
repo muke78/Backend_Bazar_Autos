@@ -1,0 +1,45 @@
+{
+	"name": "backend_bazar_autos",
+	"version": "1.0.0",
+	"description": "Sistema para un bazar de autos y control de flujo de dinero",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+		"start": "node index.js",
+		"dev": "nodemon index.js",
+		"format": "pnpm exec biome format --write .",
+		"lint": "pnpm exec biome lint --write .",
+		"check:biome": "pnpm exec biome check --write ."
+	},
+	"keywords": [
+		"node",
+		"express",
+		"api",
+		"backend",
+		"mysql",
+		"swagger"
+	],
+	"author": "Erick Gobzalez, Osvaldo Cabrera",
+	"license": "ISC",
+	"dependencies": {
+		"argon2": "0.44.0",
+		"cookie-parser": "1.4.7",
+		"cors": "2.8.6",
+		"express": "5.2.1",
+		"express-rate-limit": "8.2.1",
+		"helmet": "8.1.0",
+		"joi": "18.0.2",
+		"jsonwebtoken": "9.0.3",
+		"morgan": "1.10.1",
+		"mysql2": "3.18.2",
+		"swagger-themes": "1.4.3",
+		"swagger-ui-express": "5.0.1",
+		"winston": "3.19.0",
+		"yamljs": "0.3.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.4.4",
+		"dotenv": "17.3.1",
+		"nodemon": "3.1.14"
+	}
+}
