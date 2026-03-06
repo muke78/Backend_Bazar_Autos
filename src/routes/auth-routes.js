@@ -3,6 +3,8 @@ import { config } from '../config/config.js';
 import { methodOK } from "../server/methods-server.js";
 import { AuthError } from "../utils/error-utils.js";
 import { Login } from '../controllers/auth-controllers.js';
+import { validationFields } from '../middlewares/validation-middlewares.js';
+import { schemaAuthUserValidations } from '../schemas/auth-schemas.js';
 
 const auth = express.Router();
 
@@ -30,7 +32,7 @@ auth.post("/logout", async (request, response, next) => {
 //POST /api/auth/login
 auth.post(
     "/login",
-    // validationFields(schemaAuthUserValidations, "body"),
+    validationFields(schemaAuthUserValidations, "body"),
     async (request, response, next) => {
         try {
             const userData = request.body;

@@ -4,44 +4,77 @@
 -- ------------------------------------------------------
 -- Server version	8.0.39
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */
+;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */
+;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */
+;
+/*!50503 SET NAMES utf8 */
+;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */
+;
+/*!40103 SET TIME_ZONE='+00:00' */
+;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */
+;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */
+;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */
+;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */
+;
 
 --
 -- Table structure for table `car_costs`
 --
 
 DROP TABLE IF EXISTS `car_costs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET @saved_cs_client     = @@character_set_client */
+;
+/*!50503 SET character_set_client = utf8mb4 */
+;
 CREATE TABLE `car_costs` (
-  `cost_id` char(36) NOT NULL,
-  `car_id` char(36) NOT NULL,
-  `cost_type` enum('llantas','hojalateria','tapiceria','cielo','volante','funda','mecanico','tapones','multa','kit','sombrerera','rin_llaveta','aceite','tapon_facion','alineacion','manija','faros_calaveras') NOT NULL,
-  `amount` decimal(10,2) NOT NULL,
-  `note` varchar(255) DEFAULT NULL,
-  `created` datetime DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`cost_id`),
-  KEY `idx_car_cost_type` (`car_id`,`cost_type`),
-  CONSTRAINT `fk_cost_car` FOREIGN KEY (`car_id`) REFERENCES `cars` (`car_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+    `cost_id` char(36) NOT NULL,
+    `car_id` char(36) NOT NULL,
+    `cost_type` enum(
+        'llantas',
+        'hojalateria',
+        'tapiceria',
+        'cielo',
+        'volante',
+        'funda',
+        'mecanico',
+        'tapones',
+        'multa',
+        'kit',
+        'sombrerera',
+        'rin_llaveta',
+        'aceite',
+        'tapon_facion',
+        'alineacion',
+        'manija',
+        'faros_calaveras'
+    ) NOT NULL,
+    `amount` decimal(10, 2) NOT NULL,
+    `note` varchar(255) DEFAULT NULL,
+    `created` datetime DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`cost_id`),
+    KEY `idx_car_cost_type` (`car_id`, `cost_type`),
+    CONSTRAINT `fk_cost_car` FOREIGN KEY (`car_id`) REFERENCES `cars` (`car_id`) ON DELETE CASCADE
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */
+;
 
 --
 -- Dumping data for table `car_costs`
 --
 
 LOCK TABLES `car_costs` WRITE;
-/*!40000 ALTER TABLE `car_costs` DISABLE KEYS */;
-/*!40000 ALTER TABLE `car_costs` ENABLE KEYS */;
+/*!40000 ALTER TABLE `car_costs` DISABLE KEYS */
+;
+/*!40000 ALTER TABLE `car_costs` ENABLE KEYS */
+;
 UNLOCK TABLES;
 
 --
@@ -49,35 +82,45 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `cars`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET @saved_cs_client     = @@character_set_client */
+;
+/*!50503 SET character_set_client = utf8mb4 */
+;
 CREATE TABLE `cars` (
-  `car_id` char(36) NOT NULL,
-  `brand` varchar(20) NOT NULL,
-  `model` varchar(50) NOT NULL,
-  `year_of_car` int NOT NULL,
-  `color` varchar(15) NOT NULL,
-  `purchase_date` date NOT NULL,
-  `sale_date` date DEFAULT NULL,
-  `status` enum('Vendido','Inventario','En espera','Reparacion') NOT NULL,
-  `purchase_price` decimal(10,2) NOT NULL,
-  `price_for_sale` decimal(10,2) DEFAULT NULL,
-  `created` datetime DEFAULT CURRENT_TIMESTAMP,
-  `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`car_id`),
-  KEY `idx_brand_model` (`brand`,`model`),
-  KEY `idx_dates` (`purchase_date`,`sale_date`),
-  KEY `idx_year_of_car` (`year_of_car`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+    `car_id` char(36) NOT NULL,
+    `brand` varchar(20) NOT NULL,
+    `model` varchar(50) NOT NULL,
+    `year_of_car` int NOT NULL,
+    `color` varchar(15) NOT NULL,
+    `purchase_date` date NOT NULL,
+    `sale_date` date DEFAULT NULL,
+    `status` enum(
+        'Vendido',
+        'Inventario',
+        'En espera',
+        'Reparacion'
+    ) NOT NULL,
+    `purchase_price` decimal(10, 2) NOT NULL,
+    `price_for_sale` decimal(10, 2) DEFAULT NULL,
+    `created` datetime DEFAULT CURRENT_TIMESTAMP,
+    `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`car_id`),
+    KEY `idx_brand_model` (`brand`, `model`),
+    KEY `idx_dates` (`purchase_date`, `sale_date`),
+    KEY `idx_year_of_car` (`year_of_car`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */
+;
 
 --
 -- Dumping data for table `cars`
 --
 
 LOCK TABLES `cars` WRITE;
-/*!40000 ALTER TABLE `cars` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cars` ENABLE KEYS */;
+/*!40000 ALTER TABLE `cars` DISABLE KEYS */
+;
+/*!40000 ALTER TABLE `cars` ENABLE KEYS */
+;
 UNLOCK TABLES;
 
 --
@@ -85,27 +128,32 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `investor`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET @saved_cs_client     = @@character_set_client */
+;
+/*!50503 SET character_set_client = utf8mb4 */
+;
 CREATE TABLE `investor` (
-  `investor_id` char(36) NOT NULL,
-  `user_id` char(36) NOT NULL,
-  `investment_amount` decimal(10,2) NOT NULL,
-  `created` datetime DEFAULT CURRENT_TIMESTAMP,
-  `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`investor_id`),
-  KEY `idx_investor_user` (`user_id`),
-  CONSTRAINT `fk_investor_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+    `investor_id` char(36) NOT NULL,
+    `user_id` char(36) NOT NULL,
+    `investment_amount` decimal(10, 2) NOT NULL,
+    `created` datetime DEFAULT CURRENT_TIMESTAMP,
+    `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`investor_id`),
+    KEY `idx_investor_user` (`user_id`),
+    CONSTRAINT `fk_investor_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */
+;
 
 --
 -- Dumping data for table `investor`
 --
 
 LOCK TABLES `investor` WRITE;
-/*!40000 ALTER TABLE `investor` DISABLE KEYS */;
-/*!40000 ALTER TABLE `investor` ENABLE KEYS */;
+/*!40000 ALTER TABLE `investor` DISABLE KEYS */
+;
+/*!40000 ALTER TABLE `investor` ENABLE KEYS */
+;
 UNLOCK TABLES;
 
 --
@@ -113,32 +161,37 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `movements`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET @saved_cs_client     = @@character_set_client */
+;
+/*!50503 SET character_set_client = utf8mb4 */
+;
 CREATE TABLE `movements` (
-  `movements_id` char(36) NOT NULL,
-  `movements_category_id` char(36) NOT NULL,
-  `car_id` char(36) NOT NULL,
-  `type` enum('Compra','Gasto') NOT NULL,
-  `amount` decimal(10,2) NOT NULL,
-  `description` varchar(120) DEFAULT NULL,
-  `created` datetime DEFAULT CURRENT_TIMESTAMP,
-  `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`movements_id`),
-  KEY `idx_movements_car` (`car_id`),
-  KEY `idx_movements_category` (`movements_category_id`),
-  CONSTRAINT `fk_movements_car` FOREIGN KEY (`car_id`) REFERENCES `cars` (`car_id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_movements_category` FOREIGN KEY (`movements_category_id`) REFERENCES `movements_category` (`category_id`) ON DELETE RESTRICT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+    `movements_id` char(36) NOT NULL,
+    `movements_category_id` char(36) NOT NULL,
+    `car_id` char(36) NOT NULL,
+    `type` enum('Compra', 'Gasto') NOT NULL,
+    `amount` decimal(10, 2) NOT NULL,
+    `description` varchar(120) DEFAULT NULL,
+    `created` datetime DEFAULT CURRENT_TIMESTAMP,
+    `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`movements_id`),
+    KEY `idx_movements_car` (`car_id`),
+    KEY `idx_movements_category` (`movements_category_id`),
+    CONSTRAINT `fk_movements_car` FOREIGN KEY (`car_id`) REFERENCES `cars` (`car_id`) ON DELETE CASCADE,
+    CONSTRAINT `fk_movements_category` FOREIGN KEY (`movements_category_id`) REFERENCES `movements_category` (`category_id`) ON DELETE RESTRICT
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */
+;
 
 --
 -- Dumping data for table `movements`
 --
 
 LOCK TABLES `movements` WRITE;
-/*!40000 ALTER TABLE `movements` DISABLE KEYS */;
-/*!40000 ALTER TABLE `movements` ENABLE KEYS */;
+/*!40000 ALTER TABLE `movements` DISABLE KEYS */
+;
+/*!40000 ALTER TABLE `movements` ENABLE KEYS */
+;
 UNLOCK TABLES;
 
 --
@@ -146,23 +199,28 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `movements_category`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET @saved_cs_client     = @@character_set_client */
+;
+/*!50503 SET character_set_client = utf8mb4 */
+;
 CREATE TABLE `movements_category` (
-  `category_id` char(36) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `type` enum('Activo','Pasivo') NOT NULL,
-  PRIMARY KEY (`category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+    `category_id` char(36) NOT NULL,
+    `name` varchar(50) NOT NULL,
+    `type` enum('Activo', 'Pasivo') NOT NULL,
+    PRIMARY KEY (`category_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */
+;
 
 --
 -- Dumping data for table `movements_category`
 --
 
 LOCK TABLES `movements_category` WRITE;
-/*!40000 ALTER TABLE `movements_category` DISABLE KEYS */;
-/*!40000 ALTER TABLE `movements_category` ENABLE KEYS */;
+/*!40000 ALTER TABLE `movements_category` DISABLE KEYS */
+;
+/*!40000 ALTER TABLE `movements_category` ENABLE KEYS */
+;
 UNLOCK TABLES;
 
 --
@@ -170,39 +228,94 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET @saved_cs_client     = @@character_set_client */
+;
+/*!50503 SET character_set_client = utf8mb4 */
+;
 CREATE TABLE `users` (
-  `user_id` char(36) NOT NULL,
-  `username` varchar(100) NOT NULL,
-  `password_hash` varchar(255) NOT NULL,
-  `full_name` varchar(200) DEFAULT NULL,
-  `email` varchar(200) DEFAULT NULL,
-  `last_login` datetime DEFAULT NULL,
-  `created` datetime DEFAULT CURRENT_TIMESTAMP,
-  `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY `username` (`username`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+    `user_id` char(36) NOT NULL,
+    `username` varchar(100) NOT NULL,
+    `password_hash` varchar(255) NOT NULL,
+    `full_name` varchar(200) DEFAULT NULL,
+    `email` varchar(200) DEFAULT NULL,
+    `last_login` datetime DEFAULT NULL,
+    `created` datetime DEFAULT CURRENT_TIMESTAMP,
+    `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`user_id`),
+    UNIQUE KEY `username` (`username`),
+    UNIQUE KEY `email` (`email`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */
+;
 
 --
 -- Dumping data for table `users`
 --
 
 LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */
+;
+INSERT INTO
+    `users`
+VALUES (
+        '4a274aee-a02e-4814-98e9-6a5a55848918',
+        'ise67',
+        '$argon2i$v=19$m=16,t=2,p=1$UzVGbTdVWU1jRFZ1cjRxZQ$CZxbmRtudDUbrgX9SorCNQ',
+        'Isela Quijada Quandon',
+        'ise67@gmail.com',
+        NULL,
+        '2026-03-05 23:54:34',
+        '2026-03-06 00:00:36'
+    ),
+    (
+        '6aa4afe6-3ea2-461b-8bdd-84c8167ed1e2',
+        'zuuri12',
+        '$argon2i$v=19$m=16,t=2,p=1$UzVGbTdVWU1jRFZ1cjRxZQ$GcWuiIY/sStKPG3GpzpyjQ',
+        'Zuri Quandon Quijada',
+        'zuri12@gmail.com',
+        '2026-03-06 00:19:12',
+        '2026-03-05 23:54:34',
+        '2026-03-06 00:19:12'
+    ),
+    (
+        'ec54cc39-9174-451e-b1d0-224cd3a54e29',
+        'mon97',
+        '$argon2i$v=19$m=16,t=2,p=1$UzVGbTdVWU1jRFZ1cjRxZQ$1EOVdobZ3yrAHwhO3IwVYg',
+        'Montserrat Quandon Quijada',
+        'mon97@gmail.com',
+        NULL,
+        '2026-03-05 23:54:34',
+        '2026-03-06 00:03:24'
+    ),
+    (
+        'f272776e-7033-44c4-82de-f7c668f17cf0',
+        'ricardo90',
+        '$argon2i$v=19$m=16,t=2,p=1$UzVGbTdVWU1jRFZ1cjRxZQ$+dqCtvbeT9ydgUINkdh/5g',
+        'Ricardo Quandon Quijada',
+        'ricardo90@gmail.com',
+        '2026-03-06 00:00:39',
+        '2026-03-05 23:54:34',
+        '2026-03-06 00:03:24'
+    );
+/*!40000 ALTER TABLE `users` ENABLE KEYS */
+;
 UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */
+;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */
+;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */
+;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */
+;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */
+;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */
+;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */
+;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */
+;
 
--- Dump completed on 2026-03-01  4:59:59
+-- Dump completed on 2026-03-06  0:27:08

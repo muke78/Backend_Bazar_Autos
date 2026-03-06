@@ -1,0 +1,546 @@
+openapi: 3.0.0
+info:
+  title: API_Bazar_Autos
+  version: 1.0.0
+  description: ''
+servers:
+  - url: 'http://localhost:3000/api/v1'
+paths:
+  /auth/login:
+    post:
+      summary: Login
+      responses:
+        '200':
+          description: 200 OK
+          headers:
+            Vary:
+              deprecated: false
+              schema: {}
+              example: Origin
+            Access-Control-Allow-Credentials:
+              deprecated: false
+              schema: {}
+              example: 'true'
+            Content-Security-Policy:
+              deprecated: false
+              schema: {}
+              example: >-
+                default-src 'self';base-uri 'self';font-src 'self' https:
+                data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                data:;object-src 'none';script-src 'self';script-src-attr
+                'none';style-src 'self' https:
+                'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              deprecated: false
+              schema: {}
+              example: same-origin
+            Cross-Origin-Resource-Policy:
+              deprecated: false
+              schema: {}
+              example: same-origin
+            Origin-Agent-Cluster:
+              deprecated: false
+              schema: {}
+              example: '?1'
+            Referrer-Policy:
+              deprecated: false
+              schema: {}
+              example: no-referrer
+            Strict-Transport-Security:
+              deprecated: false
+              schema: {}
+              example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              deprecated: false
+              schema: {}
+              example: nosniff
+            X-DNS-Prefetch-Control:
+              deprecated: false
+              schema: {}
+              example: 'off'
+            X-Download-Options:
+              deprecated: false
+              schema: {}
+              example: noopen
+            X-Frame-Options:
+              deprecated: false
+              schema: {}
+              example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              deprecated: false
+              schema: {}
+              example: none
+            X-XSS-Protection:
+              deprecated: false
+              schema: {}
+              example: '0'
+            Set-Cookie:
+              deprecated: false
+              schema: {}
+              example: >-
+                access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmFhNGFmZTYtM2VhMi00NjFiLThiZGQtODRjODE2N2VkMWUyIiwiaWF0IjoxNzcyNzc3MTI2LCJleHAiOjE3NzI4NjM1MjZ9.wAD5-29DJ9bb9FAtGQiwS9xnUTrb2r1psBxiaT0zDu8;
+                Max-Age=86400; Path=/; Expires=Sat, 07 Mar 2026 06:05:26 GMT;
+                HttpOnly; SameSite=Strict
+            Content-Length:
+              deprecated: false
+              schema: {}
+              example: '210'
+            ETag:
+              deprecated: false
+              schema: {}
+              example: W/"d2-bOZOAPTMWImrX/IrFFVlRNHQoYw"
+            Date:
+              deprecated: false
+              schema: {}
+              example: Fri, 06 Mar 2026 06:05:26 GMT
+            Connection:
+              deprecated: false
+              schema: {}
+              example: keep-alive
+            Keep-Alive:
+              deprecated: false
+              schema: {}
+              example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                  message:
+                    type: string
+                  metadata:
+                    type: object
+                    properties:
+                      timestamp:
+                        type: string
+                        format: date-time
+                      requestId:
+                        type: string
+                      dataCount:
+                        type: integer
+                      dataCountFormatted:
+                        type: string
+              example:
+                success: true
+                data: {}
+                message: Sesion iniciada correctamente
+                metadata:
+                  timestamp: '2026-03-06T06:05:26.759Z'
+                  requestId: ce1486a2-479e-428b-bb1e-f28cc7bcc964
+                  dataCount: 0
+                  dataCountFormatted: '0'
+        '400':
+          description: 400 Bad Request
+          headers:
+            Vary:
+              deprecated: false
+              schema: {}
+              example: Origin
+            Access-Control-Allow-Credentials:
+              deprecated: false
+              schema: {}
+              example: 'true'
+            Content-Security-Policy:
+              deprecated: false
+              schema: {}
+              example: >-
+                default-src 'self';base-uri 'self';font-src 'self' https:
+                data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                data:;object-src 'none';script-src 'self';script-src-attr
+                'none';style-src 'self' https:
+                'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              deprecated: false
+              schema: {}
+              example: same-origin
+            Cross-Origin-Resource-Policy:
+              deprecated: false
+              schema: {}
+              example: same-origin
+            Origin-Agent-Cluster:
+              deprecated: false
+              schema: {}
+              example: '?1'
+            Referrer-Policy:
+              deprecated: false
+              schema: {}
+              example: no-referrer
+            Strict-Transport-Security:
+              deprecated: false
+              schema: {}
+              example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              deprecated: false
+              schema: {}
+              example: nosniff
+            X-DNS-Prefetch-Control:
+              deprecated: false
+              schema: {}
+              example: 'off'
+            X-Download-Options:
+              deprecated: false
+              schema: {}
+              example: noopen
+            X-Frame-Options:
+              deprecated: false
+              schema: {}
+              example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              deprecated: false
+              schema: {}
+              example: none
+            X-XSS-Protection:
+              deprecated: false
+              schema: {}
+              example: '0'
+            Content-Length:
+              deprecated: false
+              schema: {}
+              example: '260'
+            ETag:
+              deprecated: false
+              schema: {}
+              example: W/"104-AKeBepIxv2ibFGp/R5ZuU5ys3YE"
+            Date:
+              deprecated: false
+              schema: {}
+              example: Fri, 06 Mar 2026 06:07:00 GMT
+            Connection:
+              deprecated: false
+              schema: {}
+              example: keep-alive
+            Keep-Alive:
+              deprecated: false
+              schema: {}
+              example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  httpStatus:
+                    type: integer
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  errores:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                        message:
+                          type: string
+              example:
+                success: false
+                httpStatus: 400
+                code: VALIDATION
+                message: Hay algunos errores en la entrada de campos
+                errores:
+                  - field: password
+                    message: >-
+                      La contraseña debe contener al menos una mayúscula, una
+                      minúscula, un número y un carácter especial
+        '401':
+          description: 401 Unauthorized
+          headers:
+            Vary:
+              deprecated: false
+              schema: {}
+              example: Origin
+            Access-Control-Allow-Credentials:
+              deprecated: false
+              schema: {}
+              example: 'true'
+            Content-Security-Policy:
+              deprecated: false
+              schema: {}
+              example: >-
+                default-src 'self';base-uri 'self';font-src 'self' https:
+                data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                data:;object-src 'none';script-src 'self';script-src-attr
+                'none';style-src 'self' https:
+                'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              deprecated: false
+              schema: {}
+              example: same-origin
+            Cross-Origin-Resource-Policy:
+              deprecated: false
+              schema: {}
+              example: same-origin
+            Origin-Agent-Cluster:
+              deprecated: false
+              schema: {}
+              example: '?1'
+            Referrer-Policy:
+              deprecated: false
+              schema: {}
+              example: no-referrer
+            Strict-Transport-Security:
+              deprecated: false
+              schema: {}
+              example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              deprecated: false
+              schema: {}
+              example: nosniff
+            X-DNS-Prefetch-Control:
+              deprecated: false
+              schema: {}
+              example: 'off'
+            X-Download-Options:
+              deprecated: false
+              schema: {}
+              example: noopen
+            X-Frame-Options:
+              deprecated: false
+              schema: {}
+              example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              deprecated: false
+              schema: {}
+              example: none
+            X-XSS-Protection:
+              deprecated: false
+              schema: {}
+              example: '0'
+            Content-Length:
+              deprecated: false
+              schema: {}
+              example: '610'
+            ETag:
+              deprecated: false
+              schema: {}
+              example: W/"262-oJd5oxsS4bFDrBoswPXaVWfzIjE"
+            Date:
+              deprecated: false
+              schema: {}
+              example: Fri, 06 Mar 2026 06:06:28 GMT
+            Connection:
+              deprecated: false
+              schema: {}
+              example: keep-alive
+            Keep-Alive:
+              deprecated: false
+              schema: {}
+              example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      code:
+                        type: string
+                      details:
+                        type: string
+                      timestamp:
+                        type: string
+                        format: date-time
+                      errorId:
+                        type: string
+                      stack:
+                        type: string
+                      path:
+                        type: string
+                      method:
+                        type: string
+                      query:
+                        type: object
+              example:
+                success: false
+                error:
+                  message: La contraseña es incorrecta o esta mal escrita
+                  code: AUTH
+                  details: >-
+                    Ocurrió un problema en el servidor. Por favor, intenta más
+                    tarde.
+                  timestamp: '2026-03-06T06:06:28.224Z'
+                  errorId: 5e673c4b-774f-4a4f-a334-21f6d6fa29c4
+                  stack: >-
+                    AUTH || Error: La contraseña es incorrecta o esta mal
+                    escrita
+                        at loginService (file:///C:/Users/MikeT/Documentos/Backend_Bazar_Autos/src/services/auth-services.js:22:15)
+                        at async file:///C:/Users/MikeT/Documentos/Backend_Bazar_Autos/src/routes/auth-routes.js:39:27
+                  path: /api/v1/auth/login
+                  method: POST
+                  query: {}
+        '404':
+          description: 404 Not Found
+          headers:
+            Vary:
+              deprecated: false
+              schema: {}
+              example: Origin
+            Access-Control-Allow-Credentials:
+              deprecated: false
+              schema: {}
+              example: 'true'
+            Content-Security-Policy:
+              deprecated: false
+              schema: {}
+              example: >-
+                default-src 'self';base-uri 'self';font-src 'self' https:
+                data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                data:;object-src 'none';script-src 'self';script-src-attr
+                'none';style-src 'self' https:
+                'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              deprecated: false
+              schema: {}
+              example: same-origin
+            Cross-Origin-Resource-Policy:
+              deprecated: false
+              schema: {}
+              example: same-origin
+            Origin-Agent-Cluster:
+              deprecated: false
+              schema: {}
+              example: '?1'
+            Referrer-Policy:
+              deprecated: false
+              schema: {}
+              example: no-referrer
+            Strict-Transport-Security:
+              deprecated: false
+              schema: {}
+              example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              deprecated: false
+              schema: {}
+              example: nosniff
+            X-DNS-Prefetch-Control:
+              deprecated: false
+              schema: {}
+              example: 'off'
+            X-Download-Options:
+              deprecated: false
+              schema: {}
+              example: noopen
+            X-Frame-Options:
+              deprecated: false
+              schema: {}
+              example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              deprecated: false
+              schema: {}
+              example: none
+            X-XSS-Protection:
+              deprecated: false
+              schema: {}
+              example: '0'
+            Content-Length:
+              deprecated: false
+              schema: {}
+              example: '686'
+            ETag:
+              deprecated: false
+              schema: {}
+              example: W/"2ae-Wm2CDg9XhdIy155P6IpWTCr/TUk"
+            Date:
+              deprecated: false
+              schema: {}
+              example: Fri, 06 Mar 2026 06:05:57 GMT
+            Connection:
+              deprecated: false
+              schema: {}
+              example: keep-alive
+            Keep-Alive:
+              deprecated: false
+              schema: {}
+              example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      code:
+                        type: string
+                      details:
+                        type: string
+                      timestamp:
+                        type: string
+                        format: date-time
+                      errorId:
+                        type: string
+                      stack:
+                        type: string
+                      path:
+                        type: string
+                      method:
+                        type: string
+                      query:
+                        type: object
+              example:
+                success: false
+                error:
+                  message: El usuario no ha podido ser encontrado
+                  code: NOT_FOUND
+                  details: >-
+                    Ocurrió un problema en el servidor. Por favor, intenta más
+                    tarde.
+                  timestamp: '2026-03-06T06:05:57.162Z'
+                  errorId: 42eb553f-cf34-43c6-befc-a315187f4f31
+                  stack: |-
+                    NOT_FOUND || Error: El usuario no ha podido ser encontrado
+                        at loginService (file:///C:/Users/MikeT/Documentos/Backend_Bazar_Autos/src/services/auth-services.js:14:22)
+                        at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+                        at async file:///C:/Users/MikeT/Documentos/Backend_Bazar_Autos/src/routes/auth-routes.js:39:27
+                  path: /api/v1/auth/login
+                  method: POST
+                  query: {}
+      tags:
+        - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+            example:
+              email: zuri12@gmail.com
+              password: AdZkWFy3CW@3BT4
+  /auth/logout:
+    post:
+      summary: Logout
+      responses: {}
+      tags:
+        - auth
+  /:
+    get:
+      summary: server
+      responses: {}
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+security:
+  - BasicAuth: []

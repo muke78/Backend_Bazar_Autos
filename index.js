@@ -33,7 +33,8 @@ app.use(cookieParser());
 // ✅ 3 Ruta raíz de entrada cuando entras al servidor local
 app.get(`${config.api.basePath}`, async (_req, res) => {
 	const dbStatus = await testConnection();
-	res.status(200).json({
+	const statusCode = dbStatus ? 200 : 503;
+	res.status(statusCode).json({
 		name: "Backend Bazar Autos",
 		description:
 			"Backend hecho para un bazar de autos,  para un control financiero",
@@ -62,7 +63,7 @@ app.get(`${config.api.basePath}`, async (_req, res) => {
 
 // ✅ 4. Rutas de la API (ya con rate limiting aplicado)
 if (config.nodeEnv === "production") {
-	app.use(`${config.api.basePath}/auth`, burstProtectionLimiter);
+	app.use(`${config.api.basePath}/auth/login`, burstProtectionLimiter);
 	app.use(`${config.api.basePath}`, normalLimiter);
 }
 
