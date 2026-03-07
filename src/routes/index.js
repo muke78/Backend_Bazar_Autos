@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { config } from "../config/config.js";
 import { auth } from "./auth-routes.js";
+import { users } from "./users-routes.js";
+import { cars } from "./cars-routes.js";
 
 const router = Router();
 
@@ -9,6 +11,7 @@ const base = config.api.basePath;
 
 // ✅ 2. Construccion de rutas globales para el backend
 router.use(`${base}/auth`, auth);
-// router.use(`${base}/users`);
+router.use(`${base}/users`, users);
+router.use(`${base}/cars`, cars);
 
 export { router };
