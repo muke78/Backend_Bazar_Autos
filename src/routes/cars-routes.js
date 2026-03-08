@@ -1,19 +1,27 @@
 import express from 'express';
 import { methodCreated, methodOK } from "../server/methods-server.js";
-import { AuthError } from "../utils/error-utils.js";
 import { validationFields } from '../middlewares/validation-middlewares.js';
 import { verifyToken } from '../middlewares/verify-jwt-middlewares.js';
+import { schemaInsertCar } from '../schemas/cars-schema.js';
+import { GetModelsByCars, InsertCar } from '../controllers/cars-controllers.js';
 
 const cars = express.Router()
 
 // GET /api/cars/models
-
+cars.get("/models", verifyToken, async (request, response, next) => {
+    try {
+        const result = await GetModelsByCars()
+        methodOK(request, response, result)
+    } catch (error) {
+        next(error)
+    }
+})
 //POST /api/cars/create
-cars.post("/", verifyToken, async (request, response, next) => {
+cars.post("/", verifyToken, validationFields(schemaInsertCar, "body"), async (request, response, next) => {
     try {
         const insertCar = request.body;
         const result = await InsertCar(insertCar)
-        methodCreated(request, response, result, "Se inserto correctamente un auto")
+        methodCreated(request, response, undefined, result.message)
     } catch (error) {
         next(error)
     }

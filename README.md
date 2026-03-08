@@ -59,19 +59,6 @@ Registra un gasto o movimiento de dinero general, no atado a un costo específic
 
 ---
 
-### 🔧 Costos específicos del auto
-
-```
-POST /api/v1/car_costs
-```
-
-Registra un gasto directamente vinculado a un vehículo del inventario. Útil para llevar el costo total de recuperación de cada unidad antes de su venta. Ejemplos: llantas, tapicería, mecánico, faros, alineación.
-
-> [!NOTE]
-> El campo `note` no se ocupará por ahora y no está contemplado en el diseño actual, ya que no vive en el Excel de referencia.
-
----
-
 ### 👥 Inversionistas
 
 ```
