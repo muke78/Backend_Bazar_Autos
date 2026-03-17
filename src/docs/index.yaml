@@ -3,7 +3,8 @@ info:
   title: API_Bazar_Autos
   version: 1.0.0
   description: >-
-    ## 📋 Descripción General
+    ## 📋 Descripción GeneralEndFragment
+
 
     Este sistema permite administrar el ciclo completo de compra, reparación,
     inversión y venta de vehículos. Cubre los siguientes módulos
@@ -20,7 +21,7 @@ info:
     | 🔧 Costos por vehículo | Gastos directamente asociados a un auto
     específico |
 
-    | 👥 Inversionistas | 👥 Inversionistas |
+    | 👥 Inversionistas | Seguimiento del capital aportado por cada socio |
 
     | 🔐 Usuarios | Administración de accesos al sistema |
 servers:
@@ -98,7 +99,7 @@ paths:
               schema:
                 type: string
               example: >-
-                access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmFhNGFmZTYtM2VhMi00NjFiLThiZGQtODRjODE2N2VkMWUyIiwiaWF0IjoxNzcyNzc3MTI2LCJleHAiOjE3NzI4NjM1MjZ9.wAD5-29DJ9bb9FAtGQiwS9xnUTrb2r1psBxiaT0zDu8;
+                access_token=; Tu token
                 Max-Age=86400; Path=/; Expires=Sat, 07 Mar 2026 06:05:26 GMT;
                 HttpOnly; SameSite=Strict
             Content-Length:
@@ -1104,24 +1105,22 @@ paths:
                       note:
                         type: string
             example:
-              brand: Volkswagen
-              model: Jetta
+              brand: Jeep
+              model: Jeep Renegade
               year_of_car: 2017
-              color: Azul
+              color: Negro
               purchase_date: '2025-12-29'
               sale_date: '2026-03-08'
-              status: Vendido
+              status: En espera
               purchase_price: 190000
               price_for_sale: 240000
               costs:
-                - cost_type: hojalateria
-                  amount: 2400
-                  note: ''
                 - cost_type: tapiceria
-                  amount: 500
+                  amount: 800
                   note: ''
-                - cost_type: volante
-                  amount: 750
+                - cost_type: cielo
+                  amount: 200
+                  note: ''
   /cars/models:
     get:
       summary: Lista de modelos
@@ -1388,6 +1387,421 @@ paths:
                   query: {}
       tags:
         - cars
+  /expenses/categories:
+    get:
+      summary: Lista de categorias
+      responses:
+        '200':
+          description: 200 OK
+          headers:
+            Vary:
+              deprecated: false
+              schema: {}
+              example: Origin
+            Access-Control-Allow-Credentials:
+              deprecated: false
+              schema: {}
+              example: 'true'
+            Content-Security-Policy:
+              deprecated: false
+              schema: {}
+              example: >-
+                default-src 'self';base-uri 'self';font-src 'self' https:
+                data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                data:;object-src 'none';script-src 'self';script-src-attr
+                'none';style-src 'self' https:
+                'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              deprecated: false
+              schema: {}
+              example: same-origin
+            Cross-Origin-Resource-Policy:
+              deprecated: false
+              schema: {}
+              example: same-origin
+            Origin-Agent-Cluster:
+              deprecated: false
+              schema: {}
+              example: '?1'
+            Referrer-Policy:
+              deprecated: false
+              schema: {}
+              example: no-referrer
+            Strict-Transport-Security:
+              deprecated: false
+              schema: {}
+              example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              deprecated: false
+              schema: {}
+              example: nosniff
+            X-DNS-Prefetch-Control:
+              deprecated: false
+              schema: {}
+              example: 'off'
+            X-Download-Options:
+              deprecated: false
+              schema: {}
+              example: noopen
+            X-Frame-Options:
+              deprecated: false
+              schema: {}
+              example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              deprecated: false
+              schema: {}
+              example: none
+            X-XSS-Protection:
+              deprecated: false
+              schema: {}
+              example: '0'
+            Content-Length:
+              deprecated: false
+              schema: {}
+              example: '1316'
+            ETag:
+              deprecated: false
+              schema: {}
+              example: W/"524-0Xu1hpTwtZkVlgeeYB1pWrrSVB4"
+            Date:
+              deprecated: false
+              schema: {}
+              example: Tue, 17 Mar 2026 07:06:09 GMT
+            Connection:
+              deprecated: false
+              schema: {}
+              example: keep-alive
+            Keep-Alive:
+              deprecated: false
+              schema: {}
+              example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        category_id:
+                          type: string
+                        name:
+                          type: string
+                        type:
+                          type: string
+                  message:
+                    type: string
+                  metadata:
+                    type: object
+                    properties:
+                      timestamp:
+                        type: string
+                        format: date-time
+                      requestId:
+                        type: string
+                      dataCount:
+                        type: integer
+                      dataCountFormatted:
+                        type: string
+              example:
+                success: true
+                data:
+                  - category_id: e0336f64-fa02-4503-9c59-664473028b82
+                    name: Cajón
+                    type: Pasivo
+                  - category_id: 33d335f2-9181-4955-a1b2-a1641e61c439
+                    name: Comida
+                    type: Pasivo
+                  - category_id: d15c71ae-3379-429f-a75d-344487654c34
+                    name: Gasolina
+                    type: Pasivo
+                  - category_id: 9403fd42-b2ba-41f8-8c9b-74045e014d33
+                    name: Gastos Personales
+                    type: Pasivo
+                  - category_id: dad9fd2e-0b73-4800-899f-aa6c793096d0
+                    name: Lavado
+                    type: Pasivo
+                  - category_id: 1edf123a-fbc5-42e4-af29-86a1b67509d4
+                    name: Mantenimiento Menor
+                    type: Pasivo
+                  - category_id: a990c139-7dca-4165-8510-79f33d49e34c
+                    name: Pago de Piso
+                    type: Activo
+                  - category_id: 38be1842-910b-483a-b5a2-dec0184d30e9
+                    name: Refacciones
+                    type: Activo
+                  - category_id: 78fff1f4-a921-4efa-811e-9df550442e0a
+                    name: Seguro del Auto
+                    type: Activo
+                  - category_id: 25717013-00e4-44c6-ae1d-4cd9fc6e4bdc
+                    name: Tenencia
+                    type: Activo
+                  - category_id: 19d7e1d7-c302-4ccc-83c9-4e3f601f068e
+                    name: Traslados
+                    type: Pasivo
+                  - category_id: fbf6f17c-0437-4f1c-9a02-42634f1f6d41
+                    name: Verificación
+                    type: Activo
+                message: Consulta realizada correctamente
+                metadata:
+                  timestamp: '2026-03-17T07:06:09.721Z'
+                  requestId: ea07b585-a1cd-4866-ad27-4d5301b8d0d1
+                  dataCount: 12
+                  dataCountFormatted: '12'
+      tags:
+        - expenses
+  /expenses:
+    post:
+      summary: Guardar un movimiento
+      responses:
+        '201':
+          description: Guardar un movimiento
+          headers:
+            Vary:
+              deprecated: false
+              schema: {}
+              example: Origin
+            Access-Control-Allow-Credentials:
+              deprecated: false
+              schema: {}
+              example: 'true'
+            Content-Security-Policy:
+              deprecated: false
+              schema: {}
+              example: >-
+                default-src 'self';base-uri 'self';font-src 'self' https:
+                data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                data:;object-src 'none';script-src 'self';script-src-attr
+                'none';style-src 'self' https:
+                'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              deprecated: false
+              schema: {}
+              example: same-origin
+            Cross-Origin-Resource-Policy:
+              deprecated: false
+              schema: {}
+              example: same-origin
+            Origin-Agent-Cluster:
+              deprecated: false
+              schema: {}
+              example: '?1'
+            Referrer-Policy:
+              deprecated: false
+              schema: {}
+              example: no-referrer
+            Strict-Transport-Security:
+              deprecated: false
+              schema: {}
+              example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              deprecated: false
+              schema: {}
+              example: nosniff
+            X-DNS-Prefetch-Control:
+              deprecated: false
+              schema: {}
+              example: 'off'
+            X-Download-Options:
+              deprecated: false
+              schema: {}
+              example: noopen
+            X-Frame-Options:
+              deprecated: false
+              schema: {}
+              example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              deprecated: false
+              schema: {}
+              example: none
+            X-XSS-Protection:
+              deprecated: false
+              schema: {}
+              example: '0'
+            Content-Length:
+              deprecated: false
+              schema: {}
+              example: '178'
+            ETag:
+              deprecated: false
+              schema: {}
+              example: W/"b2-ihWNioBmMxO0M2VoMA2wd7vcsQM"
+            Date:
+              deprecated: false
+              schema: {}
+              example: Tue, 17 Mar 2026 07:13:30 GMT
+            Connection:
+              deprecated: false
+              schema: {}
+              example: keep-alive
+            Keep-Alive:
+              deprecated: false
+              schema: {}
+              example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  metadata:
+                    type: object
+                    properties:
+                      timestamp:
+                        type: string
+                        format: date-time
+                      requestId:
+                        type: string
+                      dataCount:
+                        type: integer
+              example:
+                success: true
+                message: Movimiento registrado con éxito
+                metadata:
+                  timestamp: '2026-03-17T07:13:30.420Z'
+                  requestId: 54c24fca-23b4-47d6-a2b0-c5a716dc75b8
+                  dataCount: 0
+      tags:
+        - expenses
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                movements_category_id:
+                  type: string
+                car_id:
+                  type: array
+                  items:
+                    type: string
+                type:
+                  type: string
+                amount:
+                  type: integer
+                description:
+                  type: string
+                isShared:
+                  type: boolean
+            example:
+              movements_category_id: e0336f64-fa02-4503-9c59-664473028b82
+              car_id:
+                - 5a0462a3-fa9d-4776-81be-4d0d917b535c
+                - 0f4c7197-2d98-4552-9d9e-869cfc4c41a8
+              type: Gasto
+              amount: 20000
+              description: Renta mensual de pensión/cajón central
+              isShared: true
+  /investors:
+    post:
+      summary: Cargar inversiones
+      responses:
+        '201':
+          description: 201 Created
+          headers:
+            Vary:
+              schema:
+                type: string
+              example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+              example: 'true'
+            Content-Security-Policy:
+              schema:
+                type: string
+              example: >-
+                default-src 'self';base-uri 'self';font-src 'self' https:
+                data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                data:;object-src 'none';script-src 'self';script-src-attr
+                'none';style-src 'self' https:
+                'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+              example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+              example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+              example: '?1'
+            Referrer-Policy:
+              schema:
+                type: string
+              example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+              example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+              example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+              example: 'off'
+            X-Download-Options:
+              schema:
+                type: string
+              example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+              example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+              example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+              example: '0'
+            Content-Length:
+              schema:
+                type: integer
+              example: '176'
+            ETag:
+              schema:
+                type: string
+              example: W/"b0-Rdds+Gn0Hsc+sQznHgpTpRZ0AqM"
+            Date:
+              schema:
+                type: string
+              example: Tue, 17 Mar 2026 06:05:16 GMT
+            Connection:
+              schema:
+                type: string
+              example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+              example: timeout=5
+      tags:
+        - investors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                investment_amount:
+                  type: integer
+            example:
+              user_id: 6aa4afe6-3ea2-461b-8bdd-84c8167ed1e2
+              investment_amount: 504000
   /users/profile:
     get:
       summary: Pefil del usuario que se loguea

@@ -16,6 +16,7 @@ cars.get("/models", verifyToken, async (request, response, next) => {
 		next(error);
 	}
 });
+
 //POST /api/cars/create
 cars.post(
 	"/",

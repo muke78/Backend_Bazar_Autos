@@ -4,6 +4,7 @@ import { auth } from "./auth-routes.js";
 import { users } from "./users-routes.js";
 import { cars } from "./cars-routes.js";
 import { investors } from "./investor-routes.js";
+import { expenses } from "./expenses-routes.js";
 
 const router = Router();
 
@@ -15,5 +16,6 @@ router.use(`${base}/auth`, auth);
 router.use(`${base}/users`, users);
 router.use(`${base}/cars`, cars);
 router.use(`${base}/investors`, investors);
+router.use(`${base}/expenses`, expenses);
 
 export { router };
