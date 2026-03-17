@@ -55,9 +55,8 @@ app.get(`${config.api.basePath}`, async (_req, res) => {
 		status: {
 			api: "running",
 			database: dbStatus ? "🟢 Connected" : "🔴 Disconnected",
-			uptime: process.uptime()
+			uptime: process.uptime(),
 		},
-
 	});
 });
 

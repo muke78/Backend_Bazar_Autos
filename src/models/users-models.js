@@ -1,24 +1,27 @@
 import { connectionQuery } from "../helpers/index.js";
 
 export const listGetFullNameUserModels = async () => {
-    try {
-        const query = `
+	try {
+		const query = `
         SELECT 
             user_id AS id, full_name AS name
         FROM
-            users;`
-        return await connectionQuery(query)
-    } catch (error) {
-        throw new DatabaseError("Error al obtener los modelos de la base de datos", {
-            context: "getModelsFromDBCarsModel",
-            metadata: { originalError: error.message }
-        });
-    }
+            users;`;
+		return await connectionQuery(query);
+	} catch (error) {
+		throw new DatabaseError(
+			"Error al obtener los modelos de la base de datos",
+			{
+				context: "getModelsFromDBCarsModel",
+				metadata: { originalError: error.message },
+			},
+		);
+	}
 };
 
 export const listProfileModel = async (user_id) => {
-    try {
-        const query = `SELECT 
+	try {
+		const query = `SELECT 
                         user_id,
                         username,
                         full_name,
@@ -28,13 +31,15 @@ export const listProfileModel = async (user_id) => {
                         updated
                     FROM users
                     WHERE user_id = ?;`;
-        const params = [user_id];
-        return await connectionQuery(query, params);
-    } catch (error) {
-        throw new DatabaseError("Error al obtener los modelos de la base de datos", {
-            context: "getModelsFromDBCarsModel",
-            metadata: { originalError: error.message }
-        });
-    }
-
+		const params = [user_id];
+		return await connectionQuery(query, params);
+	} catch (error) {
+		throw new DatabaseError(
+			"Error al obtener los modelos de la base de datos",
+			{
+				context: "getModelsFromDBCarsModel",
+				metadata: { originalError: error.message },
+			},
+		);
+	}
 };

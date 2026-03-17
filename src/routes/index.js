@@ -3,6 +3,7 @@ import { config } from "../config/config.js";
 import { auth } from "./auth-routes.js";
 import { users } from "./users-routes.js";
 import { cars } from "./cars-routes.js";
+import { investors } from "./investor-routes.js";
 
 const router = Router();
 
@@ -13,5 +14,6 @@ const base = config.api.basePath;
 router.use(`${base}/auth`, auth);
 router.use(`${base}/users`, users);
 router.use(`${base}/cars`, cars);
+router.use(`${base}/investors`, investors);
 
 export { router };
