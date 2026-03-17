@@ -2,7 +2,11 @@ import { connectionQuery } from "../helpers/index.js";
 
 export const listGetFullNameUserModels = async () => {
     try {
-        const query = `SELECT full_name FROM users;`
+        const query = `
+        SELECT 
+            user_id AS id, full_name AS name
+        FROM
+            users;`
         return await connectionQuery(query)
     } catch (error) {
         throw new DatabaseError("Error al obtener los modelos de la base de datos", {

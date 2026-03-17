@@ -5,10 +5,11 @@ export const getModelsFromDBCarsModel = async () => {
     try {
         const query = `
             SELECT 
-                DISTINCT(model) as model
-            FROM 
+                MIN(car_id) AS id, model AS name
+            FROM
                 cars
-            ORDER BY model ASC
+            GROUP BY model
+            ORDER BY model ASC;
         `;
 
         const rows = await connectionQuery(query);

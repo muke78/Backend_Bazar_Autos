@@ -5,10 +5,10 @@ export const listGetFullNameUserService = async () => {
 	const names = await listGetFullNameUserModels()
 
 	if (!names || names.length === 0) {
-		throw new NotFoundError("No se encontraron modelos de autos registrados.");
+		throw new NotFoundError("No se encontraron usuarios registrados");
 	}
 
-	return names.map(item => item.full_name);
+	return names;
 };
 
 export const listProfileService = async (user_id) => {

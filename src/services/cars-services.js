@@ -5,12 +5,12 @@ import { DatabaseError, NotFoundError } from '../utils/error-utils.js';
 
 export const getModelsByCarsService = async () => {
     const models = await getModelsFromDBCarsModel();
-    
+
     if (!models || models.length === 0) {
         throw new NotFoundError("No se encontraron modelos de autos registrados.");
     }
 
-    return models.map(item => item.model);
+    return models;
 };
 
 export const postInsertCarService = async (carData) => {
