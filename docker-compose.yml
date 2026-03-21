@@ -1,0 +1,37 @@
+services:
+  # 1. Tu base de datos MySQL (Asegurada para VPS)
+  db:
+    image: mysql:8.0
+    container_name: bazar_mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASS}"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+      
+
+  # 2. Tu Backend Node.js
+  api:
+    build: .
+    container_name: bazar_backend
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=db
+    depends_on:
+      - db
+
+volumes:
+  mysql_data:
