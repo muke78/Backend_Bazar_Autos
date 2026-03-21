@@ -1,132 +1,154 @@
--- tabla de usuarios
-DROP TABLE IF EXISTS users;
+-- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: bazar_autos
+-- ------------------------------------------------------
+-- Server version	8.0.39
 
-CREATE TABLE `users` (
-    `user_id` char(36) NOT NULL,
-    `username` varchar(100) NOT NULL,
-    `password_hash` varchar(255) NOT NULL,
-    `full_name` varchar(200) DEFAULT NULL,
-    `email` varchar(200) DEFAULT NULL,
-    `last_login` datetime DEFAULT NULL,
-    `created` datetime DEFAULT CURRENT_TIMESTAMP,
-    `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (`user_id`),
-    UNIQUE KEY `username` (`username`),
-    UNIQUE KEY `email` (`email`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `car_costs`
 --
 
--- tabla de autos (se omite el año ya que se puede sacar de el created)
-DROP TABLE IF EXISTS cars;
+DROP TABLE IF EXISTS `car_costs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `car_costs` (
+  `cost_id` char(36) NOT NULL,
+  `car_id` char(36) NOT NULL,
+  `cost_type` enum('llantas','hojalateria','tapiceria','cielo','volante','funda','mecanico','tapones','multa','kit','sombrerera','rin_llaveta','aceite','tapon_facion','alineacion','manija','faros_calaveras') NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `note` varchar(255) DEFAULT NULL,
+  `created` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`cost_id`),
+  KEY `idx_car_cost_type` (`car_id`,`cost_type`),
+  CONSTRAINT `fk_cost_car` FOREIGN KEY (`car_id`) REFERENCES `cars` (`car_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `cars`
+--
+
+DROP TABLE IF EXISTS `cars`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cars` (
-    `car_id` char(36) NOT NULL,
-    `brand` VARCHAR(20) NOT NULL,
-    `model` VARCHAR(50) NOT NULL,
-    `year_of_car` INT NOT NULL,
-    `color` VARCHAR(15) NOT NULL,
-    `purchase_date` DATE NOT NULL,
-    `sale_date` DATE NULL,
-    `status` ENUM(
-        'Vendido',
-        'Inventario',
-        'En espera',
-        'Reparacion'
-    ) NOT NULL,
-    `purchase_price` DECIMAL(10, 2) NOT NULL,
-    `price_for_sale` DECIMAL(10, 2) NULL,
-    `created` datetime DEFAULT CURRENT_TIMESTAMP,
-    `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (car_id)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+  `car_id` char(36) NOT NULL,
+  `brand` varchar(20) NOT NULL,
+  `model` varchar(50) NOT NULL,
+  `year_of_car` int NOT NULL,
+  `color` varchar(15) NOT NULL,
+  `purchase_date` date NOT NULL,
+  `sale_date` date DEFAULT NULL,
+  `status` enum('Vendido','Inventario','En espera','Reparacion') NOT NULL,
+  `purchase_price` decimal(10,2) NOT NULL,
+  `price_for_sale` decimal(10,2) DEFAULT NULL,
+  `created` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`car_id`),
+  KEY `idx_brand_model` (`brand`,`model`),
+  KEY `idx_dates` (`purchase_date`,`sale_date`),
+  KEY `idx_year_of_car` (`year_of_car`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-CREATE INDEX idx_brand_model ON cars (brand, model);
-
-CREATE INDEX idx_dates on cars (purchase_date, sale_date);
-
-CREATE INDEX idx_year_of_car ON cars (year_of_car);
+--
+-- Table structure for table `investor`
 --
 
--- tabla de costos por cada carro y sus notas o subcategorias
-DROP TABLE IF EXISTS car_costs;
-
-CREATE TABLE car_costs (
-    `cost_id` CHAR(36) NOT NULL,
-    `car_id` CHAR(36) NOT NULL,
-    cost_type ENUM(
-        'llantas',
-        'hojalateria',
-        'tapiceria',
-        'cielo',
-        'volante',
-        'funda',
-        'mecanico',
-        'tapones',
-        'multa',
-        'kit',
-        'sombrerera',
-        'rin_llaveta',
-        'aceite',
-        'tapon_facion',
-        'alineacion',
-        'manija',
-        'faros_calaveras'
-    ) NOT NULL,
-    amount DECIMAL(10, 2) NOT NULL,
-    note VARCHAR(255),
-    created DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (cost_id),
-    CONSTRAINT fk_cost_car FOREIGN KEY (car_id) REFERENCES cars (car_id) ON DELETE CASCADE
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
-
-CREATE INDEX idx_car_cost_type ON car_costs (car_id, cost_type);
---
-
--- tabla de movimientos o gastos
-DROP TABLE IF EXISTS movements;
-
-CREATE TABLE `movements` (
-    `movements_id` char(36) NOT NULL,
-    `movements_category_id` char(36) NOT NULL, -- id de foreign key al catalogo de refacciones o gasolina
-    `car_id` char(36) NOT NULL, -- id del carro a cargar su movimiento o gastos extras
-    `type` ENUM('Compra', 'Gasto') NOT NULL,
-    `amount` DECIMAL(10, 2) NOT NULL,
-    `description` VARCHAR(120),
-    `created` datetime DEFAULT CURRENT_TIMESTAMP,
-    `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (movements_id),
-    CONSTRAINT fk_movements_car FOREIGN KEY (car_id) REFERENCES cars (car_id) ON DELETE CASCADE,
-    CONSTRAINT fk_movements_category FOREIGN KEY (movements_category_id) REFERENCES movements_category (category_id) ON DELETE RESTRICT
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
-
-CREATE INDEX idx_movements_car ON movements (car_id);
-
-CREATE INDEX idx_movements_category ON movements (movements_category_id);
---
-
--- tabla de inversionistas (se omite el año ya que se puede sacar de el created)
-DROP TABLE IF EXISTS investor;
-
+DROP TABLE IF EXISTS `investor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `investor` (
-    `investor_id` char(36) NOT NULL,
-    `user_id` char(36) NOT NULL,
-    `investment_amount` DECIMAL(10, 2) NOT NULL,
-    `created` datetime DEFAULT CURRENT_TIMESTAMP,
-    `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (investor_id),
-    CONSTRAINT fk_investor_user FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE RESTRICT
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+  `investor_id` char(36) NOT NULL,
+  `user_id` char(36) NOT NULL,
+  `investment_amount` decimal(10,2) NOT NULL,
+  `created` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`investor_id`),
+  KEY `idx_investor_user` (`user_id`),
+  CONSTRAINT `fk_investor_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-CREATE INDEX idx_investor_user ON investor (user_id);
+--
+-- Table structure for table `movements`
 --
 
--- catalogo de gastos o movimientos (categorias)
-DROP TABLE IF EXISTS movements_category;
+DROP TABLE IF EXISTS `movements`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `movements` (
+  `movements_id` char(36) NOT NULL,
+  `movements_category_id` char(36) NOT NULL,
+  `car_id` char(36) NOT NULL,
+  `type` enum('Compra','Gasto') NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `description` varchar(120) DEFAULT NULL,
+  `created` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`movements_id`),
+  KEY `idx_movements_car` (`car_id`),
+  KEY `idx_movements_category` (`movements_category_id`),
+  CONSTRAINT `fk_movements_car` FOREIGN KEY (`car_id`) REFERENCES `cars` (`car_id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_movements_category` FOREIGN KEY (`movements_category_id`) REFERENCES `movements_category` (`category_id`) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `movements_category`
+--
+
+DROP TABLE IF EXISTS `movements_category`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `movements_category` (
-    `category_id` char(36) NOT NULL,
-    `name` VARCHAR(50) NOT NULL,
-    `type` ENUM('Activo', 'Pasivo') NOT NULL,
-    PRIMARY KEY (category_id)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+  `category_id` char(36) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `type` enum('Activo','Pasivo') NOT NULL,
+  PRIMARY KEY (`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
 --
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `user_id` char(36) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `full_name` varchar(200) DEFAULT NULL,
+  `email` varchar(200) DEFAULT NULL,
+  `last_login` datetime DEFAULT NULL,
+  `created` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2026-03-21  4:16:34

@@ -5,6 +5,7 @@ export const corsOptions = {
 		"http://localhost:5174",
 		"http://localhost:4173",
 		"http://localhost:5173/login",
+		"https://bazar-autos.vercel.app/login"
 	],
 	methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 	allowedHeaders: ["Authorization", "Content-Type", "X-Requested-With"],
