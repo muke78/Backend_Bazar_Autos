@@ -12,8 +12,9 @@ RUN pnpm install --prod --frozen-lockfile
 
 COPY . .
 
-USER node
+RUN mkdir -p /logs && chown -R node:node /logs
 
+USER node
 
 ENV PORT=3000
 ENV NODE_ENV=production
