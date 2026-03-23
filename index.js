@@ -24,10 +24,12 @@ setupSwagger(app);
 
 // ✅ 2. Middlewares básicos
 app.use(cors(corsOptions));
+app.use(helmet({
+	crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true, limit: "1mb" }));
 app.use(morgan("combined"));
-app.use(helmet());
 app.use(cookieParser());
 
 // ✅ 3 Ruta raíz de entrada cuando entras al servidor local

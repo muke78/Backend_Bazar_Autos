@@ -11,5 +11,5 @@ export const corsOptions = {
 	allowedHeaders: ["Authorization", "Content-Type", "X-Requested-With"],
 	credentials: true,
 	preflightContinue: false,
-        optionsSuccessStatus: 204
+	optionsSuccessStatus: 204
 };
