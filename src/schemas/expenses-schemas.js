@@ -9,5 +9,6 @@ export const schemaInsertMovement = Joi.object({
 	type: Joi.string().valid("Compra", "Gasto").required(),
 	amount: Joi.number().positive().precision(2).required(),
 	description: Joi.string().max(120).allow("", null),
+	closing_date: Joi.date().iso().required(),
 	isShared: Joi.boolean().default(false),
 });

@@ -12,11 +12,12 @@ export const insertMovementModel = async (
 	type,
 	amount,
 	description,
+	closing_date,
 ) => {
 	const query = `
         INSERT INTO movements 
-            (movements_id, movements_category_id, car_id, type, amount, description) 
-        VALUES (?, ?, ?, ?, ?, ?);
+            (movements_id, movements_category_id, car_id, type, amount, description, closing_date) 
+        VALUES (?, ?, ?, ?, ?, ?, ?);
     `;
 	const params = [
 		movements_id,
@@ -25,6 +26,7 @@ export const insertMovementModel = async (
 		type,
 		amount,
 		description,
+		closing_date,
 	];
 
 	return await connectionQuery(query, params);

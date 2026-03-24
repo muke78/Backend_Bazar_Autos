@@ -16,8 +16,15 @@ export const GetMovementCategoriesService = async () => {
 };
 
 export const InsertMovementService = async (movementData) => {
-	const { movements_category_id, car_id, type, amount, description, isShared } =
-		movementData;
+	const {
+		movements_category_id,
+		car_id,
+		type,
+		amount,
+		description,
+		closing_date,
+		isShared,
+	} = movementData;
 
 	try {
 		const carsArray = Array.isArray(car_id) ? car_id : [car_id];
@@ -37,6 +44,7 @@ export const InsertMovementService = async (movementData) => {
 				type,
 				amountPerCar,
 				finalDescription,
+				closing_date,
 			);
 		});
 

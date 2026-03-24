@@ -11,7 +11,11 @@ export const schemaInsertCar = Joi.object({
 		.valid("Vendido", "Inventario", "En espera", "Reparacion")
 		.required(),
 	purchase_price: Joi.number().precision(2).positive().required(),
-	price_for_sale: Joi.number().precision(2).positive().allow(null, "").empty(""),
+	price_for_sale: Joi.number()
+		.precision(2)
+		.positive()
+		.allow(null, "")
+		.empty(""),
 
 	// Arreglo de gastos que tiene cada carro que se pueden repetir segun su tipo
 	costs: Joi.array()
@@ -38,9 +42,16 @@ export const schemaInsertCar = Joi.object({
 						"faros_calaveras",
 					)
 					.required(),
-				amount: Joi.number().precision(2).min(0).allow(null, "").empty("").default(0).required(),
+				amount: Joi.number()
+					.precision(2)
+					.min(0)
+					.allow(null, "")
+					.empty("")
+					.default(0)
+					.required(),
 				note: Joi.string().max(255).allow("", null),
 			}),
-		).allow(null)
+		)
+		.allow(null)
 		.default([]),
 });
