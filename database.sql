@@ -95,6 +95,7 @@ CREATE TABLE `movements` (
   `type` enum('Compra','Gasto') NOT NULL,
   `amount` decimal(10,2) NOT NULL,
   `description` varchar(120) DEFAULT NULL,
+  `closing_date` date NOT NULL,
   `created` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`movements_id`),
@@ -151,4 +152,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-03-21  4:16:34
+-- Dump completed on 2026-03-24  1:51:05
