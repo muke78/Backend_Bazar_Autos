@@ -1,7 +1,9 @@
 import {
+	deleteUserService,
 	insertUserService,
 	listGetFullNameUserService,
 	listProfileService,
+	updateUserService,
 } from "../services/users-services.js";
 
 export const GetFullNameUser = async () => {
@@ -17,4 +19,14 @@ export const GetProfile = async (user_id) => {
 export const InsertUsers = async (user) => {
 	const insertUsers = await insertUserService(user);
 	return insertUsers;
+};
+
+export const UpdateUser = async (userId, userData) => {
+	const updateUser = await updateUserService(userId, userData);
+	return updateUser;
+};
+
+export const DeleteUser = async (userId) => {
+	const deleteUser = await deleteUserService(userId);
+	return deleteUser;
 };

@@ -26,12 +26,13 @@ info:
     | 🔐 Usuarios | Administración de accesos al sistema |
 servers:
   - url: http://localhost:3000/api/v1
+  - url: '{{_base_url}}'
 paths:
   /auth/login:
     post:
       summary: Login
       responses:
-        "200":
+        '200':
           description: 200 OK
           headers:
             Vary:
@@ -41,7 +42,7 @@ paths:
             Access-Control-Allow-Credentials:
               schema:
                 type: boolean
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               schema:
                 type: string
@@ -62,7 +63,7 @@ paths:
             Origin-Agent-Cluster:
               schema:
                 type: string
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               schema:
                 type: string
@@ -78,7 +79,7 @@ paths:
             X-DNS-Prefetch-Control:
               schema:
                 type: string
-              example: "off"
+              example: 'off'
             X-Download-Options:
               schema:
                 type: string
@@ -94,18 +95,18 @@ paths:
             X-XSS-Protection:
               schema:
                 type: integer
-              example: "0"
+              example: '0'
             Set-Cookie:
               schema:
                 type: string
               example: >-
-                access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+                access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmFhNGFmZTYtM2VhMi00NjFiLThiZGQtODRjODE2N2VkMWUyIiwiaWF0IjoxNzcyNzc3MTI2LCJleHAiOjE3NzI4NjM1MjZ9.wAD5-29DJ9bb9FAtGQiwS9xnUTrb2r1psBxiaT0zDu8;
                 Max-Age=86400; Path=/; Expires=Sat, 07 Mar 2026 06:05:26 GMT;
                 HttpOnly; SameSite=Strict
             Content-Length:
               schema:
                 type: integer
-              example: "210"
+              example: '210'
             ETag:
               schema:
                 type: string
@@ -150,11 +151,11 @@ paths:
                 data: {}
                 message: Sesion iniciada correctamente
                 metadata:
-                  timestamp: "2026-03-06T06:05:26.759Z"
+                  timestamp: '2026-03-06T06:05:26.759Z'
                   requestId: ce1486a2-479e-428b-bb1e-f28cc7bcc964
                   dataCount: 0
-                  dataCountFormatted: "0"
-        "400":
+                  dataCountFormatted: '0'
+        '400':
           description: 400 Bad Request
           headers:
             Vary:
@@ -164,7 +165,7 @@ paths:
             Access-Control-Allow-Credentials:
               schema:
                 type: boolean
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               schema:
                 type: string
@@ -185,7 +186,7 @@ paths:
             Origin-Agent-Cluster:
               schema:
                 type: string
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               schema:
                 type: string
@@ -201,7 +202,7 @@ paths:
             X-DNS-Prefetch-Control:
               schema:
                 type: string
-              example: "off"
+              example: 'off'
             X-Download-Options:
               schema:
                 type: string
@@ -217,11 +218,11 @@ paths:
             X-XSS-Protection:
               schema:
                 type: integer
-              example: "0"
+              example: '0'
             Content-Length:
               schema:
                 type: integer
-              example: "260"
+              example: '260'
             ETag:
               schema:
                 type: string
@@ -270,7 +271,7 @@ paths:
                     message: >-
                       La contraseña debe contener al menos una mayúscula, una
                       minúscula, un número y un carácter especial
-        "401":
+        '401':
           description: 401 Unauthorized
           headers:
             Vary:
@@ -280,7 +281,7 @@ paths:
             Access-Control-Allow-Credentials:
               deprecated: false
               schema: {}
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               deprecated: false
               schema: {}
@@ -301,7 +302,7 @@ paths:
             Origin-Agent-Cluster:
               deprecated: false
               schema: {}
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               deprecated: false
               schema: {}
@@ -317,7 +318,7 @@ paths:
             X-DNS-Prefetch-Control:
               deprecated: false
               schema: {}
-              example: "off"
+              example: 'off'
             X-Download-Options:
               deprecated: false
               schema: {}
@@ -333,7 +334,7 @@ paths:
             X-XSS-Protection:
               deprecated: false
               schema: {}
-              example: "0"
+              example: '0'
             RateLimit-Policy:
               deprecated: false
               schema: {}
@@ -341,19 +342,19 @@ paths:
             RateLimit-Limit:
               deprecated: false
               schema: {}
-              example: "5000"
+              example: '5000'
             RateLimit-Remaining:
               deprecated: false
               schema: {}
-              example: "4994"
+              example: '4994'
             RateLimit-Reset:
               deprecated: false
               schema: {}
-              example: "3463"
+              example: '3463'
             Content-Length:
               deprecated: false
               schema: {}
-              example: "220"
+              example: '220'
             ETag:
               deprecated: false
               schema: {}
@@ -400,7 +401,7 @@ paths:
                     tarde.
                   path: /api/v1/auth/login
                   query: {}
-        "404":
+        '404':
           description: 404 Not Found
           headers:
             Vary:
@@ -410,7 +411,7 @@ paths:
             Access-Control-Allow-Credentials:
               deprecated: false
               schema: {}
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               deprecated: false
               schema: {}
@@ -431,7 +432,7 @@ paths:
             Origin-Agent-Cluster:
               deprecated: false
               schema: {}
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               deprecated: false
               schema: {}
@@ -447,7 +448,7 @@ paths:
             X-DNS-Prefetch-Control:
               deprecated: false
               schema: {}
-              example: "off"
+              example: 'off'
             X-Download-Options:
               deprecated: false
               schema: {}
@@ -463,7 +464,7 @@ paths:
             X-XSS-Protection:
               deprecated: false
               schema: {}
-              example: "0"
+              example: '0'
             RateLimit-Policy:
               deprecated: false
               schema: {}
@@ -471,19 +472,19 @@ paths:
             RateLimit-Limit:
               deprecated: false
               schema: {}
-              example: "5000"
+              example: '5000'
             RateLimit-Remaining:
               deprecated: false
               schema: {}
-              example: "4993"
+              example: '4993'
             RateLimit-Reset:
               deprecated: false
               schema: {}
-              example: "3409"
+              example: '3409'
             Content-Length:
               deprecated: false
               schema: {}
-              example: "216"
+              example: '216'
             ETag:
               deprecated: false
               schema: {}
@@ -530,7 +531,7 @@ paths:
                     tarde.
                   path: /api/v1/auth/login
                   query: {}
-        "429":
+        '429':
           description: 429 To Many Request
           headers:
             Vary:
@@ -540,7 +541,7 @@ paths:
             Access-Control-Allow-Credentials:
               schema:
                 type: boolean
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               schema:
                 type: string
@@ -561,7 +562,7 @@ paths:
             Origin-Agent-Cluster:
               schema:
                 type: string
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               schema:
                 type: string
@@ -577,7 +578,7 @@ paths:
             X-DNS-Prefetch-Control:
               schema:
                 type: string
-              example: "off"
+              example: 'off'
             X-Download-Options:
               schema:
                 type: string
@@ -593,7 +594,7 @@ paths:
             X-XSS-Protection:
               schema:
                 type: integer
-              example: "0"
+              example: '0'
             RateLimit-Policy:
               schema:
                 type: string
@@ -601,23 +602,23 @@ paths:
             RateLimit-Limit:
               schema:
                 type: integer
-              example: "10"
+              example: '10'
             RateLimit-Remaining:
               schema:
                 type: integer
-              example: "0"
+              example: '0'
             RateLimit-Reset:
               schema:
                 type: integer
-              example: "888"
+              example: '888'
             Retry-After:
               schema:
                 type: integer
-              example: "888"
+              example: '888'
             Content-Length:
               schema:
                 type: integer
-              example: "255"
+              example: '255'
             ETag:
               schema:
                 type: string
@@ -680,13 +681,13 @@ paths:
                 password:
                   type: string
             example:
-              email: zuri12@gmail.com
-              password: AdZkWFy3CW@3BT4
+              email: alguienexample@gmail.com
+              password: y6Id7TegJMNsXa6CogYSny2
   /auth/logout:
     post:
       summary: Logout
       responses:
-        "200":
+        '200':
           description: Logout
           headers:
             Vary:
@@ -696,7 +697,7 @@ paths:
             Access-Control-Allow-Credentials:
               schema:
                 type: boolean
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               schema:
                 type: string
@@ -717,7 +718,7 @@ paths:
             Origin-Agent-Cluster:
               schema:
                 type: string
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               schema:
                 type: string
@@ -733,7 +734,7 @@ paths:
             X-DNS-Prefetch-Control:
               schema:
                 type: string
-              example: "off"
+              example: 'off'
             X-Download-Options:
               schema:
                 type: string
@@ -749,7 +750,7 @@ paths:
             X-XSS-Protection:
               schema:
                 type: integer
-              example: "0"
+              example: '0'
             Set-Cookie:
               schema:
                 type: string
@@ -759,7 +760,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-              example: "210"
+              example: '210'
             ETag:
               schema:
                 type: string
@@ -804,17 +805,17 @@ paths:
                 data: {}
                 message: Sesión cerrada correctamente
                 metadata:
-                  timestamp: "2026-03-06T06:23:51.162Z"
+                  timestamp: '2026-03-06T06:23:51.162Z'
                   requestId: 43bd1e50-618d-4ee8-8c6e-9758b138fcc1
                   dataCount: 0
-                  dataCountFormatted: "0"
+                  dataCountFormatted: '0'
       tags:
         - auth
   /cars:
     post:
       summary: Guardar carros
       responses:
-        "201":
+        '201':
           description: 200 OK
           headers:
             Vary:
@@ -824,7 +825,7 @@ paths:
             Access-Control-Allow-Credentials:
               schema:
                 type: boolean
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               schema:
                 type: string
@@ -845,7 +846,7 @@ paths:
             Origin-Agent-Cluster:
               schema:
                 type: string
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               schema:
                 type: string
@@ -861,7 +862,7 @@ paths:
             X-DNS-Prefetch-Control:
               schema:
                 type: string
-              example: "off"
+              example: 'off'
             X-Download-Options:
               schema:
                 type: string
@@ -877,11 +878,11 @@ paths:
             X-XSS-Protection:
               schema:
                 type: integer
-              example: "0"
+              example: '0'
             Content-Length:
               schema:
                 type: integer
-              example: "182"
+              example: '182'
             ETag:
               schema:
                 type: string
@@ -921,10 +922,10 @@ paths:
                 success: true
                 message: Auto y costos registrados con éxito
                 metadata:
-                  timestamp: "2026-03-08T09:56:48.250Z"
+                  timestamp: '2026-03-08T09:56:48.250Z'
                   requestId: 18d18779-76a9-4fa5-87f7-5cf24072eddc
                   dataCount: 0
-        "400":
+        '400':
           description: 400 Bad Request
           headers:
             Vary:
@@ -934,7 +935,7 @@ paths:
             Access-Control-Allow-Credentials:
               schema:
                 type: boolean
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               schema:
                 type: string
@@ -955,7 +956,7 @@ paths:
             Origin-Agent-Cluster:
               schema:
                 type: string
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               schema:
                 type: string
@@ -971,7 +972,7 @@ paths:
             X-DNS-Prefetch-Control:
               schema:
                 type: string
-              example: "off"
+              example: 'off'
             X-Download-Options:
               schema:
                 type: string
@@ -987,11 +988,11 @@ paths:
             X-XSS-Protection:
               schema:
                 type: integer
-              example: "0"
+              example: '0'
             Content-Length:
               schema:
                 type: integer
-              example: "224"
+              example: '224'
             ETag:
               schema:
                 type: string
@@ -1102,28 +1103,12 @@ paths:
                         type: integer
                       note:
                         type: string
-            example:
-              brand: Jeep
-              model: Jeep Renegade
-              year_of_car: 2017
-              color: Negro
-              purchase_date: "2025-12-29"
-              sale_date: "2026-03-08"
-              status: En espera
-              purchase_price: 190000
-              price_for_sale: 240000
-              costs:
-                - cost_type: tapiceria
-                  amount: 800
-                  note: Interiores
-                - cost_type: cielo
-                  amount: 200
-                  note: ""
+            example: {}
   /cars/models:
     get:
       summary: Lista de modelos
       responses:
-        "200":
+        '200':
           description: 200 OK
           headers:
             Vary:
@@ -1133,7 +1118,7 @@ paths:
             Access-Control-Allow-Credentials:
               deprecated: false
               schema: {}
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               deprecated: false
               schema: {}
@@ -1154,7 +1139,7 @@ paths:
             Origin-Agent-Cluster:
               deprecated: false
               schema: {}
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               deprecated: false
               schema: {}
@@ -1170,7 +1155,7 @@ paths:
             X-DNS-Prefetch-Control:
               deprecated: false
               schema: {}
-              example: "off"
+              example: 'off'
             X-Download-Options:
               deprecated: false
               schema: {}
@@ -1186,11 +1171,11 @@ paths:
             X-XSS-Protection:
               deprecated: false
               schema: {}
-              example: "0"
+              example: '0'
             Content-Length:
               deprecated: false
               schema: {}
-              example: "4354"
+              example: '4354'
             ETag:
               deprecated: false
               schema: {}
@@ -1218,11 +1203,6 @@ paths:
                     type: array
                     items:
                       type: object
-                      properties:
-                        id:
-                          type: string
-                        name:
-                          type: string
                   message:
                     type: string
                   metadata:
@@ -1240,139 +1220,14 @@ paths:
               example:
                 success: true
                 data:
-                  - id: 3017890d-fd6b-4eee-aec6-0207a21eed61
-                    name: Audi a1
-                  - id: 746143cc-6e8d-4534-9226-87b066b08ec6
-                    name: Aveo
-                  - id: 30f2dd5f-855a-4362-902c-4c391c97a0dd
-                    name: Beetle vw
-                  - id: e400dea8-953e-4b80-bb13-ef8cd4a185d0
-                    name: Chevrolet aveo
-                  - id: de842c82-eae7-4fad-94d0-fd7508286d99
-                    name: Chevrolet chevy
-                  - id: d2aea869-af31-46b4-9577-002e25741910
-                    name: Chevrolet silverado
-                  - id: 55bf674b-5872-4895-bbf0-a002ac601d1e
-                    name: Chevrolet spark
-                  - id: b217119a-c585-4116-8472-630727f446e2
-                    name: Clio
-                  - id: 179e4754-bd46-4634-9c91-f962671db902
-                    name: Cordoba
-                  - id: 56a0b611-38e7-4188-81cd-4d0fd186c8e0
-                    name: Corsa
-                  - id: c80f5dcb-eeeb-48fd-9d4e-a47bd44ff020
-                    name: Cruze
-                  - id: 72d7a1fa-1d2a-472a-80af-fda8362ae781
-                    name: Dodge attitude
-                  - id: 4a7453d4-3e13-4b1b-a702-43b6fc253bfd
-                    name: Duster
-                  - id: 5b58225d-fe2b-4fc2-bebc-a889575f4171
-                    name: Eco sport
-                  - id: 18086999-228c-4824-9947-eccfdb468b4c
-                    name: Fiesta
-                  - id: b897a395-623a-434b-a08a-ade2ef889bbd
-                    name: Ford escape
-                  - id: d2c38c60-bd17-4a05-9626-87a6b96f1f9e
-                    name: Ford fiesta
-                  - id: dd4c07ea-7980-4a6f-88ec-f0ef5a86a4a9
-                    name: Ford ikon
-                  - id: 39fc5877-44a4-4f23-b463-85d7b55f7399
-                    name: Ford pick up
-                  - id: d389c2ac-57fe-4917-ab48-d58a603ba8e8
-                    name: Ford rangel
-                  - id: 36a3703b-f512-4f61-90ec-b6be02204741
-                    name: Gol
-                  - id: 8162ca73-24be-43fc-999b-97b9a3b29bb5
-                    name: Honda civic
-                  - id: e8d678d0-afe1-4124-a69c-f581edb8c542
-                    name: Hyundai elantra
-                  - id: cb417f65-5a9f-4102-b9e0-850a9fb850cd
-                    name: Ibiza
-                  - id: e283f58c-bed1-46d4-beff-09088a16b45d
-                    name: Ignis
-                  - id: dc39ccc0-ed28-4cc4-a19c-f5090317a59f
-                    name: Jeep renegade
-                  - id: 0b5d5395-08e5-4761-90e9-414656e4499b
-                    name: Jetta
-                  - id: dc174281-fb98-4094-b2e0-d5041020d5f7
-                    name: Journey
-                  - id: 69c86cfb-d702-43c9-82c5-c40ac765b83e
-                    name: Kia forte
-                  - id: cbf70dcb-8474-4ddc-811f-f8a72b7e6a0e
-                    name: Leon fr
-                  - id: 25636cce-fb38-4483-85bf-1e2ef442438d
-                    name: Mazda 2
-                  - id: d1ea1e9b-22fe-4d9c-baac-ddd959dcd89d
-                    name: Mazda 2 (monse)
-                  - id: 811ebc40-fd2b-47f0-b8d1-07d0a8538ca9
-                    name: Mazda 3
-                  - id: fe5aae96-ef22-49cb-be3b-a22ca1c485fc
-                    name: Mitsubishi outlander
-                  - id: 02d3eaa6-30c5-41f9-a064-07368ad18876
-                    name: Nissan march
-                  - id: ba36a03a-2ee8-43b3-b241-166deb0b4020
-                    name: Nissan np 300
-                  - id: 0da1bea0-c11d-4517-a5ff-77460c5e50c0
-                    name: Nissan versa
-                  - id: 833cc6b9-c81e-4da6-8307-b194d65dd752
-                    name: Optra
-                  - id: a1511edb-30d1-475c-a4e4-0987c86f051b
-                    name: Polo
-                  - id: 424cb097-7ae4-4be5-bde0-526c48ab57c3
-                    name: Pt cruiser
-                  - id: e4df156a-0dd5-477c-be3a-3a38cc667686
-                    name: Ram 700
-                  - id: dc316a90-98ec-428e-b997-9decc10a2362
-                    name: Rav4
-                  - id: a9aa8e5e-9c6b-45c4-a0f0-07043b5a7d5a
-                    name: Renault clio
-                  - id: 5fc72d1c-0b7f-4b20-9330-25f9d408b7d1
-                    name: Renault duater
-                  - id: ff575169-b506-4d6b-a0f4-3b270c96ebe9
-                    name: Renault duster
-                  - id: 007e05f3-2d3a-4983-939e-996f2bc01756
-                    name: Renault logan
-                  - id: e20aac5e-73e8-4ce1-b021-55011c7120f2
-                    name: Renault sandero stepway
-                  - id: 83e821f7-c860-447c-85b9-a23c90cc5ca3
-                    name: Seat ibiza
-                  - id: f39a6ff6-5554-42e0-8321-10effdbccf2c
-                    name: Seat toledo
-                  - id: 1c62ad13-bf78-4d2e-a3bc-f6a839d1671e
-                    name: Silverado
-                  - id: 26945c48-cc92-440c-8b09-25164c7cdc87
-                    name: Spark
-                  - id: 0544d7c1-6e5f-429a-98be-68a84935d74b
-                    name: Suzuki
-                  - id: fe5090f9-25ed-48f9-ab48-854133ee9dba
-                    name: Suzuki swift
-                  - id: 2c184462-6cf8-4d1b-bf63-2cb6b3028df2
-                    name: Suzuki vitara
-                  - id: 2372c9e8-bbec-4bb3-a3f7-894c7b6daae2
-                    name: Tiguan 2016
-                  - id: 5c3637fe-aa4f-4784-a85d-920465e5f6dc
-                    name: Toyota corolla
-                  - id: 268d873d-1e40-4067-bb2c-69f77d04f798
-                    name: Toyota sienna
-                  - id: 30d54879-e045-4560-ac17-4a10458d1479
-                    name: Toyota yaris
-                  - id: 04d0df70-c5cf-4b8f-af41-4f1821cbcb60
-                    name: Vento
-                  - id: 923f6969-8677-4fd0-b6d2-81447303e50f
-                    name: Vento vw
-                  - id: 27374498-50a2-4e2e-9a0d-062400021401
-                    name: Wv gol
-                  - id: 74f42b59-8fc7-42c1-9624-1a9a40db62b5
-                    name: Wv polo
-                  - id: 9c08b9ad-a744-4ed9-9311-3e7e258b1c10
-                    name: Yaris
+                  - {}
                 message: Consulta realizada correctamente
                 metadata:
-                  timestamp: "2026-03-24T07:35:08.920Z"
+                  timestamp: '2026-03-24T07:35:08.920Z'
                   requestId: a1143bfd-558a-4f60-a91c-14ba75555b1c
-                  dataCount: 63
-                  dataCountFormatted: "63"
-        "401":
+                  dataCount: 0
+                  dataCountFormatted: '0'
+        '401':
           description: 401 Unauthorized
           headers:
             Vary:
@@ -1382,7 +1237,7 @@ paths:
             Access-Control-Allow-Credentials:
               deprecated: false
               schema: {}
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               deprecated: false
               schema: {}
@@ -1403,7 +1258,7 @@ paths:
             Origin-Agent-Cluster:
               deprecated: false
               schema: {}
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               deprecated: false
               schema: {}
@@ -1419,7 +1274,7 @@ paths:
             X-DNS-Prefetch-Control:
               deprecated: false
               schema: {}
-              example: "off"
+              example: 'off'
             X-Download-Options:
               deprecated: false
               schema: {}
@@ -1435,7 +1290,7 @@ paths:
             X-XSS-Protection:
               deprecated: false
               schema: {}
-              example: "0"
+              example: '0'
             RateLimit-Policy:
               deprecated: false
               schema: {}
@@ -1443,19 +1298,19 @@ paths:
             RateLimit-Limit:
               deprecated: false
               schema: {}
-              example: "5000"
+              example: '5000'
             RateLimit-Remaining:
               deprecated: false
               schema: {}
-              example: "4992"
+              example: '4992'
             RateLimit-Reset:
               deprecated: false
               schema: {}
-              example: "3362"
+              example: '3362'
             Content-Length:
               deprecated: false
               schema: {}
-              example: "218"
+              example: '218'
             ETag:
               deprecated: false
               schema: {}
@@ -1508,7 +1363,7 @@ paths:
     get:
       summary: Lista de categorias
       responses:
-        "200":
+        '200':
           description: 200 OK
           headers:
             Vary:
@@ -1518,7 +1373,7 @@ paths:
             Access-Control-Allow-Credentials:
               deprecated: false
               schema: {}
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               deprecated: false
               schema: {}
@@ -1539,7 +1394,7 @@ paths:
             Origin-Agent-Cluster:
               deprecated: false
               schema: {}
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               deprecated: false
               schema: {}
@@ -1555,7 +1410,7 @@ paths:
             X-DNS-Prefetch-Control:
               deprecated: false
               schema: {}
-              example: "off"
+              example: 'off'
             X-Download-Options:
               deprecated: false
               schema: {}
@@ -1571,11 +1426,11 @@ paths:
             X-XSS-Protection:
               deprecated: false
               schema: {}
-              example: "0"
+              example: '0'
             Content-Length:
               deprecated: false
               schema: {}
-              example: "1316"
+              example: '1316'
             ETag:
               deprecated: false
               schema: {}
@@ -1627,55 +1482,20 @@ paths:
               example:
                 success: true
                 data:
-                  - category_id: e0336f64-fa02-4503-9c59-664473028b82
-                    name: Cajón
-                    type: Pasivo
-                  - category_id: 33d335f2-9181-4955-a1b2-a1641e61c439
-                    name: Comida
-                    type: Pasivo
-                  - category_id: d15c71ae-3379-429f-a75d-344487654c34
-                    name: Gasolina
-                    type: Pasivo
-                  - category_id: 9403fd42-b2ba-41f8-8c9b-74045e014d33
-                    name: Gastos Personales
-                    type: Pasivo
-                  - category_id: dad9fd2e-0b73-4800-899f-aa6c793096d0
-                    name: Lavado
-                    type: Pasivo
-                  - category_id: 1edf123a-fbc5-42e4-af29-86a1b67509d4
-                    name: Mantenimiento Menor
-                    type: Pasivo
-                  - category_id: a990c139-7dca-4165-8510-79f33d49e34c
-                    name: Pago de Piso
-                    type: Activo
-                  - category_id: 38be1842-910b-483a-b5a2-dec0184d30e9
-                    name: Refacciones
-                    type: Activo
-                  - category_id: 78fff1f4-a921-4efa-811e-9df550442e0a
-                    name: Seguro del Auto
-                    type: Activo
-                  - category_id: 25717013-00e4-44c6-ae1d-4cd9fc6e4bdc
-                    name: Tenencia
-                    type: Activo
-                  - category_id: 19d7e1d7-c302-4ccc-83c9-4e3f601f068e
-                    name: Traslados
-                    type: Pasivo
-                  - category_id: fbf6f17c-0437-4f1c-9a02-42634f1f6d41
-                    name: Verificación
-                    type: Activo
+                  - {}
                 message: Consulta realizada correctamente
                 metadata:
-                  timestamp: "2026-03-17T07:06:09.721Z"
+                  timestamp: '2026-03-17T07:06:09.721Z'
                   requestId: ea07b585-a1cd-4866-ad27-4d5301b8d0d1
                   dataCount: 12
-                  dataCountFormatted: "12"
+                  dataCountFormatted: '12'
       tags:
         - expenses
   /expenses:
     post:
       summary: 201 Guardar un movimiento
       responses:
-        "201":
+        '201':
           description: 201 Guardar un movimiento
           headers:
             Vary:
@@ -1685,7 +1505,7 @@ paths:
             Access-Control-Allow-Credentials:
               deprecated: false
               schema: {}
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               deprecated: false
               schema: {}
@@ -1706,7 +1526,7 @@ paths:
             Origin-Agent-Cluster:
               deprecated: false
               schema: {}
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               deprecated: false
               schema: {}
@@ -1722,7 +1542,7 @@ paths:
             X-DNS-Prefetch-Control:
               deprecated: false
               schema: {}
-              example: "off"
+              example: 'off'
             X-Download-Options:
               deprecated: false
               schema: {}
@@ -1738,11 +1558,11 @@ paths:
             X-XSS-Protection:
               deprecated: false
               schema: {}
-              example: "0"
+              example: '0'
             Content-Length:
               deprecated: false
               schema: {}
-              example: "193"
+              example: '193'
             ETag:
               deprecated: false
               schema: {}
@@ -1782,7 +1602,7 @@ paths:
                 success: true
                 message: Movimiento dividido entre 2 autos correctamente
                 metadata:
-                  timestamp: "2026-03-24T07:33:20.040Z"
+                  timestamp: '2026-03-24T07:33:20.040Z'
                   requestId: 2b87e027-f11d-4276-8971-af4272bdcb37
                   dataCount: 0
       tags:
@@ -1810,21 +1630,12 @@ paths:
                   format: date
                 isShared:
                   type: boolean
-            example:
-              movements_category_id: e0336f64-fa02-4503-9c59-664473028b82
-              car_id:
-                - 007e05f3-2d3a-4983-939e-996f2bc01756
-                - 02d3eaa6-30c5-41f9-a064-07368ad18876
-              type: Gasto
-              amount: 20000
-              description: Renta mensual de pensión/cajón central
-              closing_date: "2026-01-28"
-              isShared: true
+            example: {}
   /investors:
     post:
       summary: Cargar inversiones
       responses:
-        "201":
+        '201':
           description: 201 Created
           headers:
             Vary:
@@ -1834,7 +1645,7 @@ paths:
             Access-Control-Allow-Credentials:
               schema:
                 type: boolean
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               schema:
                 type: string
@@ -1855,7 +1666,7 @@ paths:
             Origin-Agent-Cluster:
               schema:
                 type: string
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               schema:
                 type: string
@@ -1871,7 +1682,7 @@ paths:
             X-DNS-Prefetch-Control:
               schema:
                 type: string
-              example: "off"
+              example: 'off'
             X-Download-Options:
               schema:
                 type: string
@@ -1887,11 +1698,11 @@ paths:
             X-XSS-Protection:
               schema:
                 type: integer
-              example: "0"
+              example: '0'
             Content-Length:
               schema:
                 type: integer
-              example: "176"
+              example: '176'
             ETag:
               schema:
                 type: string
@@ -1921,13 +1732,13 @@ paths:
                 investment_amount:
                   type: integer
             example:
-              user_id: 6aa4afe6-3ea2-461b-8bdd-84c8167ed1e2
+              user_id: user_id
               investment_amount: 504000
   /users/profile:
     get:
       summary: Pefil del usuario que se loguea
       responses:
-        "200":
+        '200':
           description: 200 OK
           headers:
             Vary:
@@ -1937,7 +1748,7 @@ paths:
             Access-Control-Allow-Credentials:
               schema:
                 type: boolean
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               schema:
                 type: string
@@ -1958,7 +1769,7 @@ paths:
             Origin-Agent-Cluster:
               schema:
                 type: string
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               schema:
                 type: string
@@ -1974,7 +1785,7 @@ paths:
             X-DNS-Prefetch-Control:
               schema:
                 type: string
-              example: "off"
+              example: 'off'
             X-Download-Options:
               schema:
                 type: string
@@ -1990,11 +1801,11 @@ paths:
             X-XSS-Protection:
               schema:
                 type: integer
-              example: "0"
+              example: '0'
             Content-Length:
               schema:
                 type: integer
-              example: "460"
+              example: '460'
             ETag:
               schema:
                 type: string
@@ -2058,20 +1869,14 @@ paths:
               example:
                 success: true
                 data:
-                  - user_id: 6aa4afe6-3ea2-461b-8bdd-84c8167ed1e2
-                    username: zuuri12
-                    full_name: Zuri Quandon Quijada
-                    email: zuri12@gmail.com
-                    last_login: "2026-03-07T03:08:52.000Z"
-                    created: "2026-03-06T05:54:34.000Z"
-                    updated: "2026-03-07T03:08:52.000Z"
+                  - {}
                 message: Consulta realizada correctamente
                 metadata:
-                  timestamp: "2026-03-07T03:09:48.657Z"
+                  timestamp: '2026-03-07T03:09:48.657Z'
                   requestId: 2922dfbc-02ed-468a-b4af-70b981560d1c
                   dataCount: 1
-                  dataCountFormatted: "1"
-        "401":
+                  dataCountFormatted: '1'
+        '401':
           description: 401 Unauthorized
           headers:
             Vary:
@@ -2081,7 +1886,7 @@ paths:
             Access-Control-Allow-Credentials:
               deprecated: false
               schema: {}
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               deprecated: false
               schema: {}
@@ -2102,7 +1907,7 @@ paths:
             Origin-Agent-Cluster:
               deprecated: false
               schema: {}
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               deprecated: false
               schema: {}
@@ -2118,7 +1923,7 @@ paths:
             X-DNS-Prefetch-Control:
               deprecated: false
               schema: {}
-              example: "off"
+              example: 'off'
             X-Download-Options:
               deprecated: false
               schema: {}
@@ -2134,7 +1939,7 @@ paths:
             X-XSS-Protection:
               deprecated: false
               schema: {}
-              example: "0"
+              example: '0'
             RateLimit-Policy:
               deprecated: false
               schema: {}
@@ -2142,19 +1947,19 @@ paths:
             RateLimit-Limit:
               deprecated: false
               schema: {}
-              example: "5000"
+              example: '5000'
             RateLimit-Remaining:
               deprecated: false
               schema: {}
-              example: "4991"
+              example: '4991'
             RateLimit-Reset:
               deprecated: false
               schema: {}
-              example: "3313"
+              example: '3313'
             Content-Length:
               deprecated: false
               schema: {}
-              example: "220"
+              example: '220'
             ETag:
               deprecated: false
               schema: {}
@@ -2207,7 +2012,7 @@ paths:
     get:
       summary: Lista de usuarios
       responses:
-        "200":
+        '200':
           description: 200 OK
           headers:
             Vary:
@@ -2217,7 +2022,7 @@ paths:
             Access-Control-Allow-Credentials:
               deprecated: false
               schema: {}
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               deprecated: false
               schema: {}
@@ -2238,7 +2043,7 @@ paths:
             Origin-Agent-Cluster:
               deprecated: false
               schema: {}
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               deprecated: false
               schema: {}
@@ -2254,7 +2059,7 @@ paths:
             X-DNS-Prefetch-Control:
               deprecated: false
               schema: {}
-              example: "off"
+              example: 'off'
             X-Download-Options:
               deprecated: false
               schema: {}
@@ -2270,11 +2075,11 @@ paths:
             X-XSS-Protection:
               deprecated: false
               schema: {}
-              example: "0"
+              example: '0'
             Content-Length:
               deprecated: false
               schema: {}
-              example: "526"
+              example: '526'
             ETag:
               deprecated: false
               schema: {}
@@ -2324,21 +2129,14 @@ paths:
               example:
                 success: true
                 data:
-                  - id: 4a274aee-a02e-4814-98e9-6a5a55848918
-                    name: Isela Quijada Quandon
-                  - id: 6aa4afe6-3ea2-461b-8bdd-84c8167ed1e2
-                    name: Zuri Quandon Quijada
-                  - id: ec54cc39-9174-451e-b1d0-224cd3a54e29
-                    name: Montserrat Quandon Quijada
-                  - id: f272776e-7033-44c4-82de-f7c668f17cf0
-                    name: Ricardo Quandon Quijada
+                  - {}
                 message: Consulta realizada correctamente
                 metadata:
-                  timestamp: "2026-03-24T07:35:47.527Z"
+                  timestamp: '2026-03-24T07:35:47.527Z'
                   requestId: 74f87a67-6927-4f23-b719-9c4a6c396242
                   dataCount: 4
-                  dataCountFormatted: "4"
-        "401":
+                  dataCountFormatted: '4'
+        '401':
           description: 401 Unauthorized
           headers:
             Vary:
@@ -2348,7 +2146,7 @@ paths:
             Access-Control-Allow-Credentials:
               deprecated: false
               schema: {}
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               deprecated: false
               schema: {}
@@ -2369,7 +2167,7 @@ paths:
             Origin-Agent-Cluster:
               deprecated: false
               schema: {}
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               deprecated: false
               schema: {}
@@ -2385,7 +2183,7 @@ paths:
             X-DNS-Prefetch-Control:
               deprecated: false
               schema: {}
-              example: "off"
+              example: 'off'
             X-Download-Options:
               deprecated: false
               schema: {}
@@ -2401,7 +2199,7 @@ paths:
             X-XSS-Protection:
               deprecated: false
               schema: {}
-              example: "0"
+              example: '0'
             RateLimit-Policy:
               deprecated: false
               schema: {}
@@ -2409,19 +2207,19 @@ paths:
             RateLimit-Limit:
               deprecated: false
               schema: {}
-              example: "5000"
+              example: '5000'
             RateLimit-Remaining:
               deprecated: false
               schema: {}
-              example: "4990"
+              example: '4990'
             RateLimit-Reset:
               deprecated: false
               schema: {}
-              example: "3088"
+              example: '3088'
             Content-Length:
               deprecated: false
               schema: {}
-              example: "212"
+              example: '212'
             ETag:
               deprecated: false
               schema: {}
@@ -2473,7 +2271,7 @@ paths:
     post:
       summary: Cargar nuevos usuarios
       responses:
-        "201":
+        '201':
           description: 201 Created
           headers:
             Vary:
@@ -2483,7 +2281,7 @@ paths:
             Access-Control-Allow-Credentials:
               deprecated: false
               schema: {}
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               deprecated: false
               schema: {}
@@ -2504,7 +2302,7 @@ paths:
             Origin-Agent-Cluster:
               deprecated: false
               schema: {}
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               deprecated: false
               schema: {}
@@ -2520,7 +2318,7 @@ paths:
             X-DNS-Prefetch-Control:
               deprecated: false
               schema: {}
-              example: "off"
+              example: 'off'
             X-Download-Options:
               deprecated: false
               schema: {}
@@ -2536,11 +2334,11 @@ paths:
             X-XSS-Protection:
               deprecated: false
               schema: {}
-              example: "0"
+              example: '0'
             Content-Length:
               deprecated: false
               schema: {}
-              example: "174"
+              example: '174'
             ETag:
               deprecated: false
               schema: {}
@@ -2580,10 +2378,10 @@ paths:
                 success: true
                 message: Usuario registrado con exito
                 metadata:
-                  timestamp: "2026-03-26T03:35:00.458Z"
+                  timestamp: '2026-03-26T03:35:00.458Z'
                   requestId: 5eb8107f-3c93-492c-8b08-33f3fcee4c55
                   dataCount: 0
-        "400":
+        '400':
           description: 400 Bad Request
           headers:
             Vary:
@@ -2593,7 +2391,7 @@ paths:
             Access-Control-Allow-Credentials:
               deprecated: false
               schema: {}
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               deprecated: false
               schema: {}
@@ -2614,7 +2412,7 @@ paths:
             Origin-Agent-Cluster:
               deprecated: false
               schema: {}
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               deprecated: false
               schema: {}
@@ -2630,7 +2428,7 @@ paths:
             X-DNS-Prefetch-Control:
               deprecated: false
               schema: {}
-              example: "off"
+              example: 'off'
             X-Download-Options:
               deprecated: false
               schema: {}
@@ -2646,11 +2444,11 @@ paths:
             X-XSS-Protection:
               deprecated: false
               schema: {}
-              example: "0"
+              example: '0'
             Content-Length:
               deprecated: false
               schema: {}
-              example: "260"
+              example: '260'
             ETag:
               deprecated: false
               schema: {}
@@ -2699,7 +2497,7 @@ paths:
                     message: >-
                       La contraseña debe contener al menos una mayúscula, una
                       minúscula, un número y un carácter especial
-        "401":
+        '401':
           description: 401 Unauthorized
           headers:
             Vary:
@@ -2709,7 +2507,7 @@ paths:
             Access-Control-Allow-Credentials:
               deprecated: false
               schema: {}
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               deprecated: false
               schema: {}
@@ -2730,7 +2528,7 @@ paths:
             Origin-Agent-Cluster:
               deprecated: false
               schema: {}
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               deprecated: false
               schema: {}
@@ -2746,7 +2544,7 @@ paths:
             X-DNS-Prefetch-Control:
               deprecated: false
               schema: {}
-              example: "off"
+              example: 'off'
             X-Download-Options:
               deprecated: false
               schema: {}
@@ -2762,7 +2560,7 @@ paths:
             X-XSS-Protection:
               deprecated: false
               schema: {}
-              example: "0"
+              example: '0'
             RateLimit-Policy:
               deprecated: false
               schema: {}
@@ -2770,19 +2568,19 @@ paths:
             RateLimit-Limit:
               deprecated: false
               schema: {}
-              example: "5000"
+              example: '5000'
             RateLimit-Remaining:
               deprecated: false
               schema: {}
-              example: "4999"
+              example: '4999'
             RateLimit-Reset:
               deprecated: false
               schema: {}
-              example: "3600"
+              example: '3600'
             Content-Length:
               deprecated: false
               schema: {}
-              example: "212"
+              example: '212'
             ETag:
               deprecated: false
               schema: {}
@@ -2829,7 +2627,7 @@ paths:
                     tarde.
                   path: /api/v1/users
                   query: {}
-        "409":
+        '409':
           description: 409 Conflict
           headers:
             Vary:
@@ -2839,7 +2637,7 @@ paths:
             Access-Control-Allow-Credentials:
               deprecated: false
               schema: {}
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               deprecated: false
               schema: {}
@@ -2860,7 +2658,7 @@ paths:
             Origin-Agent-Cluster:
               deprecated: false
               schema: {}
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               deprecated: false
               schema: {}
@@ -2876,7 +2674,7 @@ paths:
             X-DNS-Prefetch-Control:
               deprecated: false
               schema: {}
-              example: "off"
+              example: 'off'
             X-Download-Options:
               deprecated: false
               schema: {}
@@ -2892,7 +2690,7 @@ paths:
             X-XSS-Protection:
               deprecated: false
               schema: {}
-              example: "0"
+              example: '0'
             RateLimit-Policy:
               deprecated: false
               schema: {}
@@ -2900,19 +2698,19 @@ paths:
             RateLimit-Limit:
               deprecated: false
               schema: {}
-              example: "5000"
+              example: '5000'
             RateLimit-Remaining:
               deprecated: false
               schema: {}
-              example: "4996"
+              example: '4996'
             RateLimit-Reset:
               deprecated: false
               schema: {}
-              example: "3544"
+              example: '3544'
             Content-Length:
               deprecated: false
               schema: {}
-              example: "208"
+              example: '208'
             ETag:
               deprecated: false
               schema: {}
@@ -2985,7 +2783,7 @@ paths:
     get:
       summary: server
       responses:
-        "200":
+        '200':
           description: 200 OK Server
           headers:
             Vary:
@@ -2995,7 +2793,7 @@ paths:
             Access-Control-Allow-Credentials:
               schema:
                 type: boolean
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               schema:
                 type: string
@@ -3016,7 +2814,7 @@ paths:
             Origin-Agent-Cluster:
               schema:
                 type: string
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               schema:
                 type: string
@@ -3032,7 +2830,7 @@ paths:
             X-DNS-Prefetch-Control:
               schema:
                 type: string
-              example: "off"
+              example: 'off'
             X-Download-Options:
               schema:
                 type: string
@@ -3048,11 +2846,11 @@ paths:
             X-XSS-Protection:
               schema:
                 type: integer
-              example: "0"
+              example: '0'
             Content-Length:
               schema:
                 type: integer
-              example: "443"
+              example: '443'
             ETag:
               schema:
                 type: string
@@ -3124,7 +2922,7 @@ paths:
                   api: running
                   database: 🟢 Connected
                   uptime: 202.7315698
-        "503":
+        '503':
           description: 503 Service Unavailable
           headers:
             Vary:
@@ -3134,7 +2932,7 @@ paths:
             Access-Control-Allow-Credentials:
               schema:
                 type: boolean
-              example: "true"
+              example: 'true'
             Content-Security-Policy:
               schema:
                 type: string
@@ -3155,7 +2953,7 @@ paths:
             Origin-Agent-Cluster:
               schema:
                 type: string
-              example: "?1"
+              example: '?1'
             Referrer-Policy:
               schema:
                 type: string
@@ -3171,7 +2969,7 @@ paths:
             X-DNS-Prefetch-Control:
               schema:
                 type: string
-              example: "off"
+              example: 'off'
             X-Download-Options:
               schema:
                 type: string
@@ -3187,11 +2985,11 @@ paths:
             X-XSS-Protection:
               schema:
                 type: integer
-              example: "0"
+              example: '0'
             Content-Length:
               schema:
                 type: integer
-              example: "444"
+              example: '444'
             ETag:
               schema:
                 type: string

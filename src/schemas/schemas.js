@@ -31,6 +31,26 @@ export const uuidSchema = Joi.string()
 	.uuid({ version: ["uuidv4"] })
 	.required()
 	.messages({
-		"string.uuid": "El id debe ser un UUID válido",
-		"any.required": "El id es obligatorio",
+		"any.required": `El campo es obligatorio`,
+		"string.base": `El campo debe ser una cadena de texto`,
+		"string.empty": `El campo no puede estar vacío`,
+		"string.guid": `El campo debe ser un UUID v4 válido`,
 	});
+
+export const multiUuidSchema = (keys = []) => {
+	const shape = {};
+
+	for (const key of keys) {
+		shape[key] = Joi.string()
+			.uuid({ version: "uuidv4" })
+			.required()
+			.messages({
+				"any.required": `El campo "${key}" es obligatorio`,
+				"string.base": `El campo "${key}" debe ser una cadena de texto`,
+				"string.empty": `El campo "${key}" no puede estar vacío`,
+				"string.guid": `El campo "${key}" debe ser un UUID v4 válido`,
+			});
+	}
+
+	return Joi.object(shape);
+};
