@@ -1,12 +1,11 @@
 import { AuthError, NotFoundError } from "../utils/error-utils.js";
 
 import {
-	// findUserAuth,
 	createToken,
 	lastLogin,
 	verifyHashedPassword,
 } from "../helpers/index.js";
-import { findUserAuth } from "../functions/find-user-auth.helper.js";
+import { findUserAuth } from "../functions/find-user-auth.functions.js";
 
 export const loginService = async ({ email, password }) => {
 	const user = await findUserAuth(email);

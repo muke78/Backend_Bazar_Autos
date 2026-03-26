@@ -43,3 +43,17 @@ export const listProfileModel = async (user_id) => {
 		);
 	}
 };
+
+export const insertUserModel = async (
+	newUserId,
+	username,
+	hashPassword,
+	full_name,
+	email,
+) => {
+	const query = `INSERT INTO users (user_id, username, password_hash, full_name, email)
+                       VALUES (?, ?, ?, ?, ?);`;
+	const params = [newUserId, username, hashPassword, full_name, email];
+
+	return await connectionQuery(query, params);
+};

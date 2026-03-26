@@ -3,8 +3,11 @@ import { verifyToken } from "../middlewares/verify-jwt-middlewares.js";
 import {
 	GetFullNameUser,
 	GetProfile,
+	InsertUsers,
 } from "../controllers/users-controllers.js";
-import { methodOK } from "../server/methods-server.js";
+import { methodCreated, methodOK } from "../server/methods-server.js";
+import { validationFields } from "../middlewares/validation-middlewares.js";
+import { schemaCreateUserValidations } from "../schemas/users-schemas.js";
 
 const users = express.Router();
 
@@ -27,5 +30,21 @@ users.get("/profile", verifyToken, async (request, response, next) => {
 		next(error);
 	}
 });
+
+// POST /api/users/create
+users.post(
+	"/",
+	verifyToken,
+	validationFields(schemaCreateUserValidations, "body"),
+	async (request, response, next) => {
+		try {
+			const insertUser = request.body;
+			const result = await InsertUsers(insertUser);
+			methodCreated(request, response, undefined, result.message);
+		} catch (error) {
+			next(error);
+		}
+	},
+);
 
 export { users };

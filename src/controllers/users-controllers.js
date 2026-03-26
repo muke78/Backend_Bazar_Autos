@@ -1,4 +1,5 @@
 import {
+	insertUserService,
 	listGetFullNameUserService,
 	listProfileService,
 } from "../services/users-services.js";
@@ -11,4 +12,9 @@ export const GetFullNameUser = async () => {
 export const GetProfile = async (user_id) => {
 	const listGetProfile = await listProfileService(user_id);
 	return listGetProfile;
+};
+
+export const InsertUsers = async (user) => {
+	const insertUsers = await insertUserService(user);
+	return insertUsers;
 };

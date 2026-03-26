@@ -26,7 +26,6 @@ info:
     | 🔐 Usuarios | Administración de accesos al sistema |
 servers:
   - url: http://localhost:3000/api/v1
-  - url: "{{_base_url}}"
 paths:
   /auth/login:
     post:
@@ -100,7 +99,7 @@ paths:
               schema:
                 type: string
               example: >-
-                access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmFhNGFmZTYtM2VhMi00NjFiLThiZGQtODRjODE2N2VkMWUyIiwiaWF0IjoxNzcyNzc3MTI2LCJleHAiOjE3NzI4NjM1MjZ9.wAD5-29DJ9bb9FAtGQiwS9xnUTrb2r1psBxiaT0zDu8;
+                access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
                 Max-Age=86400; Path=/; Expires=Sat, 07 Mar 2026 06:05:26 GMT;
                 HttpOnly; SameSite=Strict
             Content-Length:
@@ -275,16 +274,16 @@ paths:
           description: 401 Unauthorized
           headers:
             Vary:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: Origin
             Access-Control-Allow-Credentials:
-              schema:
-                type: boolean
+              deprecated: false
+              schema: {}
               example: "true"
             Content-Security-Policy:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: >-
                 default-src 'self';base-uri 'self';font-src 'self' https:
                 data:;form-action 'self';frame-ancestors 'self';img-src 'self'
@@ -292,68 +291,84 @@ paths:
                 'none';style-src 'self' https:
                 'unsafe-inline';upgrade-insecure-requests
             Cross-Origin-Opener-Policy:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: same-origin
             Cross-Origin-Resource-Policy:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: same-origin
             Origin-Agent-Cluster:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: "?1"
             Referrer-Policy:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: no-referrer
             Strict-Transport-Security:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: max-age=31536000; includeSubDomains
             X-Content-Type-Options:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: nosniff
             X-DNS-Prefetch-Control:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: "off"
             X-Download-Options:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: noopen
             X-Frame-Options:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: SAMEORIGIN
             X-Permitted-Cross-Domain-Policies:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: none
             X-XSS-Protection:
-              schema:
-                type: integer
+              deprecated: false
+              schema: {}
               example: "0"
+            RateLimit-Policy:
+              deprecated: false
+              schema: {}
+              example: 5000;w=3600
+            RateLimit-Limit:
+              deprecated: false
+              schema: {}
+              example: "5000"
+            RateLimit-Remaining:
+              deprecated: false
+              schema: {}
+              example: "4994"
+            RateLimit-Reset:
+              deprecated: false
+              schema: {}
+              example: "3463"
             Content-Length:
-              schema:
-                type: integer
-              example: "610"
+              deprecated: false
+              schema: {}
+              example: "220"
             ETag:
-              schema:
-                type: string
-              example: W/"262-oJd5oxsS4bFDrBoswPXaVWfzIjE"
+              deprecated: false
+              schema: {}
+              example: W/"dc-l2/kp8UlIq8JHR1peM2xt9awg9o"
             Date:
-              schema:
-                type: string
-              example: Fri, 06 Mar 2026 06:06:28 GMT
+              deprecated: false
+              schema: {}
+              example: Thu, 26 Mar 2026 03:39:19 GMT
             Connection:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: keep-alive
             Keep-Alive:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: timeout=5
           content:
             application/json:
@@ -371,16 +386,7 @@ paths:
                         type: string
                       details:
                         type: string
-                      timestamp:
-                        type: string
-                        format: date-time
-                      errorId:
-                        type: string
-                      stack:
-                        type: string
                       path:
-                        type: string
-                      method:
                         type: string
                       query:
                         type: object
@@ -392,30 +398,22 @@ paths:
                   details: >-
                     Ocurrió un problema en el servidor. Por favor, intenta más
                     tarde.
-                  timestamp: "2026-03-06T06:06:28.224Z"
-                  errorId: 5e673c4b-774f-4a4f-a334-21f6d6fa29c4
-                  stack: >-
-                    AUTH || Error: La contraseña es incorrecta o esta mal
-                    escrita
-                        at loginService (file:///C:/Users/MikeT/Documentos/Backend_Bazar_Autos/src/services/auth-services.js:22:15)
-                        at async file:///C:/Users/MikeT/Documentos/Backend_Bazar_Autos/src/routes/auth-routes.js:39:27
                   path: /api/v1/auth/login
-                  method: POST
                   query: {}
         "404":
           description: 404 Not Found
           headers:
             Vary:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: Origin
             Access-Control-Allow-Credentials:
-              schema:
-                type: boolean
+              deprecated: false
+              schema: {}
               example: "true"
             Content-Security-Policy:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: >-
                 default-src 'self';base-uri 'self';font-src 'self' https:
                 data:;form-action 'self';frame-ancestors 'self';img-src 'self'
@@ -423,68 +421,84 @@ paths:
                 'none';style-src 'self' https:
                 'unsafe-inline';upgrade-insecure-requests
             Cross-Origin-Opener-Policy:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: same-origin
             Cross-Origin-Resource-Policy:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: same-origin
             Origin-Agent-Cluster:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: "?1"
             Referrer-Policy:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: no-referrer
             Strict-Transport-Security:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: max-age=31536000; includeSubDomains
             X-Content-Type-Options:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: nosniff
             X-DNS-Prefetch-Control:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: "off"
             X-Download-Options:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: noopen
             X-Frame-Options:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: SAMEORIGIN
             X-Permitted-Cross-Domain-Policies:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: none
             X-XSS-Protection:
-              schema:
-                type: integer
+              deprecated: false
+              schema: {}
               example: "0"
+            RateLimit-Policy:
+              deprecated: false
+              schema: {}
+              example: 5000;w=3600
+            RateLimit-Limit:
+              deprecated: false
+              schema: {}
+              example: "5000"
+            RateLimit-Remaining:
+              deprecated: false
+              schema: {}
+              example: "4993"
+            RateLimit-Reset:
+              deprecated: false
+              schema: {}
+              example: "3409"
             Content-Length:
-              schema:
-                type: integer
-              example: "686"
+              deprecated: false
+              schema: {}
+              example: "216"
             ETag:
-              schema:
-                type: string
-              example: W/"2ae-Wm2CDg9XhdIy155P6IpWTCr/TUk"
+              deprecated: false
+              schema: {}
+              example: W/"d8-/L5MSfkUm1ALnU+nvGs6hNi2u0w"
             Date:
-              schema:
-                type: string
-              example: Fri, 06 Mar 2026 06:05:57 GMT
+              deprecated: false
+              schema: {}
+              example: Thu, 26 Mar 2026 03:40:13 GMT
             Connection:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: keep-alive
             Keep-Alive:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: timeout=5
           content:
             application/json:
@@ -502,16 +516,7 @@ paths:
                         type: string
                       details:
                         type: string
-                      timestamp:
-                        type: string
-                        format: date-time
-                      errorId:
-                        type: string
-                      stack:
-                        type: string
                       path:
-                        type: string
-                      method:
                         type: string
                       query:
                         type: object
@@ -523,15 +528,7 @@ paths:
                   details: >-
                     Ocurrió un problema en el servidor. Por favor, intenta más
                     tarde.
-                  timestamp: "2026-03-06T06:05:57.162Z"
-                  errorId: 42eb553f-cf34-43c6-befc-a315187f4f31
-                  stack: |-
-                    NOT_FOUND || Error: El usuario no ha podido ser encontrado
-                        at loginService (file:///C:/Users/MikeT/Documentos/Backend_Bazar_Autos/src/services/auth-services.js:14:22)
-                        at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-                        at async file:///C:/Users/MikeT/Documentos/Backend_Bazar_Autos/src/routes/auth-routes.js:39:27
                   path: /api/v1/auth/login
-                  method: POST
                   query: {}
         "429":
           description: 429 To Many Request
@@ -1118,7 +1115,7 @@ paths:
               costs:
                 - cost_type: tapiceria
                   amount: 800
-                  note: ""
+                  note: Interiores
                 - cost_type: cielo
                   amount: 200
                   note: ""
@@ -1379,16 +1376,16 @@ paths:
           description: 401 Unauthorized
           headers:
             Vary:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: Origin
             Access-Control-Allow-Credentials:
-              schema:
-                type: boolean
+              deprecated: false
+              schema: {}
               example: "true"
             Content-Security-Policy:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: >-
                 default-src 'self';base-uri 'self';font-src 'self' https:
                 data:;form-action 'self';frame-ancestors 'self';img-src 'self'
@@ -1396,68 +1393,84 @@ paths:
                 'none';style-src 'self' https:
                 'unsafe-inline';upgrade-insecure-requests
             Cross-Origin-Opener-Policy:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: same-origin
             Cross-Origin-Resource-Policy:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: same-origin
             Origin-Agent-Cluster:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: "?1"
             Referrer-Policy:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: no-referrer
             Strict-Transport-Security:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: max-age=31536000; includeSubDomains
             X-Content-Type-Options:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: nosniff
             X-DNS-Prefetch-Control:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: "off"
             X-Download-Options:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: noopen
             X-Frame-Options:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: SAMEORIGIN
             X-Permitted-Cross-Domain-Policies:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: none
             X-XSS-Protection:
-              schema:
-                type: integer
+              deprecated: false
+              schema: {}
               example: "0"
+            RateLimit-Policy:
+              deprecated: false
+              schema: {}
+              example: 5000;w=3600
+            RateLimit-Limit:
+              deprecated: false
+              schema: {}
+              example: "5000"
+            RateLimit-Remaining:
+              deprecated: false
+              schema: {}
+              example: "4992"
+            RateLimit-Reset:
+              deprecated: false
+              schema: {}
+              example: "3362"
             Content-Length:
-              schema:
-                type: integer
-              example: "1837"
+              deprecated: false
+              schema: {}
+              example: "218"
             ETag:
-              schema:
-                type: string
-              example: W/"72d-bGaDhvxx5EZ/NZ6j4SdPmqQ3tm0"
+              deprecated: false
+              schema: {}
+              example: W/"da-fawGCEUDV4KcC3pllUqXoxOeUrA"
             Date:
-              schema:
-                type: string
-              example: Sun, 08 Mar 2026 10:18:56 GMT
+              deprecated: false
+              schema: {}
+              example: Thu, 26 Mar 2026 03:41:00 GMT
             Connection:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: keep-alive
             Keep-Alive:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: timeout=5
           content:
             application/json:
@@ -1475,17 +1488,7 @@ paths:
                         type: string
                       details:
                         type: string
-                      timestamp:
-                        type: string
-                        format: date-time
-                      errorId:
-                        type: string
-                      stack:
-                        type: string
-                        format: style
                       path:
-                        type: string
-                      method:
                         type: string
                       query:
                         type: object
@@ -1497,22 +1500,7 @@ paths:
                   details: >-
                     Ocurrió un problema en el servidor. Por favor, intenta más
                     tarde.
-                  timestamp: "2026-03-08T10:18:56.683Z"
-                  errorId: d6509171-6543-4565-a0c9-8caa9580ce74
-                  stack: |-
-                    AUTH || Error: Acceso no autorizado, token no proporcionado
-                        at verifyToken (file:///C:/Users/MikeT/Documentos/Backend_Bazar_Autos/src/middlewares/verify-jwt-middlewares.js:10:9)
-                        at Layer.handleRequest (C:\Users\MikeT\Documentos\Backend_Bazar_Autos\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
-                        at next (C:\Users\MikeT\Documentos\Backend_Bazar_Autos\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\route.js:157:13)
-                        at Route.dispatch (C:\Users\MikeT\Documentos\Backend_Bazar_Autos\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\route.js:117:3)
-                        at handle (C:\Users\MikeT\Documentos\Backend_Bazar_Autos\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:435:11)
-                        at Layer.handleRequest (C:\Users\MikeT\Documentos\Backend_Bazar_Autos\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
-                        at C:\Users\MikeT\Documentos\Backend_Bazar_Autos\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:295:15
-                        at processParams (C:\Users\MikeT\Documentos\Backend_Bazar_Autos\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:582:12)
-                        at next (C:\Users\MikeT\Documentos\Backend_Bazar_Autos\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:291:5)
-                        at Function.handle (C:\Users\MikeT\Documentos\Backend_Bazar_Autos\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:186:3)
                   path: /api/v1/cars/models
-                  method: GET
                   query: {}
       tags:
         - cars
@@ -1688,7 +1676,7 @@ paths:
       summary: 201 Guardar un movimiento
       responses:
         "201":
-          description: Guardar un movimiento
+          description: 201 Guardar un movimiento
           headers:
             Vary:
               deprecated: false
@@ -2087,16 +2075,16 @@ paths:
           description: 401 Unauthorized
           headers:
             Vary:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: Origin
             Access-Control-Allow-Credentials:
-              schema:
-                type: boolean
+              deprecated: false
+              schema: {}
               example: "true"
             Content-Security-Policy:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: >-
                 default-src 'self';base-uri 'self';font-src 'self' https:
                 data:;form-action 'self';frame-ancestors 'self';img-src 'self'
@@ -2104,69 +2092,115 @@ paths:
                 'none';style-src 'self' https:
                 'unsafe-inline';upgrade-insecure-requests
             Cross-Origin-Opener-Policy:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: same-origin
             Cross-Origin-Resource-Policy:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: same-origin
             Origin-Agent-Cluster:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: "?1"
             Referrer-Policy:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: no-referrer
             Strict-Transport-Security:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: max-age=31536000; includeSubDomains
             X-Content-Type-Options:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: nosniff
             X-DNS-Prefetch-Control:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: "off"
             X-Download-Options:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: noopen
             X-Frame-Options:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: SAMEORIGIN
             X-Permitted-Cross-Domain-Policies:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: none
             X-XSS-Protection:
-              schema:
-                type: integer
+              deprecated: false
+              schema: {}
               example: "0"
+            RateLimit-Policy:
+              deprecated: false
+              schema: {}
+              example: 5000;w=3600
+            RateLimit-Limit:
+              deprecated: false
+              schema: {}
+              example: "5000"
+            RateLimit-Remaining:
+              deprecated: false
+              schema: {}
+              example: "4991"
+            RateLimit-Reset:
+              deprecated: false
+              schema: {}
+              example: "3313"
             Content-Length:
-              schema:
-                type: integer
-              example: "1839"
+              deprecated: false
+              schema: {}
+              example: "220"
             ETag:
-              schema:
-                type: string
-              example: W/"72f-clfRA1L9m0wRJ0tF6zA4/owW5wM"
+              deprecated: false
+              schema: {}
+              example: W/"dc-zXvQW6wKHs+2OM8+XauIGvGv8a8"
             Date:
-              schema:
-                type: string
-              example: Sat, 07 Mar 2026 03:20:24 GMT
+              deprecated: false
+              schema: {}
+              example: Thu, 26 Mar 2026 03:41:49 GMT
             Connection:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: keep-alive
             Keep-Alive:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      code:
+                        type: string
+                      details:
+                        type: string
+                      path:
+                        type: string
+                      query:
+                        type: object
+              example:
+                success: false
+                error:
+                  message: Acceso no autorizado, token no proporcionado
+                  code: AUTH
+                  details: >-
+                    Ocurrió un problema en el servidor. Por favor, intenta más
+                    tarde.
+                  path: /api/v1/users/profile
+                  query: {}
       tags:
         - users
   /users:
@@ -2308,16 +2342,16 @@ paths:
           description: 401 Unauthorized
           headers:
             Vary:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: Origin
             Access-Control-Allow-Credentials:
-              schema:
-                type: boolean
+              deprecated: false
+              schema: {}
               example: "true"
             Content-Security-Policy:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: >-
                 default-src 'self';base-uri 'self';font-src 'self' https:
                 data:;form-action 'self';frame-ancestors 'self';img-src 'self'
@@ -2325,68 +2359,84 @@ paths:
                 'none';style-src 'self' https:
                 'unsafe-inline';upgrade-insecure-requests
             Cross-Origin-Opener-Policy:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: same-origin
             Cross-Origin-Resource-Policy:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: same-origin
             Origin-Agent-Cluster:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: "?1"
             Referrer-Policy:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: no-referrer
             Strict-Transport-Security:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: max-age=31536000; includeSubDomains
             X-Content-Type-Options:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: nosniff
             X-DNS-Prefetch-Control:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: "off"
             X-Download-Options:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: noopen
             X-Frame-Options:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: SAMEORIGIN
             X-Permitted-Cross-Domain-Policies:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: none
             X-XSS-Protection:
-              schema:
-                type: integer
+              deprecated: false
+              schema: {}
               example: "0"
+            RateLimit-Policy:
+              deprecated: false
+              schema: {}
+              example: 5000;w=3600
+            RateLimit-Limit:
+              deprecated: false
+              schema: {}
+              example: "5000"
+            RateLimit-Remaining:
+              deprecated: false
+              schema: {}
+              example: "4990"
+            RateLimit-Reset:
+              deprecated: false
+              schema: {}
+              example: "3088"
             Content-Length:
-              schema:
-                type: integer
-              example: "1831"
+              deprecated: false
+              schema: {}
+              example: "212"
             ETag:
-              schema:
-                type: string
-              example: W/"727-7T5rs5tQfZUKSVGF9VvE6wR4/lc"
+              deprecated: false
+              schema: {}
+              example: W/"d4-dtATRYGyZb8HoWKP4DDMCy3ZnDE"
             Date:
-              schema:
-                type: string
-              example: Sun, 08 Mar 2026 10:31:33 GMT
+              deprecated: false
+              schema: {}
+              example: Thu, 26 Mar 2026 03:45:34 GMT
             Connection:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: keep-alive
             Keep-Alive:
-              schema:
-                type: string
+              deprecated: false
+              schema: {}
               example: timeout=5
           content:
             application/json:
@@ -2404,16 +2454,7 @@ paths:
                         type: string
                       details:
                         type: string
-                      timestamp:
-                        type: string
-                        format: date-time
-                      errorId:
-                        type: string
-                      stack:
-                        type: string
                       path:
-                        type: string
-                      method:
                         type: string
                       query:
                         type: object
@@ -2425,25 +2466,521 @@ paths:
                   details: >-
                     Ocurrió un problema en el servidor. Por favor, intenta más
                     tarde.
-                  timestamp: "2026-03-08T10:31:33.568Z"
-                  errorId: 01e0c4af-bfb6-4162-8b04-a61b46867332
-                  stack: |-
-                    AUTH || Error: Acceso no autorizado, token no proporcionado
-                        at verifyToken (file:///C:/Users/MikeT/Documentos/Backend_Bazar_Autos/src/middlewares/verify-jwt-middlewares.js:10:9)
-                        at Layer.handleRequest (C:\Users\MikeT\Documentos\Backend_Bazar_Autos\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
-                        at next (C:\Users\MikeT\Documentos\Backend_Bazar_Autos\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\route.js:157:13)
-                        at Route.dispatch (C:\Users\MikeT\Documentos\Backend_Bazar_Autos\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\route.js:117:3)
-                        at handle (C:\Users\MikeT\Documentos\Backend_Bazar_Autos\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:435:11)
-                        at Layer.handleRequest (C:\Users\MikeT\Documentos\Backend_Bazar_Autos\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
-                        at C:\Users\MikeT\Documentos\Backend_Bazar_Autos\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:295:15
-                        at processParams (C:\Users\MikeT\Documentos\Backend_Bazar_Autos\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:582:12)
-                        at next (C:\Users\MikeT\Documentos\Backend_Bazar_Autos\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:291:5)
-                        at Function.handle (C:\Users\MikeT\Documentos\Backend_Bazar_Autos\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:186:3)
                   path: /api/v1/users
-                  method: GET
                   query: {}
       tags:
         - users
+    post:
+      summary: Cargar nuevos usuarios
+      responses:
+        "201":
+          description: 201 Created
+          headers:
+            Vary:
+              deprecated: false
+              schema: {}
+              example: Origin
+            Access-Control-Allow-Credentials:
+              deprecated: false
+              schema: {}
+              example: "true"
+            Content-Security-Policy:
+              deprecated: false
+              schema: {}
+              example: >-
+                default-src 'self';base-uri 'self';font-src 'self' https:
+                data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                data:;object-src 'none';script-src 'self';script-src-attr
+                'none';style-src 'self' https:
+                'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              deprecated: false
+              schema: {}
+              example: same-origin
+            Cross-Origin-Resource-Policy:
+              deprecated: false
+              schema: {}
+              example: same-origin
+            Origin-Agent-Cluster:
+              deprecated: false
+              schema: {}
+              example: "?1"
+            Referrer-Policy:
+              deprecated: false
+              schema: {}
+              example: no-referrer
+            Strict-Transport-Security:
+              deprecated: false
+              schema: {}
+              example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              deprecated: false
+              schema: {}
+              example: nosniff
+            X-DNS-Prefetch-Control:
+              deprecated: false
+              schema: {}
+              example: "off"
+            X-Download-Options:
+              deprecated: false
+              schema: {}
+              example: noopen
+            X-Frame-Options:
+              deprecated: false
+              schema: {}
+              example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              deprecated: false
+              schema: {}
+              example: none
+            X-XSS-Protection:
+              deprecated: false
+              schema: {}
+              example: "0"
+            Content-Length:
+              deprecated: false
+              schema: {}
+              example: "174"
+            ETag:
+              deprecated: false
+              schema: {}
+              example: W/"ae-mj0G876IYVh/4KhqUQafEwEB3NQ"
+            Date:
+              deprecated: false
+              schema: {}
+              example: Thu, 26 Mar 2026 03:35:00 GMT
+            Connection:
+              deprecated: false
+              schema: {}
+              example: keep-alive
+            Keep-Alive:
+              deprecated: false
+              schema: {}
+              example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  metadata:
+                    type: object
+                    properties:
+                      timestamp:
+                        type: string
+                        format: date-time
+                      requestId:
+                        type: string
+                      dataCount:
+                        type: integer
+              example:
+                success: true
+                message: Usuario registrado con exito
+                metadata:
+                  timestamp: "2026-03-26T03:35:00.458Z"
+                  requestId: 5eb8107f-3c93-492c-8b08-33f3fcee4c55
+                  dataCount: 0
+        "400":
+          description: 400 Bad Request
+          headers:
+            Vary:
+              deprecated: false
+              schema: {}
+              example: Origin
+            Access-Control-Allow-Credentials:
+              deprecated: false
+              schema: {}
+              example: "true"
+            Content-Security-Policy:
+              deprecated: false
+              schema: {}
+              example: >-
+                default-src 'self';base-uri 'self';font-src 'self' https:
+                data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                data:;object-src 'none';script-src 'self';script-src-attr
+                'none';style-src 'self' https:
+                'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              deprecated: false
+              schema: {}
+              example: same-origin
+            Cross-Origin-Resource-Policy:
+              deprecated: false
+              schema: {}
+              example: same-origin
+            Origin-Agent-Cluster:
+              deprecated: false
+              schema: {}
+              example: "?1"
+            Referrer-Policy:
+              deprecated: false
+              schema: {}
+              example: no-referrer
+            Strict-Transport-Security:
+              deprecated: false
+              schema: {}
+              example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              deprecated: false
+              schema: {}
+              example: nosniff
+            X-DNS-Prefetch-Control:
+              deprecated: false
+              schema: {}
+              example: "off"
+            X-Download-Options:
+              deprecated: false
+              schema: {}
+              example: noopen
+            X-Frame-Options:
+              deprecated: false
+              schema: {}
+              example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              deprecated: false
+              schema: {}
+              example: none
+            X-XSS-Protection:
+              deprecated: false
+              schema: {}
+              example: "0"
+            Content-Length:
+              deprecated: false
+              schema: {}
+              example: "260"
+            ETag:
+              deprecated: false
+              schema: {}
+              example: W/"104-AKeBepIxv2ibFGp/R5ZuU5ys3YE"
+            Date:
+              deprecated: false
+              schema: {}
+              example: Thu, 26 Mar 2026 03:34:13 GMT
+            Connection:
+              deprecated: false
+              schema: {}
+              example: keep-alive
+            Keep-Alive:
+              deprecated: false
+              schema: {}
+              example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  httpStatus:
+                    type: integer
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  errores:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                        message:
+                          type: string
+              example:
+                success: false
+                httpStatus: 400
+                code: VALIDATION
+                message: Hay algunos errores en la entrada de campos
+                errores:
+                  - field: password
+                    message: >-
+                      La contraseña debe contener al menos una mayúscula, una
+                      minúscula, un número y un carácter especial
+        "401":
+          description: 401 Unauthorized
+          headers:
+            Vary:
+              deprecated: false
+              schema: {}
+              example: Origin
+            Access-Control-Allow-Credentials:
+              deprecated: false
+              schema: {}
+              example: "true"
+            Content-Security-Policy:
+              deprecated: false
+              schema: {}
+              example: >-
+                default-src 'self';base-uri 'self';font-src 'self' https:
+                data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                data:;object-src 'none';script-src 'self';script-src-attr
+                'none';style-src 'self' https:
+                'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              deprecated: false
+              schema: {}
+              example: same-origin
+            Cross-Origin-Resource-Policy:
+              deprecated: false
+              schema: {}
+              example: same-origin
+            Origin-Agent-Cluster:
+              deprecated: false
+              schema: {}
+              example: "?1"
+            Referrer-Policy:
+              deprecated: false
+              schema: {}
+              example: no-referrer
+            Strict-Transport-Security:
+              deprecated: false
+              schema: {}
+              example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              deprecated: false
+              schema: {}
+              example: nosniff
+            X-DNS-Prefetch-Control:
+              deprecated: false
+              schema: {}
+              example: "off"
+            X-Download-Options:
+              deprecated: false
+              schema: {}
+              example: noopen
+            X-Frame-Options:
+              deprecated: false
+              schema: {}
+              example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              deprecated: false
+              schema: {}
+              example: none
+            X-XSS-Protection:
+              deprecated: false
+              schema: {}
+              example: "0"
+            RateLimit-Policy:
+              deprecated: false
+              schema: {}
+              example: 5000;w=3600
+            RateLimit-Limit:
+              deprecated: false
+              schema: {}
+              example: "5000"
+            RateLimit-Remaining:
+              deprecated: false
+              schema: {}
+              example: "4999"
+            RateLimit-Reset:
+              deprecated: false
+              schema: {}
+              example: "3600"
+            Content-Length:
+              deprecated: false
+              schema: {}
+              example: "212"
+            ETag:
+              deprecated: false
+              schema: {}
+              example: W/"d4-dtATRYGyZb8HoWKP4DDMCy3ZnDE"
+            Date:
+              deprecated: false
+              schema: {}
+              example: Thu, 26 Mar 2026 03:37:01 GMT
+            Connection:
+              deprecated: false
+              schema: {}
+              example: keep-alive
+            Keep-Alive:
+              deprecated: false
+              schema: {}
+              example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      code:
+                        type: string
+                      details:
+                        type: string
+                      path:
+                        type: string
+                      query:
+                        type: object
+              example:
+                success: false
+                error:
+                  message: Acceso no autorizado, token no proporcionado
+                  code: AUTH
+                  details: >-
+                    Ocurrió un problema en el servidor. Por favor, intenta más
+                    tarde.
+                  path: /api/v1/users
+                  query: {}
+        "409":
+          description: 409 Conflict
+          headers:
+            Vary:
+              deprecated: false
+              schema: {}
+              example: Origin
+            Access-Control-Allow-Credentials:
+              deprecated: false
+              schema: {}
+              example: "true"
+            Content-Security-Policy:
+              deprecated: false
+              schema: {}
+              example: >-
+                default-src 'self';base-uri 'self';font-src 'self' https:
+                data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                data:;object-src 'none';script-src 'self';script-src-attr
+                'none';style-src 'self' https:
+                'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              deprecated: false
+              schema: {}
+              example: same-origin
+            Cross-Origin-Resource-Policy:
+              deprecated: false
+              schema: {}
+              example: same-origin
+            Origin-Agent-Cluster:
+              deprecated: false
+              schema: {}
+              example: "?1"
+            Referrer-Policy:
+              deprecated: false
+              schema: {}
+              example: no-referrer
+            Strict-Transport-Security:
+              deprecated: false
+              schema: {}
+              example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              deprecated: false
+              schema: {}
+              example: nosniff
+            X-DNS-Prefetch-Control:
+              deprecated: false
+              schema: {}
+              example: "off"
+            X-Download-Options:
+              deprecated: false
+              schema: {}
+              example: noopen
+            X-Frame-Options:
+              deprecated: false
+              schema: {}
+              example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              deprecated: false
+              schema: {}
+              example: none
+            X-XSS-Protection:
+              deprecated: false
+              schema: {}
+              example: "0"
+            RateLimit-Policy:
+              deprecated: false
+              schema: {}
+              example: 5000;w=3600
+            RateLimit-Limit:
+              deprecated: false
+              schema: {}
+              example: "5000"
+            RateLimit-Remaining:
+              deprecated: false
+              schema: {}
+              example: "4996"
+            RateLimit-Reset:
+              deprecated: false
+              schema: {}
+              example: "3544"
+            Content-Length:
+              deprecated: false
+              schema: {}
+              example: "208"
+            ETag:
+              deprecated: false
+              schema: {}
+              example: W/"d0-ajQcPXwNgQk7rl/45d8J+BCyEY8"
+            Date:
+              deprecated: false
+              schema: {}
+              example: Thu, 26 Mar 2026 03:37:58 GMT
+            Connection:
+              deprecated: false
+              schema: {}
+              example: keep-alive
+            Keep-Alive:
+              deprecated: false
+              schema: {}
+              example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      code:
+                        type: string
+                      details:
+                        type: string
+                      path:
+                        type: string
+                      query:
+                        type: object
+              example:
+                success: false
+                error:
+                  message: El correo ya se encuentra registrado
+                  code: CONFLICT
+                  details: >-
+                    Ocurrió un problema en el servidor. Por favor, intenta más
+                    tarde.
+                  path: /api/v1/users
+                  query: {}
+      tags:
+        - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                full_name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+            example:
+              username: Prueba30
+              password: WApKb@21BYK414TdV2U5
+              full_name: asdadasdadadasdadasdadasdasdas
+              email: ignacio30@gmail.com
   /:
     get:
       summary: server
