@@ -98,7 +98,9 @@ export const updateUserService = async (userId, userData) => {
 		const result = await updateUserModel(updateData);
 
 		if (result.affectedRows === 0) {
-			throw new DatabaseError("No se pudo actualizar el usuario en la base de datos");
+			throw new DatabaseError(
+				"No se pudo actualizar el usuario en la base de datos",
+			);
 		}
 
 		return result.affectedRows > 0;
@@ -115,18 +117,15 @@ export const updateUserService = async (userId, userData) => {
 			metadata: {
 				sqlMessage: error.sqlMessage,
 				code: error.code,
-				userId
+				userId,
 			},
 		});
 	}
 };
 
-
 export const deleteUserService = async (userId) => {
 	try {
-		const foundUserToEliminated = await findUserById(
-			userId,
-		);
+		const foundUserToEliminated = await findUserById(userId);
 
 		if (foundUserToEliminated.length === 0) {
 			throw new NotFoundError("El usuario no fue encontrado");
@@ -147,7 +146,5 @@ export const deleteUserService = async (userId) => {
 				code: error.code,
 			},
 		});
-
 	}
-
 };

@@ -9,7 +9,10 @@ import {
 } from "../controllers/users-controllers.js";
 import { methodCreated, methodOK } from "../server/methods-server.js";
 import { validationFields } from "../middlewares/validation-middlewares.js";
-import { schemaCreateUserValidations, schemaUpdateUserValidations } from "../schemas/users-schemas.js";
+import {
+	schemaCreateUserValidations,
+	schemaUpdateUserValidations,
+} from "../schemas/users-schemas.js";
 import { multiUuidSchema } from "../schemas/schemas.js";
 
 const users = express.Router();
@@ -93,6 +96,5 @@ users.delete(
 		}
 	},
 );
-
 
 export { users };
