@@ -5,7 +5,11 @@ import {
 	listGetFullNameUserModels,
 	listProfileModel,
 } from "../models/users-models.js";
-import { ConflictError, DatabaseError, NotFoundError } from "../utils/error-utils.js";
+import {
+	ConflictError,
+	DatabaseError,
+	NotFoundError,
+} from "../utils/error-utils.js";
 
 export const listGetFullNameUserService = async () => {
 	const names = await listGetFullNameUserModels();
@@ -32,7 +36,8 @@ export const insertUserService = async ({
 		const existingUser = await findUserByEmailOrUsername(email, username);
 
 		if (existingUser) {
-			const conflictField = existingUser.email === email ? "correo" : "nombre de usuario";
+			const conflictField =
+				existingUser.email === email ? "correo" : "nombre de usuario";
 			throw new ConflictError(`El ${conflictField} ya se encuentra registrado`);
 		}
 
