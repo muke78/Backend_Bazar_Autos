@@ -67,6 +67,6 @@ export const postInsertCarService = async (carData) => {
 			},
 		);
 	} finally {
-		connection.release();
+		if (connection) connection.release();
 	}
 };

@@ -5,6 +5,8 @@ import { methodCreated } from "../server/methods-server.js";
 import { schemaInsertInvestor } from "../schemas/investor-schemas.js";
 import { InsertInvestor } from "../controllers/investor-controllers.js";
 
+import { transactions } from "./transactions-routes.js";
+
 const investors = express.Router();
 
 //POST /api/investors
@@ -22,5 +24,7 @@ investors.post(
 		}
 	},
 );
+
+investors.use("/:investor_id/transactions", transactions);
 
 export { investors };

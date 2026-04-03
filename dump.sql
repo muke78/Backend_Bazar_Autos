@@ -111,6 +111,36 @@ LOCK TABLES `investor` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `investor_transactions`
+--
+
+DROP TABLE IF EXISTS `investor_transactions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `investor_transactions` (
+  `transaction_id` char(36) NOT NULL,
+  `investor_id` char(36) NOT NULL,
+  `type` enum('Entrada','Salida') NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `concept` varchar(255) DEFAULT NULL,
+  `created` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`transaction_id`),
+  KEY `idx_investor` (`investor_id`),
+  KEY `idx_created_type` (`created`,`type`),
+  CONSTRAINT `fk_transaction_investor` FOREIGN KEY (`investor_id`) REFERENCES `investor` (`investor_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `investor_transactions`
+--
+
+LOCK TABLES `investor_transactions` WRITE;
+/*!40000 ALTER TABLE `investor_transactions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `investor_transactions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `movements`
 --
 
@@ -197,7 +227,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('1552f72c-2b53-4941-8b81-e3a393bb3c3f','Ignacio30','$argon2id$v=19$m=65536,t=3,p=4$jDZ2xKuDuNUdqk9GVi9ZFw$d/oX7EHvWVWDXRvf3cDlTgLLtgx5Ep+YktG4NZZ+frQ','Ignacio','ignacio30@gmail.com',NULL,'2026-03-25 21:16:51','2026-03-25 21:16:51'),('2b6b5629-c297-4a09-9361-9d8ec045d297','Prueba30','$argon2id$v=19$m=65536,t=3,p=4$9nj7YhYllDhV+0TPgHXo2Q$rMWAx7HuM2wjL1JOCq9kFmKuvXEjmrfqQqrfs8CTPhU','asdadasdadadasdadasdadasdasdas','prueba30@gmail.com',NULL,'2026-03-25 21:35:00','2026-03-25 21:35:00'),('4a274aee-a02e-4814-98e9-6a5a55848918','ise67','$argon2i$v=19$m=16,t=2,p=1$UzVGbTdVWU1jRFZ1cjRxZQ$CZxbmRtudDUbrgX9SorCNQ','Isela Quijada Quandon','ise67@gmail.com',NULL,'2026-03-05 23:54:34','2026-03-06 00:00:36'),('6aa4afe6-3ea2-461b-8bdd-84c8167ed1e2','zuuri12','$argon2i$v=19$m=16,t=2,p=1$UzVGbTdVWU1jRFZ1cjRxZQ$GcWuiIY/sStKPG3GpzpyjQ','Zuri Quandon Quijada','zuri12@gmail.com','2026-03-25 21:39:05','2026-03-05 23:54:34','2026-03-25 21:39:05'),('ec54cc39-9174-451e-b1d0-224cd3a54e29','mon97','$argon2i$v=19$m=16,t=2,p=1$UzVGbTdVWU1jRFZ1cjRxZQ$1EOVdobZ3yrAHwhO3IwVYg','Montserrat Quandon Quijada','mon97@gmail.com',NULL,'2026-03-05 23:54:34','2026-03-06 00:03:24'),('f272776e-7033-44c4-82de-f7c668f17cf0','ricardo90','$argon2i$v=19$m=16,t=2,p=1$UzVGbTdVWU1jRFZ1cjRxZQ$+dqCtvbeT9ydgUINkdh/5g','Ricardo Quandon Quijada','ricardo90@gmail.com','2026-03-25 20:46:04','2026-03-05 23:54:34','2026-03-25 20:46:04'),('fb546e71-0510-429b-93c1-e598c9a0cb34','christian20','$argon2id$v=19$m=65536,t=3,p=4$IZdTiuibvRCheyszDNzxbQ$QQ7JkUnE4F/ZYhxH7LjJEK8fxQlgvZBch0qB+CLnQoc','Christian','christian20@gmail.com',NULL,'2026-03-25 21:15:46','2026-03-25 21:15:46');
+INSERT INTO `users` VALUES ('1552f72c-2b53-4941-8b81-e3a393bb3c3f','Ignacio30','$argon2id$v=19$m=65536,t=3,p=4$jDZ2xKuDuNUdqk9GVi9ZFw$d/oX7EHvWVWDXRvf3cDlTgLLtgx5Ep+YktG4NZZ+frQ','Ignacio','ignacio30@gmail.com','2026-03-26 14:26:35','2026-03-25 21:16:51','2026-03-26 14:26:35'),('4a274aee-a02e-4814-98e9-6a5a55848918','ise97','$argon2id$v=19$m=65536,t=3,p=4$cBgT3hACCE8+rWBrlqUlNw$QnUhtMHFdjqeXzHNt0MPo45eantuyqkgBKWCnCB96fg','Isela Angeles Quijada Quandon','ise67@gmail.com',NULL,'2026-03-05 23:54:34','2026-03-26 17:16:38'),('6aa4afe6-3ea2-461b-8bdd-84c8167ed1e2','zuuri12','$argon2i$v=19$m=16,t=2,p=1$UzVGbTdVWU1jRFZ1cjRxZQ$GcWuiIY/sStKPG3GpzpyjQ','Zuri Quandon Quijada','zuri12@gmail.com','2026-03-26 15:04:25','2026-03-05 23:54:34','2026-03-26 15:04:25'),('ec54cc39-9174-451e-b1d0-224cd3a54e29','mon97','$argon2i$v=19$m=16,t=2,p=1$UzVGbTdVWU1jRFZ1cjRxZQ$1EOVdobZ3yrAHwhO3IwVYg','Montserrat Quandon Quijada','mon97@gmail.com',NULL,'2026-03-05 23:54:34','2026-03-06 00:03:24'),('f272776e-7033-44c4-82de-f7c668f17cf0','ricardo90','$argon2i$v=19$m=16,t=2,p=1$UzVGbTdVWU1jRFZ1cjRxZQ$+dqCtvbeT9ydgUINkdh/5g','Ricardo Quandon Quijada','ricardo90@gmail.com','2026-04-02 18:09:29','2026-03-05 23:54:34','2026-04-02 18:09:29'),('fb546e71-0510-429b-93c1-e598c9a0cb34','christian20','$argon2id$v=19$m=65536,t=3,p=4$IZdTiuibvRCheyszDNzxbQ$QQ7JkUnE4F/ZYhxH7LjJEK8fxQlgvZBch0qB+CLnQoc','Christian','christian20@gmail.com','2026-03-25 21:54:40','2026-03-25 21:15:46','2026-03-25 21:54:40');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -210,4 +240,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-03-25 21:49:29
+-- Dump completed on 2026-04-02 21:40:44

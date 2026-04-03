@@ -82,6 +82,27 @@ CREATE TABLE `investor` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `investor_transactions`
+--
+
+DROP TABLE IF EXISTS `investor_transactions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `investor_transactions` (
+  `transaction_id` char(36) NOT NULL,
+  `investor_id` char(36) NOT NULL,
+  `type` enum('Entrada','Salida') NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `concept` varchar(255) DEFAULT NULL,
+  `created` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`transaction_id`),
+  KEY `idx_investor` (`investor_id`),
+  KEY `idx_created_type` (`created`,`type`),
+  CONSTRAINT `fk_transaction_investor` FOREIGN KEY (`investor_id`) REFERENCES `investor` (`investor_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `movements`
 --
 
@@ -152,4 +173,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-03-25 21:49:43
+-- Dump completed on 2026-04-02 21:41:01
