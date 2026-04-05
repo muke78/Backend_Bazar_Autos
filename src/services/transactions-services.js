@@ -7,16 +7,42 @@ export const GetTransactionsService = async (investor_id, filters) => {
 
     if (!transactions || transactions.length === 0) {
         const hasFilters = Object.keys(filters).length > 0;
-
         const errorMessage = hasFilters
             ? "No se encontraron transacciones para este inversionista con los filtros solicitados."
             : "No hay un historial de transacciones registrado para este inversionista.";
 
-        throw new NotFoundError(errorMessage);
-
+        throw new NotFoundError(errorMessage, {
+            context: "GetTransactionsService",
+            metadata: { investor_id, filters }
+        });
     }
 
-    return { data: transactions };
+    let total_entradas = 0;
+    let total_salidas = 0;
+
+    transactions.forEach((tx) => {
+        const amountNumber = Number(tx.raw_amount);
+
+        if (tx.type === 'Entrada') {
+            total_entradas += amountNumber;
+        } else if (tx.type === 'Salida') {
+            total_salidas += amountNumber;
+        }
+    });
+
+    const total_neto = total_entradas - total_salidas;
+
+    const cleanedTransactions = transactions.map(({ raw_amount, ...rest }) => rest);
+
+   
+    return {
+        summary: {
+            total_entradas,
+            total_salidas,
+            total_neto
+        },
+        data: cleanedTransactions
+    };
 };
 
 export const InsertTransactionService = async (investor_id, transactionData) => {

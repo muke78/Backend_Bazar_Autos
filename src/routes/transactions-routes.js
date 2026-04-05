@@ -12,14 +12,14 @@ const transactions = express.Router({ mergeParams: true })
 transactions.get(
     "/",
     verifyToken,
-    validationFields(schemaGetInvestorTransactions, "query"), // Valida que los filtros de año/mes/tipo estén bien
+    validationFields(schemaGetInvestorTransactions, "query"),
     async (request, response, next) => {
         try {
             const { investor_id } = request.params;
-            const filters = request.query; // Aquí vienen year, month, type
+            const filters = request.query;
 
             const result = await GetTransactions(investor_id, filters);
-            methodOK(request, response, result.data, "Historial obtenido");
+            methodOK(request, response, result, "Historial obtenido");
         } catch (error) {
             next(error);
         }
@@ -30,14 +30,12 @@ transactions.get(
 transactions.post(
     "/",
     verifyToken,
-    validationFields(schemaInsertInvestorTransaction, "body"), // Valida amount, type, concept
+    validationFields(schemaInsertInvestorTransaction, "body"),
     async (request, response, next) => {
         try {
-            // ✅ Gracias a mergeParams, request.params tiene el investor_id
             const { investor_id } = request.params;
             const transactionData = request.body;
 
-            // En tu controlador, le pasas ambos: el ID de la URL y los datos validados del body
             const result = await InsertTransaction(investor_id, transactionData);
 
             methodCreated(request, response, undefined, result.message);

@@ -2,6 +2,7 @@ import { GetTransactionsService, InsertTransactionService } from "../services/tr
 
 export const GetTransactions = async (investor_id, filters) => {
     const getTransactions = await GetTransactionsService(investor_id, filters);
+    console.log(getTransactions)
     return getTransactions;
 };
 

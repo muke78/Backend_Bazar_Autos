@@ -1,13 +1,33 @@
 import express from "express";
 import { verifyToken } from "../middlewares/verify-jwt-middlewares.js";
 import { validationFields } from "../middlewares/validation-middlewares.js";
-import { methodCreated } from "../server/methods-server.js";
-import { schemaInsertInvestor } from "../schemas/investor-schemas.js";
-import { InsertInvestor } from "../controllers/investor-controllers.js";
+import { methodCreated, methodOK } from "../server/methods-server.js";
+import { schemaGetInvestorParams, schemaGetInvestorQuery, schemaInsertInvestor } from "../schemas/investor-schemas.js";
+import { GetInvestmentsByUser, InsertInvestor } from "../controllers/investor-controllers.js";
 
 import { transactions } from "./transactions-routes.js";
 
 const investors = express.Router();
+
+// GET /api/v1/investors/:user_id?year=2024&month=4
+investors.get(
+	"/:user_id",
+	verifyToken,
+	validationFields(schemaGetInvestorParams, "params"),
+	validationFields(schemaGetInvestorQuery, "query"),
+	async (request, response, next) => {
+		try {
+			const { user_id } = request.params;
+			const filters = request.query;
+
+			const result = await GetInvestmentsByUser(user_id, filters);
+
+			methodOK(request, response, result, "Consulta realizada con exito")
+		} catch (error) {
+			next(error);
+		}
+	}
+);
 
 //POST /api/investors
 investors.post(

@@ -9,6 +9,7 @@ export const getTransactionsModel = async (investor_id, filters) => {
         SELECT 
             transaction_id,
             type,
+            amount AS raw_amount,
             CONCAT('$', FORMAT(amount, 2)) AS amount,
             concept,
             created
@@ -32,11 +33,9 @@ export const getTransactionsModel = async (investor_id, filters) => {
         queryParams.push(type);
     }
 
-    // Ordenamos para que el historial más reciente salga primero
     query += ` ORDER BY created DESC;`;
 
     try {
-        // Si tu connectionQuery soporta parámetros dinámicos, se los pasamos
         const rows = await connectionQuery(query, queryParams);
         return rows;
     } catch (error) {
