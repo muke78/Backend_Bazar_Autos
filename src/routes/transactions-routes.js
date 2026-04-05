@@ -38,9 +38,9 @@ transactions.post(
             const transactionData = request.body;
 
             // En tu controlador, le pasas ambos: el ID de la URL y los datos validados del body
-            await InsertTransaction(investor_id, transactionData);
+            const result = await InsertTransaction(investor_id, transactionData);
 
-            methodCreated(request, response, undefined, "Movimiento registrado correctamente");
+            methodCreated(request, response, undefined, result.message);
         } catch (error) {
             next(error);
         }

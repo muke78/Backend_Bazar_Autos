@@ -6,9 +6,16 @@ export const getTransactionsModel = async (investor_id, filters) => {
     const { year, month, type } = filters;
 
     let query = `
-        SELECT transaction_id, type, amount, concept, created 
-        FROM investor_transactions 
-        WHERE investor_id = ?
+        SELECT 
+            transaction_id,
+            type,
+            CONCAT('$', FORMAT(amount, 2)) AS amount,
+            concept,
+            created
+        FROM
+            investor_transactions
+        WHERE
+            investor_id = ?
     `;
     const queryParams = [investor_id];
 
@@ -49,6 +56,24 @@ export const insertTransactionModel = async (data) => {
     try {
         await connection.beginTransaction();
 
+        // 1. Consultar el saldo actual y BLOQUEAR la fila para actualización
+        // Esto evita que dos retiros simultáneos dejen la cuenta en negativo
+        const [rows] = await connection.query(
+            "SELECT investment_amount FROM investor WHERE investor_id = ? FOR UPDATE",
+            [investor_id]
+        );
+
+        if (rows.length === 0) {
+            throw new Error("NOT_FOUND_INVESTOR");
+        }
+
+        const currentBalance = Number(rows[0].investment_amount);
+
+        // 2. VALIDACIÓN DE FONDOS: Si es salida, verificar que tenga suficiente dinero
+        if (type === 'Salida' && currentBalance < amount) {
+            throw new Error("INSUFFICIENT_FUNDS"); // Código crudo para el Service
+        }
+
         // 1. Insertamos el movimiento en el historial
         const insertQuery = `
             INSERT INTO investor_transactions (transaction_id, investor_id, type, amount, concept)
@@ -76,17 +101,8 @@ export const insertTransactionModel = async (data) => {
         return true;
 
     } catch (error) {
-        // Si algo falla, deshacemos todo para no corromper el dinero
         await connection.rollback();
-
-        throw new DatabaseError("Error al registrar la transacción de inversión", {
-            context: "insertTransactionModel",
-            metadata: {
-                originalError: error.message,
-                sqlMessage: error.sqlMessage || null,
-                investor_id
-            }
-        });
+        throw error;
     } finally {
         if (connection) connection.release();
     }

@@ -1,5 +1,4 @@
 import Joi from 'joi';
-import { uuidSchema } from './schemas.js';
 
 export const schemaInsertInvestorTransaction = Joi.object({
     type: Joi.string().valid("Entrada", "Salida").required(),
