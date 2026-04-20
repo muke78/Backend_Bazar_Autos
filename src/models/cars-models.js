@@ -26,7 +26,12 @@ export const getAllCarsModel = async (limit, offset, search) => {
                 model,
                 year_of_car,
                 CONCAT('$', FORMAT(purchase_price, 2)) AS purchase_price,
-                CONCAT('$', FORMAT(price_for_sale, 2)) AS price_for_sale
+                CONCAT('$', FORMAT(price_for_sale, 2)) AS price_for_sale,
+                purchase_date,
+                YEAR(purchase_date) AS año,
+                MONTH(purchase_date) AS mes,
+                DAY(purchase_date) AS dia,
+                created
             FROM
                 cars
             ${whereClause}
