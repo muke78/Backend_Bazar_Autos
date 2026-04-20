@@ -37,6 +37,26 @@ export const uuidSchema = Joi.string()
 		"string.guid": `El campo debe ser un UUID v4 válido`,
 	});
 
+export const paginationSchema = Joi.object({
+	limit: Joi.number()
+		.integer()
+		.min(1)
+		.max(100)
+		.optional()
+		.default(20)
+		.messages({
+			"number.base": "El límite debe ser un número",
+			"number.integer": "El límite debe ser un número entero",
+			"number.min": "El límite debe ser al menos 1",
+			"number.max": "El límite no puede ser mayor a 100",
+		}),
+	page: Joi.number().integer().min(1).optional().default(1).messages({
+		"number.base": "La página debe ser un número",
+		"number.integer": "La página debe ser un número entero",
+		"number.min": "La página debe ser al menos 1",
+	}),
+});
+
 export const multiUuidSchema = (keys = []) => {
 	const shape = {};
 

@@ -1,7 +1,39 @@
 import { generateUUID } from "../helpers/index.js";
 import { pool } from "../lib/db.js";
-import { getModelsFromDBCarsModel } from "../models/cars-models.js";
+import {
+	getAllCarsModel,
+	getCarByIdModel,
+	getModelsFromDBCarsModel,
+} from "../models/cars-models.js";
 import { DatabaseError, NotFoundError } from "../utils/error-utils.js";
+
+export const getAllCarsService = async (pagination, search) => {
+	const limit = Number(pagination.limit) > 0 ? Number(pagination.limit) : 20;
+	const page = Number(pagination.page) > 0 ? Number(pagination.page) : 1;
+
+	const offset = (page - 1) * limit;
+
+	const { rows, total } = await getAllCarsModel(limit, offset, search);
+
+	if (!rows || rows.length === 0) {
+		throw new NotFoundError("No se encontraron carros registrados.");
+	}
+
+	const totalPages = Math.ceil(total / limit);
+
+	return {
+		search: search || null,
+		rows,
+		pagination: {
+			total,
+			totalPages,
+			currentPage: page,
+			limit,
+			hasNextPage: page < totalPages,
+			hasPrevPage: page > 1,
+		},
+	};
+};
 
 export const getModelsByCarsService = async () => {
 	const models = await getModelsFromDBCarsModel();
@@ -60,6 +92,69 @@ export const postInsertCarService = async (carData) => {
 			"Error al procesar la transacción del vehículo en la base de datos",
 			{
 				context: "postInsertCarService",
+				metadata: {
+					sqlMessage: error.sqlMessage,
+					code: error.code,
+				},
+			},
+		);
+	} finally {
+		if (connection) connection.release();
+	}
+};
+
+export const updateCarService = async (carId, carData) => {
+	const car = await getCarByIdModel(carId);
+
+	if (!car || car.length === 0) {
+		throw new NotFoundError("No se encontró el carro con el ID proporcionado.");
+	}
+
+	const connection = await pool.getConnection();
+
+	try {
+		await connection.beginTransaction();
+
+		const { costs, ...carInfo } = carData;
+
+		if (carInfo.sale_date === "") carInfo.sale_date = null;
+		if (carInfo.purchase_date === "") carInfo.purchase_date = null;
+		if (carInfo.price_for_sale === "") carInfo.price_for_sale = null;
+
+		if (Object.keys(carInfo).length > 0) {
+			const columns = Object.keys(carInfo);
+			const values = Object.values(carInfo);
+			const fields = columns.map((col) => `${col} = ?`).join(", ");
+			const updateQuery = `UPDATE cars SET ${fields} WHERE car_id = ?`;
+			await connection.execute(updateQuery, [...values, carId]);
+		}
+
+		if (costs && costs.length > 0) {
+			for (const cost of costs) {
+				const updateCostQuery = `UPDATE car_costs SET amount = ?, note = ? WHERE car_id = ? AND cost_type = ?`;
+
+				await connection.execute(updateCostQuery, [
+					cost.amount,
+					cost.note || null,
+					carId,
+					cost.cost_type
+				]);
+			}
+		}
+
+		await connection.commit();
+		return { message: "Carro actualizado con éxito" };
+	} catch (error) {
+		await connection.rollback();
+
+		if (error.statusCode || error.name === "NotFoundError" || error.name === "ValidationError") {
+			throw error;
+		}
+
+		throw new DatabaseError(
+			"Error al procesar la actualización del vehículo en la base de datos",
+			{
+				context: "updateCarService",
 				metadata: {
 					sqlMessage: error.sqlMessage,
 					code: error.code,
