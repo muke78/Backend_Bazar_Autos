@@ -1,18 +1,24 @@
 import {
 	getAllCarsService,
 	getModelsByCarsService,
+	getModelsInInventoryService,
 	postInsertCarService,
 	updateCarService,
 } from "../services/cars-services.js";
 
 export const GetAllCars = async (pagination, search) => {
-    const cars = await getAllCarsService(pagination, search);
-    return cars;
+	const cars = await getAllCarsService(pagination, search);
+	return cars;
 };
 
 export const GetModelsByCars = async () => {
 	const getModelsByCars = await getModelsByCarsService();
 	return getModelsByCars;
+};
+
+export const GetModelsInInventory = async () => {
+	const getModelsInInventory = await getModelsInInventoryService()
+	return getModelsInInventory;
 };
 
 export const InsertCar = async (carData) => {

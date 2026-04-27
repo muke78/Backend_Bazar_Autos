@@ -2,7 +2,7 @@ import { connectionQuery } from "../helpers/index.js";
 import { DatabaseError } from "../utils/error-utils.js";
 
 export const getAllCarsModel = async (limit, offset, search) => {
-	try {
+    try {
         let whereClause = "";
         const queryParams = [];
         const countParams = [];
@@ -11,7 +11,7 @@ export const getAllCarsModel = async (limit, offset, search) => {
         if (search) {
             whereClause = "WHERE brand LIKE ? OR model LIKE ?";
             const searchTerm = `%${search}%`;
-            
+
             queryParams.push(searchTerm, searchTerm);
             countParams.push(searchTerm, searchTerm);
         }
@@ -61,41 +61,74 @@ export const getAllCarsModel = async (limit, offset, search) => {
 };
 
 export const getCarByIdModel = async (carId) => {
-	try {
-		const query = `SELECT car_id FROM cars WHERE car_id = ?`;
-		const rows = await connectionQuery(query, [carId]);
-		return rows;
-	} catch (error) {
-		throw new DatabaseError(
-			"Error al buscar el carro en la base de datos",
-			{
-				context: "getCarByIdModel",
-				metadata: { originalError: error.message },
-			},
-		);
-	}
+    try {
+        const query = `SELECT car_id FROM cars WHERE car_id = ?`;
+        const rows = await connectionQuery(query, [carId]);
+        return rows;
+    } catch (error) {
+        throw new DatabaseError(
+            "Error al buscar el carro en la base de datos",
+            {
+                context: "getCarByIdModel",
+                metadata: { originalError: error.message },
+            },
+        );
+    }
 };
 
 export const getModelsFromDBCarsModel = async () => {
-	try {
-		const query = `
+    try {
+        const query = `
             SELECT 
-                MIN(car_id) AS id, model AS name
+                MIN(car_id) AS id,
+                brand,
+                model AS name,
+                CONCAT(brand, ' ', model) AS full_name
             FROM
                 cars
-            GROUP BY model
-            ORDER BY model ASC;
+            GROUP BY brand, model
+            ORDER BY brand ASC, model ASC;
         `;
 
-		const rows = await connectionQuery(query);
-		return rows;
-	} catch (error) {
-		throw new DatabaseError(
-			"Error al obtener los modelos de la base de datos",
-			{
-				context: "getModelsFromDBCarsModel",
-				metadata: { originalError: error.message },
-			},
-		);
-	}
+        const rows = await connectionQuery(query);
+        return rows;
+    } catch (error) {
+        throw new DatabaseError(
+            "Error al obtener los modelos de la base de datos",
+            {
+                context: "getModelsFromDBCarsModel",
+                metadata: { originalError: error.message },
+            },
+        );
+    }
+};
+
+
+export const getModelsInInventoryModel = async () => {
+    try {
+        const query = `
+            SELECT 
+                car_id AS id,
+                brand,
+                model AS name,
+                year_of_car,
+                CONCAT(brand, ' ', model) AS full_name
+            FROM
+                cars
+            WHERE
+                status = 'Inventario'
+            ORDER BY brand ASC, model ASC;
+        `;
+
+        const rows = await connectionQuery(query);
+        return rows;
+    } catch (error) {
+        throw new DatabaseError(
+            "Error al obtener los modelos en inventario",
+            {
+                context: "getModelsInInventoryModel",
+                metadata: { originalError: error.message },
+            },
+        );
+    }
 };

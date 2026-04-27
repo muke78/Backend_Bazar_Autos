@@ -7,6 +7,7 @@ import { multiUuidSchema } from "../schemas/schemas.js";
 import {
 	GetAllCars,
 	GetModelsByCars,
+	GetModelsInInventory,
 	InsertCar,
 	UpdateCar,
 } from "../controllers/cars-controllers.js";
@@ -29,10 +30,14 @@ cars.get(
 	},
 );
 
-// GET /api/cars/models
+// GET /api/cars/models?inStock=true
 cars.get("/models", verifyToken, async (request, response, next) => {
 	try {
-		const result = await GetModelsByCars();
+		const { inStock } = request.query;
+
+		const result = inStock === "true"
+            ? await GetModelsInInventory()
+            : await GetModelsByCars();
 		methodOK(request, response, result);
 	} catch (error) {
 		next(error);
@@ -63,7 +68,7 @@ cars.put(
 	validationFields(schemaUpdateCar, "body"),
 	async (request, response, next) => {
 		try {
-			const carId = request.params.id;	
+			const carId = request.params.id;
 			const carData = request.body;
 			const result = await UpdateCar(carId, carData);
 			methodOK(request, response, result, result.message);

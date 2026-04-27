@@ -4,6 +4,7 @@ import {
 	getAllCarsModel,
 	getCarByIdModel,
 	getModelsFromDBCarsModel,
+	getModelsInInventoryModel,
 } from "../models/cars-models.js";
 import { DatabaseError, NotFoundError } from "../utils/error-utils.js";
 
@@ -40,6 +41,16 @@ export const getModelsByCarsService = async () => {
 
 	if (!models || models.length === 0) {
 		throw new NotFoundError("No se encontraron modelos de autos registrados.");
+	}
+
+	return models;
+};
+
+export const getModelsInInventoryService = async () => {
+	const models = await getModelsInInventoryModel();
+
+	if (!models || models.length === 0) {
+		throw new NotFoundError("No hay modelos disponibles en inventario.");
 	}
 
 	return models;
