@@ -36,10 +36,14 @@ export const getAllCarsModel = async (limit, offset, search, filters = {}) => {
                 car_id,
                 brand,
                 model,
+				color,
                 year_of_car,
                 CONCAT('$', FORMAT(purchase_price, 2)) AS purchase_price,
+                purchase_price AS purchase_price_raw,
                 CONCAT('$', FORMAT(price_for_sale, 2)) AS price_for_sale,
                 purchase_date,
+				sale_date,
+				status,
                 YEAR(purchase_date) AS año,
                 MONTH(purchase_date) AS mes,
                 DAY(purchase_date) AS dia,
@@ -59,6 +63,47 @@ export const getAllCarsModel = async (limit, offset, search, filters = {}) => {
 		]);
 
 		const total = countResult[0]?.total || 0;
+
+		if (rows.length > 0) {
+			const carIds = rows.map((row) => row.car_id);
+			const placeholders = carIds.map(() => "?").join(", ");
+			const costsQuery = `
+                SELECT
+                    cost_id,
+                    car_id,
+                    cost_type,
+                    amount,
+                    note,
+                    created
+                FROM
+                    car_costs
+                WHERE
+                    car_id IN (${placeholders})
+                ORDER BY created ASC;
+            `;
+
+			const costsRows = await connectionQuery(costsQuery, carIds);
+
+			const costsByCar = costsRows.reduce((acc, cost) => {
+				if (!acc[cost.car_id]) acc[cost.car_id] = [];
+				acc[cost.car_id].push(cost);
+				return acc;
+			}, {});
+
+			rows.forEach((row) => {
+				const carCosts = costsByCar[row.car_id] || [];
+				row.costs = carCosts;
+
+				const totalCosts = carCosts.reduce((sum, cost) => sum + Number(cost.amount), 0);
+				const initialPrice = Number(row.purchase_price_raw) - totalCosts;
+				row.initial_purchase_price = `$${initialPrice.toLocaleString("en-US", {
+					minimumFractionDigits: 2,
+					maximumFractionDigits: 2,
+				})}`;
+
+				delete row.purchase_price_raw;
+			});
+		}
 
 		return { rows, total };
 	} catch (error) {

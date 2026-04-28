@@ -5,10 +5,22 @@ import { methodCreated, methodOK } from "../server/methods-server.js";
 import {
 	InsertMovement,
 	GetMovementCategories,
+	GetAllExpenses,
 } from "../controllers/expenses-controllers.js";
 import { schemaInsertMovement } from "../schemas/expenses-schemas.js";
 
 const expenses = express.Router();
+
+// GET /api/v1/expenses?limit=20&page=1
+expenses.get("/", verifyToken, async (request, response, next) => {
+	try {
+		const { limit, page, ...filters } = request.query;
+		const result = await GetAllExpenses({ limit, page }, filters);
+		methodOK(request, response, result)
+	} catch (error) {
+		next(error)
+	}
+})
 
 // GET /api/v1/expenses/categories
 expenses.get("/categories", verifyToken, async (request, response, next) => {

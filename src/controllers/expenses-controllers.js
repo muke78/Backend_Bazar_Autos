@@ -1,7 +1,12 @@
 import {
+	getAllExpensesService,
 	GetMovementCategoriesService,
 	InsertMovementService,
 } from "../services/expenses-services.js";
+
+export const GetAllExpenses = async (pagination, filters) => {
+	return await getAllExpensesService(pagination, filters);
+};
 
 export const GetMovementCategories = async () => {
 	const getMovementCategories = await GetMovementCategoriesService();
