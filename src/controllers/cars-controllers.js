@@ -1,4 +1,5 @@
 import {
+	deleteCarService,
 	getAllCarsService,
 	getModelsByCarsService,
 	getModelsInInventoryService,
@@ -6,9 +7,8 @@ import {
 	updateCarService,
 } from "../services/cars-services.js";
 
-export const GetAllCars = async (pagination, search) => {
-	const cars = await getAllCarsService(pagination, search);
-	return cars;
+export const GetAllCars = async (pagination, filters) => {
+	return await getAllCarsService(pagination, filters);
 };
 
 export const GetModelsByCars = async () => {
@@ -17,7 +17,7 @@ export const GetModelsByCars = async () => {
 };
 
 export const GetModelsInInventory = async () => {
-	const getModelsInInventory = await getModelsInInventoryService()
+	const getModelsInInventory = await getModelsInInventoryService();
 	return getModelsInInventory;
 };
 
@@ -27,6 +27,11 @@ export const InsertCar = async (carData) => {
 };
 
 export const UpdateCar = async (carId, carData) => {
-	const result = await updateCarService(carId, carData);
-	return result;
+	const updateCar = await updateCarService(carId, carData);
+	return updateCar;
+};
+
+export const DeleteCar = async (carId) => {
+	const deleteCar = await deleteCarService(carId);
+	return deleteCar;
 };

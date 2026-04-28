@@ -139,8 +139,8 @@ export const deleteUserService = async (userId) => {
 
 		return foundUserToEliminated[0];
 	} catch (error) {
-		throw new DatabaseError("Error al guardar un usuario en la base de datos", {
-			context: "insertUserService",
+		throw new DatabaseError("Error al eliminar el usuario de la base de datos", {
+			context: "deleteUserService",
 			metadata: {
 				sqlMessage: error.sqlMessage,
 				code: error.code,

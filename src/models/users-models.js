@@ -1,5 +1,5 @@
 import { connectionQuery } from "../helpers/index.js";
-import { FieldsRequiredError } from "../utils/error-utils.js";
+import { DatabaseError, FieldsRequiredError } from "../utils/error-utils.js";
 
 export const listGetFullNameUserModels = async () => {
 	try {

@@ -1,20 +1,23 @@
 import { generateUUID } from "../helpers/index.js";
 import { pool } from "../lib/db.js";
 import {
+	deleteCarModel,
 	getAllCarsModel,
+	getCarBrandAndModelById,
 	getCarByIdModel,
 	getModelsFromDBCarsModel,
 	getModelsInInventoryModel,
 } from "../models/cars-models.js";
 import { DatabaseError, NotFoundError } from "../utils/error-utils.js";
 
-export const getAllCarsService = async (pagination, search) => {
+export const getAllCarsService = async (pagination, filters = {}) => {
+	const { search, year, month } = filters;
 	const limit = Number(pagination.limit) > 0 ? Number(pagination.limit) : 20;
 	const page = Number(pagination.page) > 0 ? Number(pagination.page) : 1;
 
 	const offset = (page - 1) * limit;
 
-	const { rows, total } = await getAllCarsModel(limit, offset, search);
+	const { rows, total } = await getAllCarsModel(limit, offset, search, { year, month });
 
 	if (!rows || rows.length === 0) {
 		throw new NotFoundError("No se encontraron carros registrados.");
@@ -23,7 +26,11 @@ export const getAllCarsService = async (pagination, search) => {
 	const totalPages = Math.ceil(total / limit);
 
 	return {
-		search: search || null,
+		filters: {
+			search: search || null,
+			year: year || null,
+			month: month || null,
+		},
 		rows,
 		pagination: {
 			total,
@@ -148,7 +155,7 @@ export const updateCarService = async (carId, carData) => {
 					cost.amount,
 					cost.note || null,
 					carId,
-					cost.cost_type
+					cost.cost_type,
 				]);
 			}
 		}
@@ -158,7 +165,11 @@ export const updateCarService = async (carId, carData) => {
 	} catch (error) {
 		await connection.rollback();
 
-		if (error.statusCode || error.name === "NotFoundError" || error.name === "ValidationError") {
+		if (
+			error.statusCode ||
+			error.name === "NotFoundError" ||
+			error.name === "ValidationError"
+		) {
 			throw error;
 		}
 
@@ -174,5 +185,34 @@ export const updateCarService = async (carId, carData) => {
 		);
 	} finally {
 		if (connection) connection.release();
+	}
+};
+
+export const deleteCarService = async (carId) => {
+	try {
+		const car = await getCarBrandAndModelById(carId);
+
+		if (car.length === 0) {
+			throw new NotFoundError("No se pudo encontrar el carro");
+		}
+
+		await deleteCarModel(carId);
+
+		return { full_name: car[0].full_name };
+	} catch (error) {
+		if (error.statusCode || error.name === "NotFoundError") {
+			throw error;
+		}
+
+		throw new DatabaseError(
+			"Error al procesar la eliminacion del vehículo en la base de datos",
+			{
+				context: "deleteCarService",
+				metadata: {
+					sqlMessage: error.sqlMessage,
+					code: error.code,
+				},
+			},
+		);
 	}
 };

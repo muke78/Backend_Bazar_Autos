@@ -2,8 +2,15 @@ import express from "express";
 import { verifyToken } from "../middlewares/verify-jwt-middlewares.js";
 import { validationFields } from "../middlewares/validation-middlewares.js";
 import { methodCreated, methodOK } from "../server/methods-server.js";
-import { schemaGetInvestorParams, schemaGetInvestorQuery, schemaInsertInvestor } from "../schemas/investor-schemas.js";
-import { GetInvestmentsByUser, InsertInvestor } from "../controllers/investor-controllers.js";
+import {
+	schemaGetInvestorParams,
+	schemaGetInvestorQuery,
+	schemaInsertInvestor,
+} from "../schemas/investor-schemas.js";
+import {
+	GetInvestmentsByUser,
+	InsertInvestor,
+} from "../controllers/investor-controllers.js";
 
 import { transactions } from "./transactions-routes.js";
 
@@ -22,11 +29,11 @@ investors.get(
 
 			const result = await GetInvestmentsByUser(user_id, filters);
 
-			methodOK(request, response, result, "Consulta realizada con exito")
+			methodOK(request, response, result, "Consulta realizada con exito");
 		} catch (error) {
 			next(error);
 		}
-	}
+	},
 );
 
 //POST /api/investors

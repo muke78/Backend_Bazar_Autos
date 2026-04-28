@@ -2,9 +2,14 @@ import express from "express";
 import { methodCreated, methodOK } from "../server/methods-server.js";
 import { validationFields } from "../middlewares/validation-middlewares.js";
 import { verifyToken } from "../middlewares/verify-jwt-middlewares.js";
-import { querySchema, schemaInsertCar, schemaUpdateCar } from "../schemas/cars-schema.js";
+import {
+	querySchema,
+	schemaInsertCar,
+	schemaUpdateCar,
+} from "../schemas/cars-schema.js";
 import { multiUuidSchema } from "../schemas/schemas.js";
 import {
+	DeleteCar,
 	GetAllCars,
 	GetModelsByCars,
 	GetModelsInInventory,
@@ -21,8 +26,8 @@ cars.get(
 	validationFields(querySchema, "query"),
 	async (request, response, next) => {
 		try {
-			const { search, ...pagination } = request.query;
-			const result = await GetAllCars(pagination, search);
+			const { limit, page, ...filters } = request.query;
+			const result = await GetAllCars({ limit, page }, filters);
 			methodOK(request, response, result);
 		} catch (error) {
 			next(error);
@@ -35,9 +40,10 @@ cars.get("/models", verifyToken, async (request, response, next) => {
 	try {
 		const { inStock } = request.query;
 
-		const result = inStock === "true"
-            ? await GetModelsInInventory()
-            : await GetModelsByCars();
+		const result =
+			inStock === "true"
+				? await GetModelsInInventory()
+				: await GetModelsByCars();
 		methodOK(request, response, result);
 	} catch (error) {
 		next(error);
@@ -72,6 +78,27 @@ cars.put(
 			const carData = request.body;
 			const result = await UpdateCar(carId, carData);
 			methodOK(request, response, result, result.message);
+		} catch (error) {
+			next(error);
+		}
+	},
+);
+
+// DELETE /api/cars/:id
+cars.delete(
+	"/:id",
+	verifyToken,
+	validationFields(multiUuidSchema(["id"]), "params"),
+	async (request, response, next) => {
+		try {
+			const carId = request.params.id;
+			const result = await DeleteCar(carId);
+			methodOK(
+				request,
+				response,
+				undefined,
+				`El carro ${result.full_name} fue eliminado correctamente`,
+			);
 		} catch (error) {
 			next(error);
 		}

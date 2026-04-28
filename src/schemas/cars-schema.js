@@ -2,15 +2,41 @@ import Joi from "joi";
 import { paginationSchema, uuidSchema } from "./schemas.js";
 
 export const querySchema = paginationSchema.append({
-	search: Joi.string().allow("").optional()
+	search: Joi.string().allow("").optional(),
+	year: Joi.number().integer().min(2000).max(2100).optional().messages({
+		"number.base": "El año debe ser un número.",
+		"number.integer": "El año debe ser un número entero.",
+		"number.min": "El año no puede ser menor a 2000.",
+		"number.max": "El año no puede ser mayor a 2100.",
+	}),
+	month: Joi.number().integer().min(1).max(12).optional().messages({
+		"number.base": "El mes debe ser un número.",
+		"number.integer": "El mes debe ser un número entero.",
+		"number.min": "El mes debe estar entre 1 y 12.",
+		"number.max": "El mes debe estar entre 1 y 12.",
+	}),
 });
 
 export const baseCostItemFields = {
 	cost_type: Joi.string()
 		.valid(
-			"llantas", "hojalateria", "tapiceria", "cielo", "volante", "funda",
-			"mecanico", "tapones", "multa", "kit", "sombrerera", "rin_llaveta",
-			"aceite", "tapon_facion", "alineacion", "manija", "faros_calaveras"
+			"llantas",
+			"hojalateria",
+			"tapiceria",
+			"cielo",
+			"volante",
+			"funda",
+			"mecanico",
+			"tapones",
+			"multa",
+			"kit",
+			"sombrerera",
+			"rin_llaveta",
+			"aceite",
+			"tapon_facion",
+			"alineacion",
+			"manija",
+			"faros_calaveras",
 		)
 		.required()
 		.messages({
@@ -19,11 +45,18 @@ export const baseCostItemFields = {
 			"any.required": "El tipo de gasto es obligatorio.",
 		}),
 
-	amount: Joi.number().precision(2).min(0).allow(null, "").empty("").default(0).required().messages({
-		"number.base": "El monto del gasto debe ser un número.",
-		"number.min": "El monto del gasto no puede ser negativo.",
-		"any.required": "El monto del gasto es obligatorio.",
-	}),
+	amount: Joi.number()
+		.precision(2)
+		.min(0)
+		.allow(null, "")
+		.empty("")
+		.default(0)
+		.required()
+		.messages({
+			"number.base": "El monto del gasto debe ser un número.",
+			"number.min": "El monto del gasto no puede ser negativo.",
+			"any.required": "El monto del gasto es obligatorio.",
+		}),
 
 	note: Joi.string().max(255).allow("", null).messages({
 		"string.base": "La nota del gasto debe ser un texto.",
@@ -61,54 +94,85 @@ export const baseCarFields = {
 		"date.base": "La fecha de venta debe ser una fecha válida.",
 		"date.format": "La fecha de venta debe tener un formato ISO válido.",
 	}),
-	status: Joi.string().valid("Vendido", "Inventario", "En espera", "Reparacion").messages({
-		"string.base": "El estado debe ser un texto.",
-		"any.only": "El estado debe ser uno de los siguientes: 'Vendido', 'Inventario', 'En espera', 'Reparacion'.",
-	}),
+	status: Joi.string()
+		.valid("Vendido", "Inventario", "En espera", "Reparacion")
+		.messages({
+			"string.base": "El estado debe ser un texto.",
+			"any.only":
+				"El estado debe ser uno de los siguientes: 'Vendido', 'Inventario', 'En espera', 'Reparacion'.",
+		}),
 	purchase_price: Joi.number().precision(2).positive().messages({
 		"number.base": "El precio de compra debe ser un número.",
 		"number.positive": "El precio de compra debe ser mayor a cero.",
 	}),
-	price_for_sale: Joi.number().precision(2).positive().allow(null).empty("").default(null).messages({
-		"number.base": "El precio de venta objetivo debe ser un número.",
-		"number.positive": "El precio de venta objetivo debe ser mayor a cero.",
-	}),
+	price_for_sale: Joi.number()
+		.precision(2)
+		.positive()
+		.allow(null)
+		.empty("")
+		.default(null)
+		.messages({
+			"number.base": "El precio de venta objetivo debe ser un número.",
+			"number.positive": "El precio de venta objetivo debe ser mayor a cero.",
+		}),
 };
-
 
 export const schemaUpdateCar = Joi.object({
 	...baseCarFields,
-	costs: Joi.array().items(
-		Joi.object({
-			// El Update es el único que acepta cost_id para saber qué actualizar
-			cost_id: uuidSchema.optional().allow(null, "").empty(""),
-			...baseCostItemFields,
-		})
-	).allow(null).default([]).messages({
-		"array.base": "Los gastos deben enviarse en formato de lista (arreglo).",
-	}),
-}).min(1).messages({
-	"object.min": "Debe enviar al menos un campo para actualizar.",
-});
-
+	costs: Joi.array()
+		.items(
+			Joi.object({
+				// El Update es el único que acepta cost_id para saber qué actualizar
+				cost_id: uuidSchema.optional().allow(null, "").empty(""),
+				...baseCostItemFields,
+			}),
+		)
+		.allow(null)
+		.default([])
+		.messages({
+			"array.base": "Los gastos deben enviarse en formato de lista (arreglo).",
+		}),
+})
+	.min(1)
+	.messages({
+		"object.min": "Debe enviar al menos un campo para actualizar.",
+	});
 
 export const schemaInsertCar = Joi.object({
 	// Tomamos los campos base y les concatenamos el .required() dinámicamente
-	brand: baseCarFields.brand.required().messages({ "any.required": "La marca del vehículo es obligatoria." }),
-	model: baseCarFields.model.required().messages({ "any.required": "El modelo del vehículo es obligatorio." }),
-	year_of_car: baseCarFields.year_of_car.required().messages({ "any.required": "El año del vehículo es obligatorio." }),
-	color: baseCarFields.color.required().messages({ "any.required": "El color del vehículo es obligatorio." }),
-	purchase_date: baseCarFields.purchase_date.required().messages({ "any.required": "La fecha de compra es obligatoria." }),
+	brand: baseCarFields.brand
+		.required()
+		.messages({ "any.required": "La marca del vehículo es obligatoria." }),
+	model: baseCarFields.model
+		.required()
+		.messages({ "any.required": "El modelo del vehículo es obligatorio." }),
+	year_of_car: baseCarFields.year_of_car
+		.required()
+		.messages({ "any.required": "El año del vehículo es obligatorio." }),
+	color: baseCarFields.color
+		.required()
+		.messages({ "any.required": "El color del vehículo es obligatorio." }),
+	purchase_date: baseCarFields.purchase_date
+		.required()
+		.messages({ "any.required": "La fecha de compra es obligatoria." }),
 
 	// Estos se quedan exactamente igual (opcionales)
 	sale_date: baseCarFields.sale_date,
 	price_for_sale: baseCarFields.price_for_sale,
 
-	status: baseCarFields.status.required().messages({ "any.required": "El estado del vehículo es obligatorio." }),
-	purchase_price: baseCarFields.purchase_price.required().messages({ "any.required": "El precio de compra es obligatorio." }),
+	status: baseCarFields.status
+		.required()
+		.messages({ "any.required": "El estado del vehículo es obligatorio." }),
+	purchase_price: baseCarFields.purchase_price
+		.required()
+		.messages({ "any.required": "El precio de compra es obligatorio." }),
 
 	// Los costos en Insert no necesitan cost_id, así que usamos directo la base
-	costs: Joi.array().items(Joi.object(baseCostItemFields)).allow(null).default([]).messages({
-		"array.base": "Los gastos deben enviarse en formato de lista (arreglo)."
-	})
+	costs: Joi.array()
+		.items(Joi.object(baseCostItemFields))
+		.allow(null)
+		.default([])
+		.messages({
+			"array.base": "Los gastos deben enviarse en formato de lista (arreglo).",
+		}),
 });

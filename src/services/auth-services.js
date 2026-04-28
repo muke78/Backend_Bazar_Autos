@@ -1,7 +1,7 @@
 import { AuthError, NotFoundError } from "../utils/error-utils.js";
-
 import {
 	createToken,
+	createRefreshToken,
 	lastLogin,
 	verifyHashedPassword,
 } from "../helpers/index.js";
@@ -12,19 +12,15 @@ export const loginService = async ({ email, password }) => {
 
 	if (!user) throw new NotFoundError("El usuario no ha podido ser encontrado");
 
-	const isPasswordValid = await verifyHashedPassword(
-		user.password_hash,
-		password,
-	);
+	const isPasswordValid = await verifyHashedPassword(user.password_hash, password);
 
-	if (!isPasswordValid)
-		throw new AuthError("La contraseña es incorrecta o esta mal escrita");
+	if (!isPasswordValid) throw new AuthError("La contraseña es incorrecta o esta mal escrita");
 
-	const token = createToken({
-		user_id: user.user_id,
-	});
+	const payload = { user_id: user.user_id };
+	const accessToken = createToken(payload);
+	const refreshToken = createRefreshToken(payload);
 
 	await lastLogin(user.user_id);
 
-	return token;
+	return { accessToken, refreshToken };
 };

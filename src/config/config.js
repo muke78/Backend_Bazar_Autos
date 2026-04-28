@@ -44,10 +44,13 @@ export const config = {
 	},
 	cookie: {
 		cookieMaxAge: parseExpiration(process.env.JWT_EXPIRES_COOKIE),
+		refreshCookieMaxAge: parseExpiration(process.env.JWT_REFRESH_EXPIRES_COOKIE),
 	},
 	jwt: {
 		secret: process.env.JWT_SECRET,
 		expiresIn: process.env.JWT_EXPIRES_IN,
+		refreshSecret: process.env.JWT_SECRET_EXPAND,
+		refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
 	},
 	docs: {
 		baseUrl: process.env.BASE_URL_SWAGGER,
