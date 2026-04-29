@@ -31,9 +31,9 @@ export const getAllExpensesModel = async (limit, offset, isShared, filters = {})
 		}
 
 		if (name) {
-			conditions.push("mctg.name = ?");
-			queryParams.push(name);
-			countParams.push(name);
+			conditions.push("mctg.name COLLATE utf8mb4_general_ci LIKE ?");
+			queryParams.push(`%${name}%`);
+			countParams.push(`%${name}%`);
 		}
 
 		const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
