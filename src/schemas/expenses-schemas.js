@@ -40,9 +40,54 @@ export const schemaInsertMovement = Joi.object({
 			"La fecha de cierre debe tener un formato válido (ISO 8601).",
 		"any.required": "La fecha de cierre es obligatoria.",
 	}),
+});
 
-	isShared: Joi.boolean().default(false).messages({
-		"boolean.base":
-			"El indicador de gasto compartido debe ser verdadero o falso (boolean).",
+export const schemaUpdateMovement = Joi.object({
+	movements_ids: Joi.array().items(uuidSchema).min(1).required().messages({
+		"array.base": "movements_ids debe ser un arreglo.",
+		"array.min": "Debe enviar al menos un movements_id existente del grupo.",
+		"any.required": "movements_ids es obligatorio para identificar el grupo a editar.",
+	}),
+
+	movements_category_id: uuidSchema.messages({
+		"string.guid":
+			"El ID de la categoría de movimiento debe ser un identificador válido (UUID).",
+	}),
+
+	car_id: Joi.alternatives()
+		.try(uuidSchema, Joi.array().items(uuidSchema).min(1))
+		.required()
+		.messages({
+			"alternatives.match":
+				"El vehículo debe ser un identificador válido único o una lista con al menos un identificador.",
+			"any.required": "El identificador del vehículo (car_id) es obligatorio.",
+		}),
+
+	type: Joi.string().valid("Compra", "Gasto").required().messages({
+		"any.only": "El tipo de movimiento solo puede ser 'Compra' o 'Gasto'.",
+		"any.required": "El tipo de movimiento es obligatorio.",
+	}),
+
+	amount: Joi.number().positive().precision(2).required().messages({
+		"number.base": "El monto debe ser un número válido.",
+		"number.positive": "El monto debe ser un valor positivo mayor a cero.",
+		"any.required": "El monto es obligatorio.",
+	}),
+
+	description: Joi.string().max(120).allow("", null).messages({
+		"string.max": "La descripción no puede exceder los 120 caracteres.",
+	}),
+
+	closing_date: Joi.date().iso().required().messages({
+		"date.base": "La fecha de cierre debe ser una fecha válida.",
+		"any.required": "La fecha de cierre es obligatoria.",
+	}),
+});
+
+export const schemaDeleteMovement = Joi.object({
+	movements_ids: Joi.array().items(uuidSchema).min(1).required().messages({
+		"array.base": "movements_ids debe ser un arreglo.",
+		"array.min": "Debe enviar al menos un movements_id.",
+		"any.required": "movements_ids es obligatorio.",
 	}),
 });

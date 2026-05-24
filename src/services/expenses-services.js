@@ -1,21 +1,28 @@
 import { generateUUID } from "../helpers/index.js";
 import {
 	getAllExpensesModel,
-	getMovementCategoriesModel,
-	insertMovementModel,
+	insertMovementsBulkModel,
+	findMovementsByIdsModel,
+	replaceMovementsModel,
+	deleteMovementsModel,
 } from "../models/expenses-models.js";
-import { NotFoundError } from "../utils/error-utils.js";
+import {
+	NotFoundError,
+	FieldsRequiredError,
+} from "../utils/error-utils.js";
 
 export const getAllExpensesService = async (pagination, filters = {}) => {
-	const { isShared, year, month, type, name } = filters;
+	const { year, month, type, name } = filters;
 	const limit = Number(pagination.limit) > 0 ? Number(pagination.limit) : 20;
 	const page = Number(pagination.page) > 0 ? Number(pagination.page) : 1;
-
 	const offset = (page - 1) * limit;
 
-	const isSharedBool = isShared === "true" || isShared === true;
-
-	const { rows, total } = await getAllExpensesModel(limit, offset, isSharedBool, { year, month, type, name });
+	const { rows, total } = await getAllExpensesModel(limit, offset, {
+		year,
+		month,
+		type,
+		name,
+	});
 
 	if (!rows || rows.length === 0) {
 		throw new NotFoundError("No se encontraron gastos registrados.");
@@ -25,11 +32,10 @@ export const getAllExpensesService = async (pagination, filters = {}) => {
 
 	return {
 		filters: {
-			isShared: isShared || null,
 			year: year || null,
 			month: month || null,
 			type: type || null,
-			name: name || null
+			name: name || null,
 		},
 		rows,
 		pagination: {
@@ -43,53 +49,76 @@ export const getAllExpensesService = async (pagination, filters = {}) => {
 	};
 };
 
-export const GetMovementCategoriesService = async () => {
-	const categories = await getMovementCategoriesModel();
+const buildMovementRows = ({
+	movements_category_id,
+	car_id,
+	type,
+	amount,
+	description,
+	closing_date,
+}) => {
+	const carsArray = Array.isArray(car_id) ? car_id : [car_id];
 
-	if (!categories || categories.length === 0) {
-		throw new NotFoundError("No se encontraron categorías registradas.");
+	if (carsArray.length === 0) {
+		throw new FieldsRequiredError("Debe enviar al menos un car_id.");
 	}
 
-	return categories;
+	const amountPerCar = Number((amount / carsArray.length).toFixed(2));
+
+	return carsArray.map((id) => ({
+		movements_id: generateUUID(),
+		movements_category_id,
+		car_id: id,
+		type,
+		amount: amountPerCar,
+		description: description ?? null,
+		closing_date,
+	}));
 };
 
 export const InsertMovementService = async (movementData) => {
-	const {
-		movements_category_id,
-		car_id,
-		type,
-		amount,
-		description,
-		closing_date,
-		isShared,
-	} = movementData;
-
-	const carsArray = Array.isArray(car_id) ? car_id : [car_id];
-
-	const amountPerCar = isShared ? amount / carsArray.length : amount;
-
-	const insertPromises = carsArray.map((id) => {
-		const movements_id = generateUUID();
-		const finalDescription = isShared
-			? `[Compartido] ${description || ""}`.trim()
-			: description;
-
-		return insertMovementModel(
-			movements_id,
-			movements_category_id,
-			id,
-			type,
-			amountPerCar,
-			finalDescription,
-			closing_date,
-		);
-	});
-
-	await Promise.all(insertPromises);
+	const rows = buildMovementRows(movementData);
+	await insertMovementsBulkModel(rows);
 
 	return {
-		message: isShared
-			? `Movimiento dividido entre ${carsArray.length} autos correctamente`
-			: "Movimiento registrado con éxito",
+		message:
+			rows.length > 1
+				? `Movimiento dividido entre ${rows.length} autos correctamente`
+				: "Movimiento registrado con éxito",
+	};
+};
+
+export const UpdateMovementService = async (payload) => {
+	const { movements_ids, ...data } = payload;
+
+	const existing = await findMovementsByIdsModel(movements_ids);
+	if (existing.length !== movements_ids.length) {
+		throw new NotFoundError(
+			"Algunos movements_ids enviados no existen en la base de datos.",
+		);
+	}
+
+	const newRows = buildMovementRows(data);
+	await replaceMovementsModel(movements_ids, newRows);
+
+	return {
+		message:
+			newRows.length > 1
+				? `Gasto actualizado y dividido entre ${newRows.length} autos`
+				: "Gasto actualizado correctamente",
+	};
+};
+
+export const DeleteMovementService = async ({ movements_ids }) => {
+	const existing = await findMovementsByIdsModel(movements_ids);
+	if (existing.length === 0) {
+		throw new NotFoundError("Ningún movements_id existe en la base de datos.");
+	}
+
+	const result = await deleteMovementsModel(movements_ids);
+
+	return {
+		message: `Se eliminaron ${result.affectedRows} movimientos correctamente`,
+		deleted: result.affectedRows,
 	};
 };

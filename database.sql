@@ -156,6 +156,7 @@ CREATE TABLE `users` (
   `full_name` varchar(200) DEFAULT NULL,
   `email` varchar(200) DEFAULT NULL,
   `last_login` datetime DEFAULT NULL,
+  `role` ENUM('admin', 'user') NOT NULL DEFAULT 'user',
   `created` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`),

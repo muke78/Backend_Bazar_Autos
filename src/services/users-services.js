@@ -34,6 +34,7 @@ export const insertUserService = async ({
 	password,
 	full_name,
 	email,
+	role = "user",
 }) => {
 	try {
 		const existingUser = await findUserByEmailOrUsername(email, username);
@@ -45,10 +46,9 @@ export const insertUserService = async ({
 		}
 
 		const hashPassword = await hashedPassword(password);
-
 		const newUserId = generateUUID();
 
-		await insertUserModel(newUserId, username, hashPassword, full_name, email);
+		await insertUserModel(newUserId, username, hashPassword, full_name, email, role);
 
 		return { message: "Usuario registrado con exito" };
 	} catch (error) {
@@ -65,7 +65,7 @@ export const insertUserService = async ({
 };
 
 export const updateUserService = async (userId, userData) => {
-	const { username, password, full_name, email } = userData;
+	const { username, password, full_name, email, role } = userData;
 	try {
 		const existingUser = await findUserById(userId);
 
@@ -86,6 +86,7 @@ export const updateUserService = async (userId, userData) => {
 		if (username !== undefined) updateData.username = username;
 		if (full_name !== undefined) updateData.full_name = full_name;
 		if (email !== undefined) updateData.email = email;
+		if (role !== undefined) updateData.role = role;
 
 		if (password && password.trim() !== "") {
 			updateData.password = await hashedPassword(password);

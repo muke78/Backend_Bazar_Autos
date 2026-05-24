@@ -1,5 +1,4 @@
-import { generateUUID } from "../helpers/index.js";
-import { pool } from "../lib/db.js";
+import { connectionTransaction, generateUUID } from "../helpers/index.js";
 import {
 	deleteCarModel,
 	getAllCarsModel,
@@ -64,48 +63,46 @@ export const getModelsInInventoryService = async () => {
 };
 
 export const postInsertCarService = async (carData) => {
-	const connection = await pool.getConnection();
-
 	try {
-		await connection.beginTransaction();
+		return await connectionTransaction(async (query) => {
+			const carId = generateUUID();
+			const { costs, ...carInfo } = carData;
 
-		const carId = generateUUID();
-		const { costs, ...carInfo } = carData;
+			const carQuery = `INSERT INTO cars (car_id, brand, model, year_of_car, color, purchase_date, sale_date, status, purchase_price, price_for_sale)
+                              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-		const carQuery = `INSERT INTO cars (car_id, brand, model, year_of_car, color, purchase_date, sale_date, status, purchase_price, price_for_sale) 
-                          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+			await query(carQuery, [
+				carId,
+				carInfo.brand,
+				carInfo.model,
+				carInfo.year_of_car,
+				carInfo.color,
+				carInfo.purchase_date,
+				carInfo.sale_date || null,
+				carInfo.status,
+				carInfo.purchase_price,
+				carInfo.price_for_sale || null,
+			]);
 
-		await connection.execute(carQuery, [
-			carId,
-			carInfo.brand,
-			carInfo.model,
-			carInfo.year_of_car,
-			carInfo.color,
-			carInfo.purchase_date,
-			carInfo.sale_date || null,
-			carInfo.status,
-			carInfo.purchase_price,
-			carInfo.price_for_sale || null,
-		]);
+			if (costs && costs.length > 0) {
+				const costQuery = `INSERT INTO car_costs (cost_id, car_id, cost_type, amount, note) VALUES (?, ?, ?, ?, ?)`;
 
-		if (costs && costs.length > 0) {
-			const costQuery = `INSERT INTO car_costs (cost_id, car_id, cost_type, amount, note) VALUES (?, ?, ?, ?, ?)`;
-
-			for (const cost of costs) {
-				await connection.execute(costQuery, [
-					generateUUID(),
-					carId,
-					cost.cost_type,
-					cost.amount,
-					cost.note || null,
-				]);
+				for (const cost of costs) {
+					await query(costQuery, [
+						generateUUID(),
+						carId,
+						cost.cost_type,
+						cost.amount,
+						cost.note || null,
+					]);
+				}
 			}
-		}
 
-		await connection.commit();
-		return { message: "Auto y costos registrados con éxito" };
+			return { message: "Auto y costos registrados con éxito" };
+		});
 	} catch (error) {
-		await connection.rollback();
+		if (error.statusCode) throw error;
+
 		throw new DatabaseError(
 			"Error al procesar la transacción del vehículo en la base de datos",
 			{
@@ -116,8 +113,6 @@ export const postInsertCarService = async (carData) => {
 				},
 			},
 		);
-	} finally {
-		if (connection) connection.release();
 	}
 };
 
@@ -128,50 +123,39 @@ export const updateCarService = async (carId, carData) => {
 		throw new NotFoundError("No se encontró el carro con el ID proporcionado.");
 	}
 
-	const connection = await pool.getConnection();
-
 	try {
-		await connection.beginTransaction();
+		return await connectionTransaction(async (query) => {
+			const { costs, ...carInfo } = carData;
 
-		const { costs, ...carInfo } = carData;
+			if (carInfo.sale_date === "") carInfo.sale_date = null;
+			if (carInfo.purchase_date === "") carInfo.purchase_date = null;
+			if (carInfo.price_for_sale === "") carInfo.price_for_sale = null;
 
-		if (carInfo.sale_date === "") carInfo.sale_date = null;
-		if (carInfo.purchase_date === "") carInfo.purchase_date = null;
-		if (carInfo.price_for_sale === "") carInfo.price_for_sale = null;
+			if (Object.keys(carInfo).length > 0) {
+				const columns = Object.keys(carInfo);
+				const values = Object.values(carInfo);
+				const fields = columns.map((col) => `${col} = ?`).join(", ");
+				const updateQuery = `UPDATE cars SET ${fields} WHERE car_id = ?`;
+				await query(updateQuery, [...values, carId]);
+			}
 
-		if (Object.keys(carInfo).length > 0) {
-			const columns = Object.keys(carInfo);
-			const values = Object.values(carInfo);
-			const fields = columns.map((col) => `${col} = ?`).join(", ");
-			const updateQuery = `UPDATE cars SET ${fields} WHERE car_id = ?`;
-			await connection.execute(updateQuery, [...values, carId]);
-		}
-
-		if (costs && costs.length > 0) {
-			for (const cost of costs) {
+			if (costs && costs.length > 0) {
 				const updateCostQuery = `UPDATE car_costs SET amount = ?, note = ? WHERE car_id = ? AND cost_type = ?`;
 
-				await connection.execute(updateCostQuery, [
-					cost.amount,
-					cost.note || null,
-					carId,
-					cost.cost_type,
-				]);
+				for (const cost of costs) {
+					await query(updateCostQuery, [
+						cost.amount,
+						cost.note || null,
+						carId,
+						cost.cost_type,
+					]);
+				}
 			}
-		}
 
-		await connection.commit();
-		return { message: "Carro actualizado con éxito" };
+			return { message: "Carro actualizado con éxito" };
+		});
 	} catch (error) {
-		await connection.rollback();
-
-		if (
-			error.statusCode ||
-			error.name === "NotFoundError" ||
-			error.name === "ValidationError"
-		) {
-			throw error;
-		}
+		if (error.statusCode) throw error;
 
 		throw new DatabaseError(
 			"Error al procesar la actualización del vehículo en la base de datos",
@@ -183,8 +167,6 @@ export const updateCarService = async (carId, carData) => {
 				},
 			},
 		);
-	} finally {
-		if (connection) connection.release();
 	}
 };
 

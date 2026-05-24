@@ -5,7 +5,11 @@ export const listGetFullNameUserModels = async () => {
 	try {
 		const query = `
         SELECT 
-            user_id AS id, full_name AS name
+            user_id AS id, 
+			full_name AS name,
+			username,
+			email,
+			role
         FROM
             users;`;
 		return await connectionQuery(query);
@@ -27,6 +31,7 @@ export const listProfileModel = async (user_id) => {
                         username,
                         full_name,
                         email,
+						role,
                         last_login,
                         created,
                         updated
@@ -46,7 +51,7 @@ export const listProfileModel = async (user_id) => {
 };
 
 export const updateUserModel = async (payload) => {
-	const { username, full_name, email, password, user_id } = payload;
+	const { username, full_name, email, password, role, user_id } = payload;
 
 	const fields = [];
 	const params = [];
@@ -71,6 +76,11 @@ export const updateUserModel = async (payload) => {
 		params.push(password);
 	}
 
+	if (role !== undefined) {
+		fields.push("role = ?");
+		params.push(role);
+	}
+
 	if (fields.length === 0) {
 		throw new FieldsRequiredError("No se enviaron campos para actualizar");
 	}
@@ -92,10 +102,11 @@ export const insertUserModel = async (
 	hashPassword,
 	full_name,
 	email,
+	role = "user",
 ) => {
-	const query = `INSERT INTO users (user_id, username, password_hash, full_name, email)
-                       VALUES (?, ?, ?, ?, ?);`;
-	const params = [newUserId, username, hashPassword, full_name, email];
+	const query = `INSERT INTO users (user_id, username, password_hash, full_name, email, role)
+                       VALUES (?, ?, ?, ?, ?, ?);`;
+	const params = [newUserId, username, hashPassword, full_name, email, role];
 
 	return await connectionQuery(query, params);
 };

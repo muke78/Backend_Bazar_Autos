@@ -1,5 +1,6 @@
 import express from "express";
 import { verifyToken } from "../middlewares/verify-jwt-middlewares.js";
+import { requireRole } from "../middlewares/authorize-roles-middlewares.js";
 import {
 	DeleteUser,
 	GetFullNameUser,
@@ -17,7 +18,7 @@ import { multiUuidSchema } from "../schemas/schemas.js";
 
 const users = express.Router();
 
-users.get("/", verifyToken, async (request, response, next) => {
+users.get("/", verifyToken, requireRole("admin"), async (request, response, next) => {
 	try {
 		const result = await GetFullNameUser();
 		methodOK(request, response, result);
@@ -41,6 +42,7 @@ users.get("/profile", verifyToken, async (request, response, next) => {
 users.post(
 	"/",
 	verifyToken,
+	requireRole("admin"),
 	validationFields(schemaCreateUserValidations, "body"),
 	async (request, response, next) => {
 		try {
@@ -57,6 +59,7 @@ users.post(
 users.put(
 	"/:id",
 	verifyToken,
+	requireRole("admin"),
 	validationFields(multiUuidSchema(["id"]), "params"),
 	validationFields(schemaUpdateUserValidations, "body"),
 	async (request, response, next) => {
@@ -80,6 +83,7 @@ users.put(
 users.delete(
 	"/:id",
 	verifyToken,
+	requireRole("admin"),
 	validationFields(multiUuidSchema(["id"]), "params"),
 	async (request, response, next) => {
 		try {

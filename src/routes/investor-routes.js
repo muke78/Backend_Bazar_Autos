@@ -1,5 +1,6 @@
 import express from "express";
 import { verifyToken } from "../middlewares/verify-jwt-middlewares.js";
+import { requireRole } from "../middlewares/authorize-roles-middlewares.js";
 import { validationFields } from "../middlewares/validation-middlewares.js";
 import { methodCreated, methodOK } from "../server/methods-server.js";
 import {
@@ -20,6 +21,7 @@ const investors = express.Router();
 investors.get(
 	"/:user_id",
 	verifyToken,
+	requireRole("admin"),
 	validationFields(schemaGetInvestorParams, "params"),
 	validationFields(schemaGetInvestorQuery, "query"),
 	async (request, response, next) => {
@@ -40,6 +42,7 @@ investors.get(
 investors.post(
 	"/",
 	verifyToken,
+	requireRole("admin"),
 	validationFields(schemaInsertInvestor, "body"),
 	async (request, response, next) => {
 		try {
