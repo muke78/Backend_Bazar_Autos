@@ -3,9 +3,8 @@
 # ═══════════════════════════════════════════════════════════════════════════
 FROM node:22-bookworm-slim AS deps
 
-# Evita que puppeteer descargue Chromium durante pnpm install
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
-    SCARF_ANALYTICS=false
+# puppeteer-core no tiene postinstall — no descarga nada
+ENV SCARF_ANALYTICS=false
 
 WORKDIR /app
 

@@ -36,7 +36,7 @@
 		"jsonwebtoken": "9.0.3",
 		"morgan": "1.10.1",
 		"mysql2": "3.18.2",
-		"puppeteer": "^25.0.4",
+		"puppeteer-core": "^25.0.4",
 		"swagger-themes": "1.4.3",
 		"swagger-ui-express": "5.0.1",
 		"winston": "3.19.0",
@@ -47,6 +47,9 @@
 		"nodemon": "3.1.14"
 	},
 	"pnpm": {
-		"onlyBuiltDependencies": ["@scarf/scarf", "argon2", "puppeteer"]
+		"onlyBuiltDependencies": [
+			"@scarf/scarf",
+			"argon2"
+		]
 	}
 }

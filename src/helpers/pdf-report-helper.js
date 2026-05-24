@@ -1,4 +1,4 @@
-import puppeteer from "puppeteer";
+import puppeteer from "puppeteer-core";
 import ejs from "ejs";
 import { readFileSync } from "fs";
 import { fileURLToPath } from "url";
@@ -111,8 +111,15 @@ export const generatePdfReport = async (type, data, meta) => {
 		moneyFmt,
 	});
 
+	// En Docker: PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium (seteado en Dockerfile)
+	// En local:  channel:'chrome' usa el Chrome del sistema (sin necesitar path manual)
+	const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+
 	const browser = await puppeteer.launch({
 		headless: true,
+		...(executablePath
+			? { executablePath }
+			: { channel: "chrome" }),
 		args: [
 			"--no-sandbox",
 			"--disable-setuid-sandbox",
