@@ -113,7 +113,12 @@ export const generatePdfReport = async (type, data, meta) => {
 
 	const browser = await puppeteer.launch({
 		headless: true,
-		args: ["--no-sandbox", "--disable-setuid-sandbox"],
+		args: [
+			"--no-sandbox",
+			"--disable-setuid-sandbox",
+			"--disable-dev-shm-usage",   // evita crash en Docker por /dev/shm pequeño
+			"--disable-gpu",
+		],
 	});
 
 	try {

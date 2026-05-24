@@ -1,11 +1,11 @@
 services:
-  # 1. Tu base de datos MySQL (Asegurada para VPS)
+
+  # ── MySQL ──────────────────────────────────────────────────────────────────
   db:
     image: mysql:8.0
     container_name: bazar_mysql
     restart: always
-    ports:
-      - "3306:3306"
+    # Sin ports: BD no es accesible desde fuera — solo red interna Docker
     environment:
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
@@ -13,27 +13,42 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASS}
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
+      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql:ro
+    networks:
+      - bazar_net
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASS}"]
       interval: 5s
       timeout: 10s
-      retries: 5
-      
+      retries: 10
+      start_period: 30s
 
-  # 2. Tu Backend Node.js
+  # ── Backend Node.js ────────────────────────────────────────────────────────
   api:
     build: .
     container_name: bazar_backend
     restart: always
     ports:
-      - "127.0.0.1:3000:3000"
+      - "127.0.0.1:3000:3000"   # Solo accesible desde localhost (Nginx proxy)
     env_file:
       - .env
     environment:
-      - DB_HOST=db
+      DB_HOST: db
+      NODE_ENV: production
+    volumes:
+      - logs_data:/logs
+    networks:
+      - bazar_net
     depends_on:
-      - db
+      db:
+        condition: service_healthy   # Espera a que MySQL esté realmente listo
+    # /dev/shm extra para Chromium (Puppeteer PDF) en Docker
+    shm_size: "256mb"
+
+networks:
+  bazar_net:
+    driver: bridge
 
 volumes:
   mysql_data:
+  logs_data:

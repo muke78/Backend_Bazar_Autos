@@ -1,7 +1,12 @@
 node_modules
 .env
-npm-debug.log
+*.log
 pnpm-debug.log
+npm-debug.log
 .git
 .gitignore
-README.md
+*.md
+.nvmrc
+kpis.sql
+logs/
+.vscode/

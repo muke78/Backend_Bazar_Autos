@@ -44,5 +44,8 @@
 	"devDependencies": {
 		"@biomejs/biome": "2.4.4",
 		"nodemon": "3.1.14"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": ["argon2", "puppeteer"]
 	}
 }
