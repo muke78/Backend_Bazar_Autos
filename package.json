@@ -21,6 +21,7 @@
 	],
 	"author": "Erick Gobzalez, Osvaldo Cabrera",
 	"license": "ISC",
+	"packageManager": "pnpm@10.33.3",
 	"dependencies": {
 		"argon2": "0.44.0",
 		"cookie-parser": "1.4.7",
@@ -46,6 +47,6 @@
 		"nodemon": "3.1.14"
 	},
 	"pnpm": {
-		"onlyBuiltDependencies": ["argon2", "puppeteer"]
+		"onlyBuiltDependencies": ["@scarf/scarf", "argon2", "puppeteer"]
 	}
 }

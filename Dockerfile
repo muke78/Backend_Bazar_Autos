@@ -15,11 +15,13 @@ RUN apt-get update && apt-get install -y \
 
 # Usar Chromium del sistema — evita que puppeteer descargue su propio binario
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
-    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium \
+    SCARF_ANALYTICS=false
 
 WORKDIR /app
 
-RUN corepack enable pnpm
+# Pin pnpm exacto para que coincida con package.json#packageManager
+RUN corepack enable && corepack prepare pnpm@10.33.3 --activate
 
 COPY package.json pnpm-lock.yaml ./
 
