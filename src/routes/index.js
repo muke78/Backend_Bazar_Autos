@@ -7,6 +7,7 @@ import { investors } from "./investor-routes.js";
 import { expenses } from "./expenses-routes.js";
 import { categories } from "./categories-routes.js";
 import { dashboard } from "./dashboard-routes.js";
+import { reports } from "./reports-routes.js";
 
 const router = Router();
 
@@ -21,5 +22,6 @@ router.use(`${base}/investors`, investors);
 router.use(`${base}/expenses`, expenses);
 router.use(`${base}/categories`, categories);
 router.use(`${base}/dashboard`, dashboard);
+router.use(`${base}/reports`, reports);
 
 export { router };

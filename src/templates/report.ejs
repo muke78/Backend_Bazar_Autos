@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bazar Autos — Reporte</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 9px;
+      color: #1E293B;
+      background: #fff;
+    }
+
+    /* ── Cover header ─────────────────────────────────────── */
+    .report-header {
+      text-align: center;
+      padding: 14px 0 10px;
+      border-bottom: 3px solid #2563EB;
+      margin-bottom: 22px;
+    }
+    .report-title  { font-size: 22px; font-weight: bold; color: #1E3A5F; letter-spacing: 0.5px; }
+    .report-meta   { font-size: 9px; color: #64748B; margin-top: 5px; }
+
+    /* ── Section ──────────────────────────────────────────── */
+    .section { margin-bottom: 28px; }
+    .page-break { page-break-before: always; }
+
+    .section-header {
+      display: flex; align-items: baseline; gap: 10px;
+      margin-bottom: 6px;
+      border-left: 4px solid #2563EB;
+      padding-left: 8px;
+    }
+    .section-title { font-size: 13px; font-weight: bold; color: #1E3A5F; }
+    .section-badge {
+      font-size: 8px; color: #64748B;
+      background: #F1F5F9; border: 1px solid #CBD5E1;
+      border-radius: 10px; padding: 1px 7px;
+    }
+    .section-dates { font-size: 8px; color: #94A3B8; margin-bottom: 8px; padding-left: 12px; }
+
+    /* ── Standard table ───────────────────────────────────── */
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    thead th {
+      background-color: #2563EB; color: #FFFFFF;
+      font-size: 7.5px; font-weight: bold;
+      padding: 6px 4px; text-align: left;
+      border: 1px solid #1D4ED8;
+      white-space: nowrap; overflow: hidden;
+    }
+    tbody tr:nth-child(even) td { background-color: #F0F4FF; }
+    tbody tr:nth-child(odd)  td { background-color: #FFFFFF; }
+    tbody td {
+      font-size: 7px; padding: 4px;
+      border: 1px solid #CBD5E1;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      vertical-align: middle;
+    }
+    .total-row td {
+      background-color: #DBEAFE !important;
+      font-weight: bold; font-size: 7.5px; color: #1E3A5F;
+      border-top: 2px solid #2563EB;
+    }
+
+    /* ── Grouped transactions ─────────────────────────────── */
+    .investor-block  { margin-bottom: 16px; }
+    .investor-header {
+      display: flex; align-items: center; gap: 10px;
+      background: #1E3A5F; color: #fff;
+      padding: 5px 8px; border-radius: 3px 3px 0 0;
+      font-size: 9px;
+    }
+    .investor-name   { font-weight: bold; font-size: 10px; }
+    .investor-email  { color: #93C5FD; font-size: 8px; }
+
+    .type-block      { margin-top: 0; }
+    .type-label {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 8px; font-weight: bold;
+      padding: 3px 8px; margin-bottom: 2px;
+      border-radius: 0;
+    }
+    .type-label.entrada { background: #DCFCE7; color: #166534; border-left: 3px solid #16A34A; }
+    .type-label.salida  { background: #FEE2E2; color: #991B1B; border-left: 3px solid #DC2626; }
+
+    .type-total {
+      text-align: right; font-size: 7.5px; font-weight: bold;
+      padding: 3px 6px; background: #F8FAFC; border: 1px solid #CBD5E1;
+      color: #1E3A5F;
+    }
+    .type-total.entrada { border-left: 3px solid #16A34A; }
+    .type-total.salida  { border-left: 3px solid #DC2626; }
+
+    .investor-summary {
+      display: flex; gap: 0;
+      border: 1px solid #CBD5E1;
+      border-top: none;
+      font-size: 7.5px;
+    }
+    .summary-item { flex: 1; padding: 4px 8px; border-right: 1px solid #CBD5E1; }
+    .summary-item:last-child { border-right: none; }
+    .summary-label { color: #64748B; font-size: 7px; }
+    .summary-value { font-weight: bold; color: #1E3A5F; }
+
+    /* ── Empty state ──────────────────────────────────────── */
+    .empty-msg {
+      text-align: center; padding: 14px; color: #94A3B8;
+      font-size: 9px; border: 1px dashed #CBD5E1; border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ Cover header ══════════════════════════════════════ -->
+  <div class="report-header">
+    <div class="report-title">Bazar Autos &mdash; Reporte</div>
+    <div class="report-meta">
+      Per&iacute;odo: <%= meta.dateFrom %> &rarr; <%= meta.dateTo %>
+      &nbsp;&nbsp;|&nbsp;&nbsp;Generado: <%= meta.generatedAt %>
+      &nbsp;&nbsp;|&nbsp;&nbsp;Tipo: <%= type.toUpperCase() %>
+    </div>
+  </div>
+
+  <!-- ══ Sections ══════════════════════════════════════════ -->
+  <% sections.forEach(function(section, idx) { %>
+  <div class="section<%= idx > 0 ? ' page-break' : '' %>">
+
+    <div class="section-header">
+      <span class="section-title"><%= section.title %></span>
+      <% if (!section.isGrouped) { %>
+        <span class="section-badge"><%= section.rows.length %> registros</span>
+      <% } else { %>
+        <span class="section-badge"><%= section.groups.length %> inversionistas</span>
+      <% } %>
+    </div>
+    <div class="section-dates"><%= meta.dateFrom %> &rarr; <%= meta.dateTo %></div>
+
+    <!-- ── Standard (flat) section ──────────────────────── -->
+    <% if (!section.isGrouped) {
+      const numericKeys = ['purchase_price','total_costs','price_for_sale','profit',
+                           'amount','capital','total_entries','total_exits','net_balance'];
+      const hasTotals = section.columns.some(function(c){ return numericKeys.indexOf(c.key) !== -1; });
+    %>
+      <% if (section.rows.length === 0) { %>
+        <div class="empty-msg">Sin registros para el per&iacute;odo seleccionado.</div>
+      <% } else { %>
+      <table>
+        <colgroup>
+          <% section.columns.forEach(function(col){ %><col style="width:<%- col.pct %>%" /><% }); %>
+        </colgroup>
+        <thead>
+          <tr><% section.columns.forEach(function(col){ %><th><%= col.label %></th><% }); %></tr>
+        </thead>
+        <tbody>
+          <% section.rows.forEach(function(row){ %>
+          <tr>
+            <% section.columns.forEach(function(col){ %>
+              <td title="<%= fmtCell(col, row) %>"><%= fmtCell(col, row) %></td>
+            <% }); %>
+          </tr>
+          <% }); %>
+          <% if (hasTotals) { %>
+          <tr class="total-row">
+            <% section.columns.forEach(function(col, ci){ %>
+              <td>
+                <% if (ci === 0) { %>TOTAL
+                <% } else if (numericKeys.indexOf(col.key) !== -1) { %>
+                  <%= moneyFmt(section.rows.reduce(function(s,r){ return s + Number(r[col.key]||0); }, 0)) %>
+                <% } %>
+              </td>
+            <% }); %>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+      <% } %>
+
+    <!-- ── Grouped transactions section ─────────────────── -->
+    <% } else { %>
+      <% if (section.groups.length === 0) { %>
+        <div class="empty-msg">Sin transacciones para el per&iacute;odo seleccionado.</div>
+      <% } else { %>
+        <% section.groups.forEach(function(group) {
+          var totalEntradas = group.entradas.reduce(function(s,t){ return s + Number(t.amount||0); }, 0);
+          var totalSalidas  = group.salidas.reduce(function(s,t){ return s + Number(t.amount||0); }, 0);
+          var saldo         = totalEntradas - totalSalidas;
+        %>
+        <div class="investor-block">
+
+          <!-- Investor header bar -->
+          <div class="investor-header">
+            <span class="investor-name"><%= group.name %></span>
+            <span class="investor-email"><%= group.email %></span>
+          </div>
+
+          <!-- Entradas sub-table -->
+          <div class="type-block">
+            <div class="type-label entrada">
+              &#8593; Entradas &mdash; <%= group.entradas.length %> mov.
+            </div>
+            <% if (group.entradas.length === 0) { %>
+              <div style="padding:4px 8px;font-size:7.5px;color:#94A3B8;border:1px solid #CBD5E1;">Sin entradas en el per&iacute;odo.</div>
+            <% } else { %>
+            <table>
+              <colgroup>
+                <% section.detailCols.forEach(function(c){ %><col style="width:<%- c.pct %>%" /><% }); %>
+              </colgroup>
+              <thead>
+                <tr style="background:#16A34A;">
+                  <% section.detailCols.forEach(function(c){ %>
+                    <th style="background:#16A34A;border-color:#15803D;"><%= c.label %></th>
+                  <% }); %>
+                </tr>
+              </thead>
+              <tbody>
+                <% group.entradas.forEach(function(row){ %>
+                <tr>
+                  <% section.detailCols.forEach(function(col){ %>
+                    <td title="<%= fmtCell(col, row) %>"><%= fmtCell(col, row) %></td>
+                  <% }); %>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
+            <div class="type-total entrada">Total Entradas: <%= moneyFmt(totalEntradas) %></div>
+            <% } %>
+          </div>
+
+          <!-- Salidas sub-table -->
+          <div class="type-block" style="margin-top:6px;">
+            <div class="type-label salida">
+              &#8595; Salidas &mdash; <%= group.salidas.length %> mov.
+            </div>
+            <% if (group.salidas.length === 0) { %>
+              <div style="padding:4px 8px;font-size:7.5px;color:#94A3B8;border:1px solid #CBD5E1;">Sin salidas en el per&iacute;odo.</div>
+            <% } else { %>
+            <table>
+              <colgroup>
+                <% section.detailCols.forEach(function(c){ %><col style="width:<%- c.pct %>%" /><% }); %>
+              </colgroup>
+              <thead>
+                <tr>
+                  <% section.detailCols.forEach(function(c){ %>
+                    <th style="background:#DC2626;border-color:#B91C1C;"><%= c.label %></th>
+                  <% }); %>
+                </tr>
+              </thead>
+              <tbody>
+                <% group.salidas.forEach(function(row){ %>
+                <tr>
+                  <% section.detailCols.forEach(function(col){ %>
+                    <td title="<%= fmtCell(col, row) %>"><%= fmtCell(col, row) %></td>
+                  <% }); %>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
+            <div class="type-total salida">Total Salidas: <%= moneyFmt(totalSalidas) %></div>
+            <% } %>
+          </div>
+
+          <!-- Investor summary bar -->
+          <div class="investor-summary">
+            <div class="summary-item">
+              <div class="summary-label">Total Entradas</div>
+              <div class="summary-value" style="color:#16A34A;"><%= moneyFmt(totalEntradas) %></div>
+            </div>
+            <div class="summary-item">
+              <div class="summary-label">Total Salidas</div>
+              <div class="summary-value" style="color:#DC2626;"><%= moneyFmt(totalSalidas) %></div>
+            </div>
+            <div class="summary-item">
+              <div class="summary-label">Saldo Neto</div>
+              <div class="summary-value" style="color:<%= saldo >= 0 ? '#16A34A' : '#DC2626' %>;">
+                <%= moneyFmt(saldo) %>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.investor-block -->
+        <% }); %>
+      <% } %>
+    <% } %>
+
+  </div><!-- /.section -->
+  <% }); %>
+
+</body>
+</html>
