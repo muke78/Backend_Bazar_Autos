@@ -137,3 +137,6 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+# DB dumps con datos reales — solo schema.sql va a git
+dump.sql
+*.dump.sql
