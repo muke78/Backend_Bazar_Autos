@@ -74,12 +74,12 @@ export const updateUserService = async (userId, userData) => {
 				"No se proporcionó un ID válido o el usuario no existe",
 			);
 
-		if (email && email !== existingUser.email) {
-			const emailConflict = await findUserByEmailOrUsername(email, username);
-			if (emailConflict) {
-				throw new ConflictError("El correo ya se encuentra registrado");
-			}
-		}
+		// if (email && email !== existingUser.email) {
+		// 	const emailConflict = await findUserByEmailOrUsername(email, username);
+		// 	if (emailConflict) {
+		// 		throw new ConflictError("El correo ya se encuentra registrado");
+		// 	}
+		// }
 
 		const updateData = { user_id: userId };
 

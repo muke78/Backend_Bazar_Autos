@@ -58,7 +58,10 @@ CREATE TABLE `cars` (
   PRIMARY KEY (`car_id`),
   KEY `idx_brand_model` (`brand`,`model`),
   KEY `idx_dates` (`purchase_date`,`sale_date`),
-  KEY `idx_year_of_car` (`year_of_car`)
+  KEY `idx_year_of_car` (`year_of_car`),
+  KEY `idx_created` (`created`),
+  KEY `idx_status` (`status`),
+  KEY `idx_sale_purchase_dates` (`sale_date`,`purchase_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -77,6 +80,8 @@ CREATE TABLE `investor` (
   `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`investor_id`),
   KEY `idx_investor_user` (`user_id`),
+  KEY `idx_investor_created` (`created`),
+  KEY `idx_investor_user_created` (`user_id`,`created`),
   CONSTRAINT `fk_investor_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -122,6 +127,8 @@ CREATE TABLE `movements` (
   PRIMARY KEY (`movements_id`),
   KEY `idx_movements_car` (`car_id`),
   KEY `idx_movements_category` (`movements_category_id`),
+  KEY `idx_movements_created` (`created`),
+  KEY `idx_movements_created_car` (`created`,`car_id`),
   CONSTRAINT `fk_movements_car` FOREIGN KEY (`car_id`) REFERENCES `cars` (`car_id`) ON DELETE CASCADE,
   CONSTRAINT `fk_movements_category` FOREIGN KEY (`movements_category_id`) REFERENCES `movements_category` (`category_id`) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -155,8 +162,8 @@ CREATE TABLE `users` (
   `password_hash` varchar(255) NOT NULL,
   `full_name` varchar(200) DEFAULT NULL,
   `email` varchar(200) DEFAULT NULL,
+  `role` enum('admin','user') NOT NULL DEFAULT 'user',
   `last_login` datetime DEFAULT NULL,
-  `role` ENUM('admin', 'user') NOT NULL DEFAULT 'user',
   `created` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`),
@@ -174,4 +181,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-04-02 21:41:01
+-- Dump completed on 2026-05-23 21:19:02
