@@ -1,10 +1,30 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# Stage 1 — deps: instala node_modules de producción
+# ═══════════════════════════════════════════════════════════════════════════
+FROM node:22-bookworm-slim AS deps
+
+# Evita que puppeteer descargue Chromium durante pnpm install
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
+    SCARF_ANALYTICS=false
+
+WORKDIR /app
+
+RUN corepack enable && corepack prepare pnpm@10.33.3 --activate
+
+COPY package.json pnpm-lock.yaml ./
+
+RUN pnpm install --prod --frozen-lockfile
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Stage 2 — runner: imagen final limpia con Chromium + código
+# ═══════════════════════════════════════════════════════════════════════════
 FROM node:22-bookworm-slim
 
-# ── Chromium + fonts para Puppeteer (PDF generation) ─────────────────────────
+# Chromium + libs de runtime para Puppeteer (PDF generation)
+# fonts-liberation cubre Latin/español — fonts-noto-core no es necesaria
 RUN apt-get update && apt-get install -y \
     chromium \
     fonts-liberation \
-    fonts-noto-core \
     libgbm1 \
     libnss3 \
     libatk-bridge2.0-0 \
@@ -13,19 +33,14 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-# Usar Chromium del sistema — evita que puppeteer descargue su propio binario
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium \
     SCARF_ANALYTICS=false
 
 WORKDIR /app
 
-# Pin pnpm exacto para que coincida con package.json#packageManager
-RUN corepack enable && corepack prepare pnpm@10.33.3 --activate
-
-COPY package.json pnpm-lock.yaml ./
-
-RUN pnpm install --prod --frozen-lockfile
+# Solo node_modules del stage anterior (sin pnpm, sin cache de build)
+COPY --from=deps /app/node_modules ./node_modules
 
 COPY . .
 

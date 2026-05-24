@@ -8,7 +8,7 @@ services:
     # Sin ports: BD no es accesible desde fuera — solo red interna Docker
     environment:
       MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
+      MYSQL_USER: ${DB_USER}           # ⚠️  NO puede ser "root" — usa otro nombre (ej: bazar_user)
       MYSQL_PASSWORD: ${DB_PASS}
       MYSQL_ROOT_PASSWORD: ${DB_PASS}
     volumes:
@@ -17,7 +17,8 @@ services:
     networks:
       - bazar_net
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASS}"]
+      # Usa root + MYSQL_ROOT_PASSWORD para el ping (independiente de DB_USER)
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p${DB_PASS} --silent"]
       interval: 5s
       timeout: 10s
       retries: 10
