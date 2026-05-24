@@ -1,7 +1,7 @@
 import mysql from "mysql2/promise";
 import { config } from "../config/config.js";
 
-//Creando conexion pool y su configuracion
+// Pool de conexiones MySQL
 export const pool = mysql.createPool({
 	host: config.db.host,
 	port: config.db.port,
@@ -18,24 +18,27 @@ export const pool = mysql.createPool({
 	multipleStatements: config.db.multipleStatements,
 });
 
-// Función opcional para verificar conexión al iniciar
+// ── Health check con cache (evita ping a BD en cada request) ────────────────
+let lastCheck = { ts: 0, ok: false };
+const HEALTH_TTL_MS = 5000; // 5s
+
 export const testConnection = async () => {
+	const now = Date.now();
+	if (now - lastCheck.ts < HEALTH_TTL_MS) return lastCheck.ok;
+
 	try {
 		const connection = await pool.getConnection();
-		console.log("✅ Conectado a la base de datos MySQL");
 		connection.release();
+		lastCheck = { ts: now, ok: true };
 		return true;
 	} catch (error) {
-		console.error("❌ Error conectando a la base de datos:", error.message);
+		console.error("❌ DB error:", error.message);
+		lastCheck = { ts: now, ok: false };
 		return false;
 	}
 };
 
-// Probar conexión al cargar el módulo (opcional)
-testConnection().then((success) => {
-	if (success) {
-		console.log("✅ Conexión a BD verificada correctamente");
-	} else {
-		console.error("❌ No se pudo establecer conexión con la BD");
-	}
+// Ping inicial único al arrancar
+testConnection().then((ok) => {
+	console.log(ok ? "✅ MySQL pool listo" : "❌ MySQL pool falló al iniciar");
 });

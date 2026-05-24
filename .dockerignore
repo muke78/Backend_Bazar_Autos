@@ -1,12 +1,54 @@
+# ═══ Code & deps ═══════════════════════════════════════════════════════════
 node_modules
+.pnpm-store
+
+# ═══ Env & secrets ═════════════════════════════════════════════════════════
 .env
+.env.local
+.env.*.local
+
+# ═══ Logs ══════════════════════════════════════════════════════════════════
 *.log
 pnpm-debug.log
 npm-debug.log
+logs/
+
+# ═══ Git ═══════════════════════════════════════════════════════════════════
 .git
 .gitignore
+.gitattributes
+
+# ═══ Docs (no se necesitan en runtime) ─────────────────────────────────────
 *.md
-.nvmrc
-kpis.sql
-logs/
+
+# ═══ IDE / Editor ──────────────────────────────────────────────────────────
 .vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# ═══ Build/Profiling artifacts ─────────────────────────────────────────────
+.clinic/
+coverage/
+.nyc_output/
+
+# ═══ Dev-only scripts (loadtest, profiling) ────────────────────────────────
+scripts/
+
+# ═══ Docker artifacts (no recursión) ───────────────────────────────────────
+Dockerfile
+.dockerignore
+docker-compose.yml
+docker-compose.*.yml
+
+# ═══ Data (NUNCA en imagen) ────────────────────────────────────────────────
+dump.sql
+*.dump.sql
+*.backup.sql
+kpis.sql
+
+# ═══ Misc ──────────────────────────────────────────────────────────────────
+.nvmrc
+biome.json
+.editorconfig

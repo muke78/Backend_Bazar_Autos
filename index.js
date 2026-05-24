@@ -2,7 +2,9 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import helmet from "helmet";
+import compression from "compression";
 import cookieParser from "cookie-parser";
+import statusMonitor from "express-status-monitor";
 import { router } from "./src/routes/index.js";
 import { config } from "./src/config/config.js";
 import { corsOptions } from "./src/middlewares/cors-middlewares.js";
@@ -19,14 +21,52 @@ const port = config.port ?? 3000;
 
 const app = express();
 
+// ✅ 0. Monitor de performance en tiempo real (debe ir ANTES de otros middlewares)
+// Acceso: http://localhost:PORT/status
+app.use(
+	statusMonitor({
+		title: "Bazar Autos — Backend Monitor",
+		path: "/status",
+		spans: [
+			{ interval: 1, retention: 60 },   // 1s × 60 = último minuto
+			{ interval: 5, retention: 60 },   // 5s × 60 = últimos 5 min
+			{ interval: 15, retention: 60 },  // 15s × 60 = últimos 15 min
+		],
+		chartVisibility: {
+			cpu: true,
+			mem: true,
+			load: true,
+			eventLoop: true,
+			heap: true,
+			responseTime: true,
+			rps: true,
+			statusCodes: true,
+		},
+		healthChecks: [
+			{
+				protocol: "http",
+				host: "localhost",
+				path: `${config.api.basePath}`,
+				port: port,
+			},
+		],
+	}),
+);
+
 // ✅ 1. Configuracion de swagger para la documentacion de API's
 setupSwagger(app);
 
 // ✅ 2. Middlewares básicos
 app.use(cors(corsOptions));
+app.use(compression()); // gzip JSON/HTML responses
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true, limit: "1mb" }));
-app.use(morgan("combined"));
+
+// morgan solo en desarrollo (en producción genera I/O sincrónico costoso)
+if (config.nodeEnv !== "production") {
+	app.use(morgan("dev"));
+}
+
 app.use(helmet());
 app.use(cookieParser());
 

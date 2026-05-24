@@ -1,8 +1,8 @@
-import puppeteer from "puppeteer-core";
 import ejs from "ejs";
 import { readFileSync } from "fs";
 import { fileURLToPath } from "url";
 import path from "path";
+import { getBrowser } from "../lib/browser.js";
 import {
 	SALES_COLUMNS,
 	EXPENSES_COLUMNS,
@@ -12,6 +12,9 @@ import {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const TEMPLATE_PATH = path.join(__dirname, "../templates/report.ejs");
+
+// Template cacheado en memoria (evita readFileSync por request)
+const TEMPLATE = readFileSync(TEMPLATE_PATH, "utf-8");
 
 // ── Formatters ──────────────────────────────────────────────────────────────
 const MONEY_KEYS = new Set([
@@ -98,12 +101,11 @@ const buildSections = (type, data) => {
 	return sections;
 };
 
-// ── PDF generator ───────────────────────────────────────────────────────────
+// ── PDF generator (usa browser singleton) ───────────────────────────────────
 export const generatePdfReport = async (type, data, meta) => {
-	const template = readFileSync(TEMPLATE_PATH, "utf-8");
 	const sections = buildSections(type, data);
 
-	const html = ejs.render(template, {
+	const html = ejs.render(TEMPLATE, {
 		type,
 		meta,
 		sections,
@@ -111,26 +113,13 @@ export const generatePdfReport = async (type, data, meta) => {
 		moneyFmt,
 	});
 
-	// En Docker: PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium (seteado en Dockerfile)
-	// En local:  channel:'chrome' usa el Chrome del sistema (sin necesitar path manual)
-	const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
-
-	const browser = await puppeteer.launch({
-		headless: true,
-		...(executablePath
-			? { executablePath }
-			: { channel: "chrome" }),
-		args: [
-			"--no-sandbox",
-			"--disable-setuid-sandbox",
-			"--disable-dev-shm-usage",   // evita crash en Docker por /dev/shm pequeño
-			"--disable-gpu",
-		],
-	});
+	// Reusa el browser singleton — no relanza Chromium por request
+	const browser = await getBrowser();
+	const page = await browser.newPage();
 
 	try {
-		const page = await browser.newPage();
-		await page.setContent(html, { waitUntil: "networkidle0" });
+		// 'load' es más rápido que 'networkidle0' para HTML estático sin recursos externos
+		await page.setContent(html, { waitUntil: "load" });
 
 		const buffer = await page.pdf({
 			format: "A4",
@@ -149,6 +138,7 @@ export const generatePdfReport = async (type, data, meta) => {
 
 		return Buffer.isBuffer(buffer) ? buffer : Buffer.from(buffer);
 	} finally {
-		await browser.close();
+		// Cierra solo la página, no el browser (browser se reusa)
+		await page.close();
 	}
 };

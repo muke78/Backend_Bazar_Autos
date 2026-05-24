@@ -30,17 +30,21 @@ export const config = {
 	nodeEnv: process.env.NODE_ENV,
 	db: {
 		host: process.env.DB_HOST || "localhost",
+		port: Number(process.env.DB_PORT) || 3306,
 		user: process.env.DB_USER,
 		password: process.env.DB_PASS,
 		database: process.env.DB_NAME,
 		runtime: process.env.RUNTIME,
 		waitForConnections: true,
-		connectionLimit: 10,
-		maxIdle: 10,
+		// Pool dimensionado para ~10 usuarios concurrentes con dashboard (21 queries paralelas)
+		// Subir si VPS tiene más CPU/RAM o si MySQL aguanta más conexiones simultáneas
+		connectionLimit: Number(process.env.DB_POOL_LIMIT) || 25,
+		maxIdle: Number(process.env.DB_POOL_MAX_IDLE) || 10,
 		idleTimeout: 60000,
 		queueLimit: 0,
 		enableKeepAlive: true,
 		keepAliveInitialDelay: 0,
+		multipleStatements: false,
 	},
 	cookie: {
 		cookieMaxAge: parseExpiration(process.env.JWT_EXPIRES_COOKIE),

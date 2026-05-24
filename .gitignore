@@ -140,3 +140,6 @@ vite.config.ts.timestamp-*
 # DB dumps con datos reales — solo schema.sql va a git
 dump.sql
 *.dump.sql
+
+# Clinic.js — reportes de profiling locales (HTML pesados, no van a git)
+.clinic/

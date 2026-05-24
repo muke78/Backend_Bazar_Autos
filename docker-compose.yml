@@ -5,24 +5,53 @@ services:
     image: mysql:8.0
     container_name: bazar_mysql
     restart: always
-    # Sin ports: BD no es accesible desde fuera — solo red interna Docker
     environment:
       MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}           # ⚠️  NO puede ser "root" — usa otro nombre (ej: bazar_user)
+      MYSQL_USER: ${DB_USER}           # ⚠️  NO puede ser "root"
       MYSQL_PASSWORD: ${DB_PASS}
       MYSQL_ROOT_PASSWORD: ${DB_PASS}
+    # ── MySQL tuneado para 1 vCPU / 1 GB RAM ──────────────────────────────
+    command:
+      # Máx conexiones: 15 pool Node + overhead = 30 total es suficiente
+      - --max-connections=50
+      # Buffer pool: 128M (no más — Node + OS necesitan el resto del GB)
+      - --innodb-buffer-pool-size=128M
+      - --innodb-log-file-size=32M
+      # flush=2: commit sin fsync en cada tx → mucho más rápido en VPS sin SSD enterprise
+      # Riesgo: pérdida de ~1s de transacciones si hay crash. Aceptable para este caso.
+      - --innodb-flush-log-at-trx-commit=2
+      - --innodb-flush-method=O_DIRECT
+      # Evita reverse DNS lookup por cada conexión → menos latencia
+      - --skip-name-resolve
+      # Performance schema consume ~50-100MB RAM — off en VPS chico
+      - --performance-schema=OFF
+      # Thread cache: reutiliza threads en lugar de crear/destruir
+      - --thread-cache-size=8
+      # Query cache desactivado (deprecated en 8.0, solo overhead)
+      - --default-authentication-plugin=mysql_native_password
     volumes:
       - mysql_data:/var/lib/mysql
       - ./schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
     networks:
       - bazar_net
     healthcheck:
-      # Usa root + MYSQL_ROOT_PASSWORD para el ping (independiente de DB_USER)
       test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p${DB_PASS} --silent"]
       interval: 5s
       timeout: 10s
       retries: 10
       start_period: 30s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.8"    # 80% del core cuando haya queries pesadas
+          memory: 400M   # 128M buffer + overhead InnoDB + threads
+        reservations:
+          memory: 200M
 
   # ── Backend Node.js ────────────────────────────────────────────────────────
   api:
@@ -30,21 +59,40 @@ services:
     container_name: bazar_backend
     restart: always
     ports:
-      - "127.0.0.1:3000:3000"   # Solo accesible desde localhost (Nginx proxy)
+      - "127.0.0.1:3000:3000"   # Solo localhost → Nginx hace proxy
     env_file:
       - .env
     environment:
       DB_HOST: db
       NODE_ENV: production
+      # Pool de MySQL: 15 conexiones
+      # (10 suficiente para carga normal, 15 da margen para picos)
+      DB_POOL_LIMIT: "15"
     volumes:
       - logs_data:/logs
     networks:
       - bazar_net
     depends_on:
       db:
-        condition: service_healthy   # Espera a que MySQL esté realmente listo
-    # /dev/shm extra para Chromium (Puppeteer PDF) en Docker
-    shm_size: "256mb"
+        condition: service_healthy
+    # Chromium necesita /dev/shm — 128MB suficiente para 1-2 PDFs concurrent
+    # No es necesario más en un VPS de 1GB con carga normal
+    shm_size: "128mb"
+    # /tmp en RAM → Chromium escribe temp files aquí (más rápido que disco)
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"    # todo el core cuando no hay queries MySQL intensas
+          memory: 450M   # Node heap 300MB + overhead V8 + Chromium singleton
+        reservations:
+          memory: 250M
 
 networks:
   bazar_net:

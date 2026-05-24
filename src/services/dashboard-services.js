@@ -15,6 +15,10 @@ import {
 	getExpensesByCategoryModel,
 	getNumberOfCarModels,
 } from "../models/dashboard-models.js";
+import { memoize } from "../lib/cache.js";
+
+// TTL del cache de dashboard — 60s es buen trade-off para datos casi-realtime
+const DASHBOARD_CACHE_TTL_MS = 60_000;
 
 const computeChange = (current, previous) => {
 	if (!previous || previous === 0) {
@@ -31,18 +35,7 @@ const getPreviousPeriod = (year, month) => {
 	return { year: year - 1, month: null };
 };
 
-export const getDashboardService = async ({
-	year,
-	month,
-	years_range,
-	top_limit,
-}) => {
-	const now = new Date();
-	const currentYear = year || now.getFullYear();
-	const currentMonth = month || null;
-	const yearsRange = years_range || 6;
-	const topLimit = top_limit || 3;
-
+const buildDashboard = async (currentYear, currentMonth, yearsRange, topLimit) => {
 	const prev = getPreviousPeriod(currentYear, currentMonth);
 
 	// Todas las queries en paralelo
@@ -234,4 +227,30 @@ export const getDashboardService = async ({
 			},
 		},
 	};
+};
+
+/**
+ * Service público — wraps buildDashboard con cache TTL.
+ * Misma combinación de filtros = misma key → resultado servido desde memoria.
+ * Reduce 21 queries paralelas a 0 en cache hit.
+ */
+export const getDashboardService = async ({
+	year,
+	month,
+	years_range,
+	top_limit,
+}) => {
+	const now = new Date();
+	const currentYear = year || now.getFullYear();
+	const currentMonth = month || null;
+	const yearsRange = years_range || 6;
+	const topLimit = top_limit || 3;
+
+	const cacheKey = `dash:${currentYear}:${currentMonth ?? "all"}:${yearsRange}:${topLimit}`;
+
+	return memoize(
+		cacheKey,
+		() => buildDashboard(currentYear, currentMonth, yearsRange, topLimit),
+		DASHBOARD_CACHE_TTL_MS,
+	);
 };
