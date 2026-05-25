@@ -103,36 +103,38 @@ export const getTotalInvestedModel = async (year, month) => {
 
 // ============ CHARTS ============
 
-// Bar: autos vendidos por año (últimos N años)
-export const getCarsSoldPerYearModel = async (yearsRange) => {
+// Bar: autos vendidos por año (últimos N años desde el año filtrado)
+export const getCarsSoldPerYearModel = async (yearsRange, year) => {
 	const query = `
 		SELECT YEAR(created) AS year, COUNT(*) AS total
 		FROM cars
 		WHERE status = 'Vendido'
-			AND YEAR(created) >= YEAR(CURDATE()) - ?
+			AND YEAR(created) >= ? - ?
+			AND YEAR(created) <= ?
 		GROUP BY YEAR(created)
 		ORDER BY year ASC;
 	`;
-	return await runQuery("getCarsSoldPerYearModel", query, [yearsRange - 1]);
+	return await runQuery("getCarsSoldPerYearModel", query, [year, yearsRange - 1, year]);
 };
 
-// Line: utilidad por año (últimos N años)
-export const getProfitPerYearModel = async (yearsRange) => {
+// Line: utilidad por año (últimos N años desde el año filtrado)
+export const getProfitPerYearModel = async (yearsRange, year) => {
 	const query = `
 		SELECT YEAR(created) AS year,
 			COALESCE(SUM(price_for_sale - purchase_price), 0) AS total
 		FROM cars
 		WHERE status = 'Vendido'
 			AND price_for_sale IS NOT NULL
-			AND YEAR(created) >= YEAR(CURDATE()) - ?
+			AND YEAR(created) >= ? - ?
+			AND YEAR(created) <= ?
 		GROUP BY YEAR(created)
 		ORDER BY year ASC;
 	`;
-	return await runQuery("getProfitPerYearModel", query, [yearsRange - 1]);
+	return await runQuery("getProfitPerYearModel", query, [year, yearsRange - 1, year]);
 };
 
 // Area: inversión acumulada por año (running total con window function MySQL 8+)
-export const getInvestmentPerYearModel = async (yearsRange) => {
+export const getInvestmentPerYearModel = async (yearsRange, year) => {
 	const query = `
 		SELECT
 			year,
@@ -141,12 +143,32 @@ export const getInvestmentPerYearModel = async (yearsRange) => {
 		FROM (
 			SELECT YEAR(created) AS year, COALESCE(SUM(investment_amount), 0) AS total
 			FROM investor
-			WHERE YEAR(created) >= YEAR(CURDATE()) - ?
+			WHERE YEAR(created) >= ? - ?
+				AND YEAR(created) <= ?
 			GROUP BY YEAR(created)
 		) AS yearly
 		ORDER BY year ASC;
 	`;
-	return await runQuery("getInvestmentPerYearModel", query, [yearsRange - 1]);
+	return await runQuery("getInvestmentPerYearModel", query, [year, yearsRange - 1, year]);
+};
+
+// Horizontal bar: promedio días por marca filtrado por año
+export const getAvgDaysToSellByBrandModel = async (year) => {
+	const query = `
+		SELECT
+			brand,
+			COUNT(*) AS total_sold,
+			ROUND(AVG(DATEDIFF(sale_date, purchase_date)), 1) AS avg_days
+		FROM cars
+		WHERE status = 'Vendido'
+			AND sale_date IS NOT NULL
+			AND YEAR(created) <= ?
+		GROUP BY brand
+		HAVING total_sold >= 2
+		ORDER BY avg_days ASC
+		LIMIT 10;
+	`;
+	return await runQuery("getAvgDaysToSellByBrandModel", query, [year]);
 };
 
 // Ranking: top autos vendidos (por unidades)
@@ -167,23 +189,6 @@ export const getTopSoldCarsModel = async (limit) => {
 		LIMIT ?;
 	`;
 	return await runQuery("getTopSoldCarsModel", query, [limit]);
-};
-
-// Horizontal bar: promedio días por marca (velocidad de venta)
-export const getAvgDaysToSellByBrandModel = async () => {
-	const query = `
-		SELECT
-			brand,
-			COUNT(*) AS total_sold,
-			ROUND(AVG(DATEDIFF(sale_date, purchase_date)), 1) AS avg_days
-		FROM cars
-		WHERE status = 'Vendido' AND sale_date IS NOT NULL
-		GROUP BY brand
-		HAVING total_sold >= 2
-		ORDER BY avg_days ASC
-		LIMIT 10;
-	`;
-	return await runQuery("getAvgDaysToSellByBrandModel", query);
 };
 
 // Donut/Pie: utilidad por marca (en periodo filtrado)

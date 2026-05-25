@@ -9,7 +9,8 @@ export const listGetFullNameUserModels = async () => {
 			full_name AS name,
 			username,
 			email,
-			role
+			role,
+			last_login
         FROM
             users;`;
 		return await connectionQuery(query);
